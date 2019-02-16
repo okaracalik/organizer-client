@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import example from './module-example'
+import app from './app'
+import tag from './tag'
+import occurrence from './occurrence'
+import task from './task'
 
 Vue.use(Vuex)
 
@@ -13,7 +16,10 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      example
+      app,
+      tag,
+      occurrence,
+      task
     }
   })
 
