@@ -4,6 +4,8 @@ module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
     plugins: [
+      'vuelidate',
+      'emitter'
     ],
     css: [
       'app.styl'
@@ -53,7 +55,16 @@ module.exports = function (ctx) {
         'QListHeader',
         'QItem',
         'QItemMain',
-        'QItemSide'
+        'QItemSide',
+        'QField',
+        'QInput',
+        'QSelect',
+        'QChip',
+        'QChipsInput',
+        'QToggle',
+        'QAjaxBar',
+        'QDatetime',
+        'QColor'
       ],
       directives: [
         'Ripple',
