@@ -1,8 +1,13 @@
 <template>
   <q-page padding>
+    <div class="q-mb-md row justify-between">
+      <q-btn color="positive" @click="save()" icon="fas fa-save"/>
+      <q-btn v-if="id" color="negative" @click="erase()" icon="fas fa-trash"/>
+    </div>
+    <hr>
     <div class="row">
       <!-- begins -->
-      <q-field class="col-md-6 col-xs-12 q-pr-md">
+      <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-start">
         <q-datetime
           type="date"
           float-label="Begins"
@@ -13,7 +18,7 @@
         />
       </q-field>
       <!-- ends -->
-      <q-field class="col-md-6 col-xs-12 q-pl-md">
+      <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-end">
         <q-datetime
           type="date"
           float-label="Ends"
@@ -26,7 +31,7 @@
     </div>
     <div class="row">
       <!-- repeats -->
-      <q-field class="col-md-1 col-xs-12 q-pr-md">
+      <q-field class="col-md-1 col-xs-12 q-pr-lg" icon="fas fa-hashtag">
         <q-input
           type="number"
           float-label="Repeats"
@@ -37,7 +42,7 @@
         />
       </q-field>
       <!-- frequency -->
-      <q-field class="col-md-5 col-xs-12 q-pr-md">
+      <q-field class="col-md-5 col-xs-12 q-pr-lg" icon="fas fa-sync-alt">
         <q-select
           float-label="Frequency"
           v-model="occurrenceForm.data.frequency"
@@ -45,7 +50,7 @@
         />
       </q-field>
       <!-- isLastDayOfMonth -->
-      <q-field class="items-center q-pl-md">
+      <q-field class="items-center">
         <q-toggle
           label="Last Day of Month"
           v-model="occurrenceForm.data.isOnLastDayOfMonth"

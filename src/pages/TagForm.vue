@@ -3,7 +3,6 @@
     <!-- form -->
     <div v-if="tagForm.data">
       <div class="row">
-
         <!-- name -->
         <q-field
           class="col-md-9 col-xs-12 q-pr-lg"

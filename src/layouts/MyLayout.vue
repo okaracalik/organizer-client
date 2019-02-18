@@ -33,7 +33,7 @@
           <q-item-main label="Task"/>
         </q-item>
         <q-item to="/occurrences">
-          <q-item-side icon="fas fa-calendar-alt"/>
+          <q-item-side icon="update"/>
           <q-item-main label="Occurrences"/>
         </q-item>
         <q-item to="/tags">
