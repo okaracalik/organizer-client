@@ -50,27 +50,30 @@
         />
       </q-field>
       <!-- isLastDayOfMonth -->
-      <q-field class="items-center">
+      <q-field class="items-end">
         <q-toggle
           label="Last Day of Month"
           v-model="occurrenceForm.data.isOnLastDayOfMonth"
           v-show="showIsOnLastDayOfMonth"
         />
       </q-field>
+      <!-- days -->
+      <q-field class="items-end">
+        <q-checkbox
+          class="col"
+          v-model="occurrenceForm.data.weekdays"
+          v-for="(item, index) in days"
+          :key="index"
+          :val="item.value"
+          :label="item.label"
+          :disable="!showDays"
+          v-show="showDays"
+        />
+      </q-field>
     </div>
-    <!-- days -->
-    <q-field class="col-md-12 col-xs-12 q-my-lg">
-      <q-select
-        chips
-        multiple
-        v-model="occurrenceForm.data.weekdays"
-        :options="days"
-        :disable="!showDays"
-        v-show="showDays"
-      />
-    </q-field>
     <!-- occurrences -->
     <occurrences
+      class="q-my-lg"
       :succeeded="occurrenceForm.data.succeeded"
       :skipped="occurrenceForm.data.skipped"
       :next="occurrenceForm.data.next"
@@ -81,16 +84,13 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import { isLastDayOfMonth } from 'date-fns'
+import { isLastDayOfMonth, startOfToday, getDay } from 'date-fns'
 import Occurrences from '../components/Occurrences'
 import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
 // TODO: endless
-// TODO: occurrence on edit
-// TODO: better day selection
-// TODO: occurrence views
 export default {
   name: 'OccurrenceForm',
   mixins: [form],
@@ -209,6 +209,14 @@ export default {
       if (!newValue) {
         this.occurrenceForm.data.showIsOnLastDayOfMonth = false
       }
+    },
+    'occurrenceForm.data.frequency' (newValue, oldValue) {
+      if (oldValue === 'week') {
+        this.occurrenceForm.data.weekdays = []
+      }
+      if (newValue === 'week') {
+        this.occurrenceForm.data.weekdays = [this.days[getDay(startOfToday()) - 1].value]
+      }
     }
   },
   created () {
@@ -217,16 +225,16 @@ export default {
   validations: {
     occurrenceForm: {
       data: {
-        begins: { },
-        ends: { },
-        repeats: { },
-        frequency: { },
-        isOnLastDayOfMonth: { },
-        weekdays: { },
-        next: { },
-        succeeded: { },
-        failed: { },
-        skipped: { }
+        begins: {},
+        ends: {},
+        repeats: {},
+        frequency: {},
+        isOnLastDayOfMonth: {},
+        weekdays: {},
+        next: {},
+        succeeded: {},
+        failed: {},
+        skipped: {}
       }
     }
   }

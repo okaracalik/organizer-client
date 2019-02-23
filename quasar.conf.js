@@ -66,7 +66,8 @@ module.exports = function (ctx) {
         'QDatetime',
         'QColor',
         'QModal',
-        'QDatetimePicker'
+        'QDatetimePicker',
+        'QCheckbox'
       ],
       directives: [
         'Ripple',

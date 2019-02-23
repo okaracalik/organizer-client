@@ -1,7 +1,9 @@
 <template>
   <div class="row">
     <q-list class="col-md-3" striped-odd>
-      <q-list-header>Succeeded
+      <q-list-header>
+        <q-icon name="fas fa-check"/>
+        Succeeded
         <q-chip small color="green-10">{{succeeded.length}}</q-chip>
         <q-btn
           class="float-right"
@@ -12,7 +14,7 @@
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'succeeded'}"
         />
       </q-list-header>
-      <q-item v-for="(item, index) in succeeded" :key="index">
+      <q-item v-for="(item, index) in succeeded.slice(0, shownItems.succeeded)" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
         <q-item-side class="text-right">
           <q-btn
@@ -41,9 +43,14 @@
           />
         </q-item-side>
       </q-item>
+      <q-item v-if="shownItems.succeeded < succeeded.length">
+        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.succeeded += 10"/>
+      </q-item>
     </q-list>
     <q-list class="col-md-3" striped>
-      <q-list-header>Skipped
+      <q-list-header>
+        <q-icon name="fas fa-forward"/>
+        Skipped
         <q-chip small color="deep-orange-10">{{skipped.length}}</q-chip>
         <q-btn
           class="float-right"
@@ -54,7 +61,7 @@
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'skipped'}"
         />
       </q-list-header>
-      <q-item v-for="(item, index) in skipped" :key="index">
+      <q-item v-for="(item, index) in skipped.slice(0, shownItems.skipped)" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
         <q-item-side class="text-right">
           <q-btn
@@ -83,9 +90,14 @@
           />
         </q-item-side>
       </q-item>
+      <q-item v-if="shownItems.skipped < skipped.length">
+        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.skipped += 10"/>
+      </q-item>
     </q-list>
     <q-list class="col-md-3" striped-odd>
-      <q-list-header>Failed
+      <q-list-header>
+        <q-icon name="fas fa-times"/>
+        Failed
         <q-chip small color="red-10">{{failed.length}}</q-chip>
         <q-btn
           class="float-right"
@@ -96,7 +108,7 @@
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'failed'}"
         />
       </q-list-header>
-      <q-item v-for="(item, index) in failed" :key="index">
+      <q-item v-for="(item, index) in failed.slice(0, shownItems.failed)" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
         <q-item-side class="text-right">
           <q-btn
@@ -125,9 +137,14 @@
           />
         </q-item-side>
       </q-item>
+      <q-item v-if="shownItems.failed < failed.length">
+        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.failed += 10"/>
+      </q-item>
     </q-list>
     <q-list class="col-md-3" striped>
-      <q-list-header>Next
+      <q-list-header>
+        <q-icon name="fas fa-angle-right"/>
+        Next
         <q-chip small color="blue-10">{{next.length}}</q-chip>
         <q-btn
           class="float-right"
@@ -138,7 +155,7 @@
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'next'}"
         />
       </q-list-header>
-      <q-item v-for="(item, index) in next" :key="index">
+      <q-item v-for="(item, index) in next.slice(0, shownItems.next)" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
         <q-item-side class="text-right">
           <q-btn
@@ -168,6 +185,9 @@
             @click.native="fail(...next.splice(index, 1))"
           />
         </q-item-side>
+      </q-item>
+      <q-item v-if="shownItems.next < next.length">
+        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.next += 10"/>
       </q-item>
     </q-list>
     <q-modal v-model="dateModal.isOpened">
@@ -213,6 +233,12 @@ export default {
   },
   data () {
     return {
+      shownItems: {
+        next: 10,
+        failed: 10,
+        skipped: 10,
+        succeeded: 10
+      },
       dateModal: {
         isOpened: false,
         value: null,
