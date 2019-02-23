@@ -3,6 +3,14 @@
     <q-list class="col-md-3" striped-odd>
       <q-list-header>Succeeded
         <q-chip small color="green-10">{{succeeded.length}}</q-chip>
+        <q-btn
+          class="float-right"
+          size="sm"
+          icon="fas fa-plus"
+          round
+          color="teal"
+          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'succeeded'}"
+        />
       </q-list-header>
       <q-item v-for="(item, index) in succeeded" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
@@ -37,6 +45,14 @@
     <q-list class="col-md-3" striped>
       <q-list-header>Skipped
         <q-chip small color="deep-orange-10">{{skipped.length}}</q-chip>
+        <q-btn
+          class="float-right"
+          size="sm"
+          icon="fas fa-plus"
+          round
+          color="teal"
+          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'skipped'}"
+        />
       </q-list-header>
       <q-item v-for="(item, index) in skipped" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
@@ -71,6 +87,14 @@
     <q-list class="col-md-3" striped-odd>
       <q-list-header>Failed
         <q-chip small color="red-10">{{failed.length}}</q-chip>
+        <q-btn
+          class="float-right"
+          size="sm"
+          icon="fas fa-plus"
+          round
+          color="teal"
+          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'failed'}"
+        />
       </q-list-header>
       <q-item v-for="(item, index) in failed" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
@@ -105,6 +129,14 @@
     <q-list class="col-md-3" striped>
       <q-list-header>Next
         <q-chip small color="blue-10">{{next.length}}</q-chip>
+        <q-btn
+          class="float-right"
+          size="sm"
+          icon="fas fa-plus"
+          round
+          color="teal"
+          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'next'}"
+        />
       </q-list-header>
       <q-item v-for="(item, index) in next" :key="index">
         <q-item-main>{{ format(item) }}</q-item-main>
@@ -138,6 +170,21 @@
         </q-item-side>
       </q-item>
     </q-list>
+    <q-modal v-model="dateModal.isOpened">
+      <q-datetime-picker v-model="dateModal.value" type="date"/>
+      <q-btn
+        color="warning"
+        class="float-left"
+        label="cancel"
+        @click.native="() => {dateModal.value=null; dateModal.isOpened=false}"
+      />
+      <q-btn
+        color="positive"
+        class="float-right"
+        label="add"
+        @click.native="() => {$props[dateModal.selected].push(dateModal.value); dateModal.selected = null; dateModal.value=null; dateModal.isOpened=false}"
+      />
+    </q-modal>
   </div>
 </template>
 
@@ -162,6 +209,15 @@ export default {
     failed: {
       type: Array,
       default: () => []
+    }
+  },
+  data () {
+    return {
+      dateModal: {
+        isOpened: false,
+        value: null,
+        selected: null
+      }
     }
   },
   methods: {

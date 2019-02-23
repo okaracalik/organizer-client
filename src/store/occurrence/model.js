@@ -24,7 +24,7 @@ const eachWeek = (days, repeats) => {
   })
 }
 
-const generateOccurrences = (begins, ends, frequency, repeats, isOnLastDayOfMonth, weekdays) => {
+const generateOccurrences = (begins, ends, repeats, frequency, isOnLastDayOfMonth, weekdays) => {
   let temp = []
   let today = begins
   switch (frequency) {
@@ -62,12 +62,14 @@ const generateOccurrences = (begins, ends, frequency, repeats, isOnLastDayOfMont
 }
 
 export const getInstance = () => ({
+  id: null,
+  task_id: null,
   begins: startOfToday(),
   ends: endOfToday(),
   repeats: 1,
   frequency: 'once', // once, day, week, month, year, custom
   isOnLastDayOfMonth: false, // for month and year
-  weekdays: [],
+  weekdays: [], // for week
   next: [],
   succeeded: [],
   failed: [],
@@ -78,8 +80,8 @@ export const observer = {
   set: function (obj, prop, value) {
     obj[prop] = value
     // any change on properties below will generate new occurrences
-    if (_.includes(['begins', 'ends', 'frequency', 'repeats', 'isOnLastDayOfMonth', 'weekdays'], prop)) {
-      obj.next = generateOccurrences(obj.begins, obj.ends, obj.frequency, obj.repeats, obj.isOnLastDayOfMonth, obj.weekdays)
+    if (_.includes(['begins', 'ends', 'repeats', 'frequency', 'isOnLastDayOfMonth', 'weekdays'], prop)) {
+      obj.next = generateOccurrences(obj.begins, obj.ends, obj.repeats, obj.frequency, obj.isOnLastDayOfMonth, obj.weekdays)
     }
     return true
   }

@@ -8,7 +8,7 @@
       color="primary"
       class="fixed"
       style="right: 18px; bottom: 18px"
-      @click="$router.push('/occurrences/new')"
+      @click="$router.push('/tasks/new')"
       icon="fas fa-plus"
     />
   </q-page>

@@ -3,30 +3,12 @@
     <!-- content -->
     <!-- title -->
     <q-field class="col-md-12 col-xs-12">
-      <q-input
-        type="text"
-        float-label="Title"
-        v-model.trim="taskForm.data.title"
-      />
+      <q-input type="text" float-label="Title" v-model.trim="taskForm.data.title"/>
     </q-field>
     <!-- description -->
     <q-field class="col-md-12 col-xs-12">
-      <q-input
-        type="textarea"
-        float-label="Description"
-        v-model.trim="taskForm.data.description"
-      />
+      <q-input type="textarea" float-label="Description" v-model.trim="taskForm.data.description"/>
     </q-field>
-    <!-- fab -->
-    <q-btn
-      fab
-      round
-      color="primary"
-      class="fixed"
-      style="right: 18px; bottom: 18px"
-      @click="$router.push('/tasks/new')"
-      icon="fas fa-plus"
-    />
   </q-page>
 </template>
 
@@ -37,6 +19,7 @@ import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
+// TODO: include occurrence
 export default {
   name: 'TaskForm',
   mixins: [form],
@@ -115,21 +98,18 @@ export default {
   validations: {
     taskForm: {
       data: {
-        begins: { },
-        ends: { },
-        repeats: { },
-        frequency: { },
-        isOnLastDayOfMonth: { },
-        weekdays: { },
-        next: { },
-        succeeded: { },
-        failed: { },
-        skipped: { }
+        begins: {},
+        ends: {},
+        repeats: {},
+        frequency: {},
+        isOnLastDayOfMonth: {},
+        weekdays: {},
+        next: {},
+        succeeded: {},
+        failed: {},
+        skipped: {}
       }
     }
   }
 }
 </script>
-
-<style>
-</style>

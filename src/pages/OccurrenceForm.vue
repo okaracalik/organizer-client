@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="this.occurrenceForm.data">
     <div class="q-mb-md row justify-between">
       <q-btn color="positive" @click="save()" icon="fas fa-save"/>
       <q-btn v-if="id" color="negative" @click="erase()" icon="fas fa-trash"/>
@@ -88,7 +88,6 @@ import form from '../mixins/form'
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
 // TODO: endless
-// TODO: custom date
 // TODO: occurrence on edit
 // TODO: better day selection
 // TODO: occurrence views
@@ -125,13 +124,13 @@ export default {
       occurrenceForm: state => state.form
     }),
     showRepeats () {
-      return !_.includes(['once'], this.occurrenceForm.data.frequency)
+      return this.occurrenceForm.data && !_.includes(['once'], this.occurrenceForm.data.frequency)
     },
     showIsOnLastDayOfMonth () {
-      return _.includes(['month', 'year'], this.occurrenceForm.data.frequency) && isLastDayOfMonth(this.occurrenceForm.data.begins)
+      return this.occurrenceForm.data && _.includes(['month', 'year'], this.occurrenceForm.data.frequency) && isLastDayOfMonth(this.occurrenceForm.data.begins)
     },
     showDays () {
-      return _.includes(['week'], this.occurrenceForm.data.frequency)
+      return this.occurrenceForm.data && _.includes(['week'], this.occurrenceForm.data.frequency)
     }
   },
   methods: {
