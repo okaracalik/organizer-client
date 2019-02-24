@@ -1,14 +1,16 @@
 <template>
-  <q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg">
+  <q-page padding>
+    <calendar-month />
   </q-page>
 </template>
 
-<style>
-</style>
-
 <script>
+import CalendarMonth from '../components/CalendarMonth'
+
 export default {
-  name: 'PageIndex'
+  name: 'PageIndex',
+  components: {
+    CalendarMonth
+  }
 }
 </script>
