@@ -2,23 +2,17 @@
   <q-page padding>
     <!-- content -->
     <!-- fab -->
-    <q-btn
-      fab
-      round
-      color="primary"
-      class="fixed"
-      style="right: 18px; bottom: 18px"
-      @click="$router.push('/tasks/new')"
-      icon="fas fa-plus"
-    />
+    <floating-action-button next='/tasks/new' />
   </q-page>
 </template>
 
 <script>
+import FloatingActionButton from '../components/FloatingActionButton'
+
 export default {
-  // name: 'PageName',
+  name: 'TaskList',
+  components: {
+    FloatingActionButton
+  }
 }
 </script>
-
-<style>
-</style>

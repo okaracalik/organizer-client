@@ -45,7 +45,6 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { required, minLength } from 'vuelidate/lib/validators'
 import _ from 'lodash'
 import form from '../mixins/form'
 
@@ -56,6 +55,7 @@ export default {
   mixins: [form],
   data () {
     return {
+      formName: 'tagForm',
       color: '#FFFFFF'
     }
   },
@@ -147,17 +147,6 @@ export default {
     isProperty (newValue) {
       if (newValue) {
         this.setTag({ name: newValue.name, color: newValue.color, active: newValue.color })
-      }
-    }
-  },
-  created () {
-    this.init()
-  },
-  validations: {
-    tagForm: {
-      data: {
-        name: { required, minLength: minLength(2) },
-        active: { required }
       }
     }
   }

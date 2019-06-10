@@ -13,15 +13,7 @@
       </q-card>
     </div>
     <!-- fab -->
-    <q-btn
-      fab
-      round
-      color="primary"
-      class="fixed"
-      style="right: 18px; bottom: 18px"
-      @click="$router.push('/tags/new')"
-      icon="fas fa-plus"
-    />
+    <floating-action-button next='/tags/new' />
   </q-page>
 </template>
 
@@ -30,9 +22,14 @@ import { createNamespacedHelpers } from 'vuex'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
 
+import FloatingActionButton from '../components/FloatingActionButton'
+
 // TODO: search
 export default {
   name: 'TagList',
+  components: {
+    FloatingActionButton
+  },
   computed: {
     ...mapState({
       tagList: state => state.list

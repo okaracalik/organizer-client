@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- FIXME -->
     <q-field :error="isNoResult" error-label="You can add new by clicking plus icon.">
       <q-search
         stack-label="Tag"

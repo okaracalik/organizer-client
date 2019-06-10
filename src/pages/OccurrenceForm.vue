@@ -90,6 +90,8 @@ import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
+// TODO: (1) date-inputs
+// TODO: occurrence view
 // TODO: endless
 export default {
   name: 'OccurrenceForm',
@@ -99,6 +101,7 @@ export default {
   },
   data () {
     return {
+      formName: 'occurrenceForm',
       frequencies: [
         { label: 'Once', value: 'once' },
         { label: 'Day', value: 'day' },
@@ -216,25 +219,6 @@ export default {
       }
       if (newValue === 'week') {
         this.occurrenceForm.data.weekdays = [this.days[getDay(startOfToday()) - 1].value]
-      }
-    }
-  },
-  created () {
-    this.init()
-  },
-  validations: {
-    occurrenceForm: {
-      data: {
-        begins: {},
-        ends: {},
-        repeats: {},
-        frequency: {},
-        isOnLastDayOfMonth: {},
-        weekdays: {},
-        next: {},
-        succeeded: {},
-        failed: {},
-        skipped: {}
       }
     }
   }

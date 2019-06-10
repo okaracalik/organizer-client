@@ -31,6 +31,11 @@ const { mapState, mapActions } = createNamespacedHelpers('task')
 export default {
   name: 'TaskForm',
   mixins: [form],
+  data () {
+    return {
+      formName: 'taskForm'
+    }
+  },
   computed: {
     ...mapState({
       taskItem: state => state.item,
@@ -97,25 +102,6 @@ export default {
           message: this.$emitter.constructNotifyMessage(this.mode, 'Task'),
           type: 'positive'
         })
-      }
-    }
-  },
-  created () {
-    this.init()
-  },
-  validations: {
-    taskForm: {
-      data: {
-        begins: {},
-        ends: {},
-        repeats: {},
-        frequency: {},
-        isOnLastDayOfMonth: {},
-        weekdays: {},
-        next: {},
-        succeeded: {},
-        failed: {},
-        skipped: {}
       }
     }
   }

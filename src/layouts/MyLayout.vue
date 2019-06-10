@@ -9,8 +9,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen">
-      <q-list >
+    <q-drawer v-model="leftDrawerOpen" bordered>
+      <q-list bordered separator padding>
         <q-item-label header>Menu</q-item-label>
         <q-item to="/tasks">
           <q-item-section avatar>
