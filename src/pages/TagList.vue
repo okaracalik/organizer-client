@@ -9,7 +9,7 @@
         :class="[!item.active ? 'disabled' : '', 'col-md-2 col-xs-5 q-ma-xs text-bold']"
         :style="getColors(item.colors)"
       >
-        <q-card-main class="column text-center cursor-pointer">{{ item.name }}</q-card-main>
+        <q-card-section class="column text-center cursor-pointer">{{ item.name }}</q-card-section>
       </q-card>
     </div>
     <!-- fab -->

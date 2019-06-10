@@ -1,14 +1,9 @@
 <template>
   <q-page padding v-if="this.occurrenceForm.data">
-    <div class="q-mb-md row justify-between">
-      <q-btn color="positive" @click="save()" icon="fas fa-save"/>
-      <q-btn v-if="id" color="negative" @click="erase()" icon="fas fa-trash"/>
-    </div>
-    <hr>
     <div class="row">
       <!-- begins -->
-      <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-start">
-        <q-datetime
+      <!-- <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-start">
+        <q-date
           type="date"
           float-label="Begins"
           v-model="occurrenceForm.data.begins"
@@ -16,10 +11,10 @@
           :first-day-of-week="1"
           :max="occurrenceForm.data.ends"
         />
-      </q-field>
+      </q-field>-->
       <!-- ends -->
-      <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-end">
-        <q-datetime
+      <!-- <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-end">
+        <q-date
           type="date"
           float-label="Ends"
           v-model="occurrenceForm.data.ends"
@@ -27,28 +22,32 @@
           :first-day-of-week="1"
           :min="occurrenceForm.data.begins"
         />
-      </q-field>
+      </q-field>-->
     </div>
     <div class="row">
       <!-- repeats -->
-      <q-field class="col-md-1 col-xs-12 q-pr-lg" icon="fas fa-hashtag">
-        <q-input
-          type="number"
-          float-label="Repeats"
-          v-model="occurrenceForm.data.repeats"
-          min="1"
-          align="center"
-          :disable="!showRepeats"
-        />
-      </q-field>
+      <q-input
+        type="number"
+        float-label="Repeats"
+        v-model="occurrenceForm.data.repeats"
+        min="1"
+        align="center"
+        :disable="!showRepeats"
+      >
+        <template v-slot:before>
+          <q-icon name="fas fa-hashtag"/>
+        </template>
+      </q-input>
       <!-- frequency -->
-      <q-field class="col-md-5 col-xs-12 q-pr-lg" icon="fas fa-sync-alt">
-        <q-select
-          float-label="Frequency"
-          v-model="occurrenceForm.data.frequency"
-          :options="frequencies"
-        />
-      </q-field>
+      <q-select
+        float-label="Frequency"
+        v-model="occurrenceForm.data.frequency"
+        :options="frequencies"
+      >
+        <template v-slot:before>
+          <q-icon name="fas fa-sync"/>
+        </template>
+      </q-select>
       <!-- isLastDayOfMonth -->
       <q-field class="items-end">
         <q-toggle
@@ -72,16 +71,17 @@
       </q-field>
     </div>
     <!-- occurrences -->
-    <occurrences
+    <!-- <occurrences
       class="q-my-lg"
       :succeeded="occurrenceForm.data.succeeded"
       :skipped="occurrenceForm.data.skipped"
       :next="occurrenceForm.data.next"
-    />
+    /> -->
   </q-page>
 </template>
 
 <script>
+/* eslint-disable */
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
 import { isLastDayOfMonth, startOfToday, getDay } from 'date-fns'

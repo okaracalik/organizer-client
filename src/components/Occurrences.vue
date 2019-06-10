@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <q-list class="col-md-3" striped-odd>
-      <q-list-header>
+      <q-header>
         <q-icon name="fas fa-check"/>
         Succeeded
         <q-chip small color="green-10">{{succeeded.length}}</q-chip>
@@ -13,10 +13,10 @@
           color="teal"
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'succeeded'}"
         />
-      </q-list-header>
+      </q-header>
       <q-item v-for="(item, index) in succeeded.slice(0, shownItems.succeeded)" :key="index">
-        <q-item-main>{{ format(item) }}</q-item-main>
-        <q-item-side class="text-right">
+        <q-item-label>{{ format(item) }}</q-item-label>
+        <q-item-section class="text-right">
           <q-btn
             class="q-mr-xs"
             size="xs"
@@ -41,14 +41,14 @@
             round
             @click.native="() => succeeded.splice(index, 1)"
           />
-        </q-item-side>
+        </q-item-section>
       </q-item>
       <q-item v-if="shownItems.succeeded < succeeded.length">
         <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.succeeded += 10"/>
       </q-item>
     </q-list>
     <q-list class="col-md-3" striped>
-      <q-list-header>
+      <q-header>
         <q-icon name="fas fa-forward"/>
         Skipped
         <q-chip small color="deep-orange-10">{{skipped.length}}</q-chip>
@@ -60,10 +60,10 @@
           color="teal"
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'skipped'}"
         />
-      </q-list-header>
+      </q-header>
       <q-item v-for="(item, index) in skipped.slice(0, shownItems.skipped)" :key="index">
-        <q-item-main>{{ format(item) }}</q-item-main>
-        <q-item-side class="text-right">
+        <q-item-label>{{ format(item) }}</q-item-label>
+        <q-item-section class="text-right">
           <q-btn
             class="q-mr-xs"
             size="xs"
@@ -88,14 +88,14 @@
             round
             @click.native="() => skipped.splice(index, 1)"
           />
-        </q-item-side>
+        </q-item-section>
       </q-item>
       <q-item v-if="shownItems.skipped < skipped.length">
         <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.skipped += 10"/>
       </q-item>
     </q-list>
     <q-list class="col-md-3" striped-odd>
-      <q-list-header>
+      <q-header>
         <q-icon name="fas fa-times"/>
         Failed
         <q-chip small color="red-10">{{failed.length}}</q-chip>
@@ -107,10 +107,10 @@
           color="teal"
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'failed'}"
         />
-      </q-list-header>
+      </q-header>
       <q-item v-for="(item, index) in failed.slice(0, shownItems.failed)" :key="index">
-        <q-item-main>{{ format(item) }}</q-item-main>
-        <q-item-side class="text-right">
+        <q-item-label>{{ format(item) }}</q-item-label>
+        <q-item-section class="text-right">
           <q-btn
             class="q-mr-xs"
             size="xs"
@@ -135,14 +135,14 @@
             round
             @click.native="() => failed.splice(index, 1)"
           />
-        </q-item-side>
+        </q-item-section>
       </q-item>
       <q-item v-if="shownItems.failed < failed.length">
         <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.failed += 10"/>
       </q-item>
     </q-list>
     <q-list class="col-md-3" striped>
-      <q-list-header>
+      <q-header>
         <q-icon name="fas fa-angle-right"/>
         Next
         <q-chip small color="blue-10">{{next.length}}</q-chip>
@@ -154,10 +154,10 @@
           color="teal"
           @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'next'}"
         />
-      </q-list-header>
+      </q-header>
       <q-item v-for="(item, index) in next.slice(0, shownItems.next)" :key="index">
-        <q-item-main>{{ format(item) }}</q-item-main>
-        <q-item-side class="text-right">
+        <q-item-label>{{ format(item) }}</q-item-label>
+        <q-item-section class="text-right">
           <q-btn
             v-if="isAfter(item)"
             class="q-mr-xs"
@@ -184,14 +184,14 @@
             round
             @click.native="fail(...next.splice(index, 1))"
           />
-        </q-item-side>
+        </q-item-section>
       </q-item>
       <q-item v-if="shownItems.next < next.length">
         <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.next += 10"/>
       </q-item>
     </q-list>
-    <q-modal v-model="dateModal.isOpened">
-      <q-datetime-picker v-model="dateModal.value" type="date"/>
+    <q-dialog v-model="dateModal.isOpened">
+      <!-- <q-date v-model="dateModal.value" type="date"/> -->
       <q-btn
         color="warning"
         class="float-left"
@@ -204,7 +204,7 @@
         label="add"
         @click.native="() => {$props[dateModal.selected].push(dateModal.value); dateModal.selected = null; dateModal.value=null; dateModal.isOpened=false}"
       />
-    </q-modal>
+    </q-dialog>
   </div>
 </template>
 

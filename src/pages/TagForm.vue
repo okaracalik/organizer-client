@@ -4,44 +4,25 @@
     <div v-if="tagForm.data">
       <div class="row">
         <!-- name -->
-        <q-field
-          class="col-md-9 col-xs-12 q-pr-lg"
-          :error="$v.tagForm.data.name.$error"
-          error-label="Please enter valid input."
-        >
-          <q-input
-            type="text"
-            float-label="Name"
-            v-model.trim="tagForm.data.name"
-            @input="$v.tagForm.data.name.$touch"
-            :error="$v.tagForm.data.name.$error"
-            :autofocus="!isEdit"
-          />
-        </q-field>
+        <q-input type="text" label="Name" v-model.trim="tagForm.data.name">
+          <template v-slot:before>
+            <q-icon name="fas fa-font"/>
+          </template>
+        </q-input>
         <!-- color -->
-        <q-field class="col-md-2 col-xs-12 q-pr-lg">
-          <q-color
-            stack-label="Color"
-            v-model="color"
-            format-model="hex"
-            :after="[
-              {
-                icon: 'fas fa-plus',
-                content: true,
-                handler () {
-                  tagForm.data.colors.push(color)
-                  color = '#FFFFFF'
-                }
-              }
-            ]"
-          />
-        </q-field>
-        <q-field class="col-md-1 col-xs-12 items-center q-my-md">
-          <q-toggle
-            v-model="tagForm.data.active"
-            :label="tagForm.data.active ? 'Active' : 'Inactive'"
-          />
-        </q-field>
+        <q-icon v-model="color">
+          <template v-slot:append>
+            <q-icon name="colorize" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-color v-model="color"/>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-icon>
+        <q-toggle
+          v-model="tagForm.data.active"
+          :label="tagForm.data.active ? 'Active' : 'Inactive'"
+        />
       </div>
       <!-- colors -->
       <div class="q-mt-md">

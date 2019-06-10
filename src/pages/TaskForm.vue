@@ -1,14 +1,20 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <!-- title -->
-    <q-field class="col-md-12 col-xs-12">
-      <q-input type="text" float-label="Title" v-model.trim="taskForm.data.title"/>
-    </q-field>
-    <!-- description -->
-    <q-field class="col-md-12 col-xs-12">
-      <q-input type="textarea" float-label="Description" v-model.trim="taskForm.data.description"/>
-    </q-field>
+    <div class="q-mt-lg">
+      <!-- title -->
+      <q-input type="text" label="Title" v-model.trim="taskForm.data.title">
+        <template v-slot:before>
+          <q-icon name="fas fa-font"/>
+        </template>
+      </q-input>
+      <!-- description -->
+      <q-input type="textarea" label="Description" v-model.trim="taskForm.data.description">
+        <template v-slot:before>
+          <q-icon name="fas fa-paragraph"/>
+        </template>
+      </q-input>
+    </div>
   </q-page>
 </template>
 
@@ -20,6 +26,8 @@ import form from '../mixins/form'
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
 // TODO: include occurrence
+// TODO: make it have children
+// TODO: multiple occurrences should not have same elements for each category
 export default {
   name: 'TaskForm',
   mixins: [form],

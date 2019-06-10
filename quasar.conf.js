@@ -2,8 +2,8 @@
 
 module.exports = function (ctx) {
   return {
-    // app plugins (/src/plugins)
-    plugins: [
+    // app boot (/src/boot)
+    boot: [
       'vuelidate',
       'emitter'
     ],
@@ -11,11 +11,11 @@ module.exports = function (ctx) {
       'app.styl'
     ],
     extras: [
-      ctx.theme.mat ? 'roboto-font' : null,
+      ctx.mode.pwa ? 'roboto-font' : null,
       'material-icons', // optional, you are not bound to it
       // 'ionicons',
-      // 'mdi',
-      'fontawesome'
+      'mdi-v3',
+      'fontawesome-v5'
     ],
     supportIE: false,
     build: {
@@ -37,14 +37,15 @@ module.exports = function (ctx) {
     devServer: {
       // https: true,
       // port: 8080,
-      open: true // opens browser window automatically
+      open: true, // opens browser window automatically
+      port: ctx.mode.spa ? 8000 : (ctx.mode.pwa ? 9000 : 9090)
     },
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
         'QLayout',
-        'QLayoutHeader',
-        'QLayoutDrawer',
+        'QHeader',
+        'QDrawer',
         'QPageContainer',
         'QPage',
         'QToolbar',
@@ -52,38 +53,36 @@ module.exports = function (ctx) {
         'QBtn',
         'QIcon',
         'QList',
-        'QListHeader',
+        'QHeader',
         'QItem',
-        'QItemMain',
-        'QItemSide',
+        'QItemLabel',
+        'QItemSection',
         'QField',
         'QInput',
         'QSelect',
         'QChip',
-        'QChipsInput',
         'QToggle',
         'QAjaxBar',
-        'QDatetime',
+        'QDate',
         'QColor',
-        'QModal',
-        'QDatetimePicker',
+        'QDialog',
+        'QTime',
         'QCheckbox',
         'QCard',
-        'QCardTitle',
-        'QCardMain',
-        'QCardSeparator',
-        'QCardActions',
-        'QBtnGroup'
+        'QCardSection',
+        'QBtnGroup',
+        'QPopupProxy'
       ],
       directives: [
         'Ripple',
-        'CloseOverlay'
+        'ClosePopup'
       ],
       // Quasar plugins
       plugins: [
         'Notify',
         'Meta',
-        'Loading'
+        'Loading',
+        'Dialog'
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language

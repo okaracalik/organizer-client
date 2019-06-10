@@ -1,9 +1,9 @@
 <template>
   <q-card>
-    <q-card-title class="text-center">
+    <q-card-section class="text-center">
       <span class="weekday" v-if="showWeekdays">{{ getWeekday(day) }}</span>
       <span slot="subtitle">{{ getDayInMonth(day) }}</span>
-    </q-card-title>
+    </q-card-section>
   </q-card>
 </template>
 
