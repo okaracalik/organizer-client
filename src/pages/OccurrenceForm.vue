@@ -1,65 +1,96 @@
 <template>
-  <q-page padding v-if="this.occurrenceForm.data">
-    <div class="row">
-      <!-- begins -->
-      <!-- <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-start">
-        <q-date
-          type="date"
-          float-label="Begins"
-          v-model="occurrenceForm.data.begins"
-          format="MMM DD, YYYY"
-          :first-day-of-week="1"
-          :max="occurrenceForm.data.ends"
-        />
-      </q-field>-->
-      <!-- ends -->
-      <!-- <q-field class="col-md-6 col-xs-12 q-pr-lg" icon="fas fa-hourglass-end">
-        <q-date
-          type="date"
-          float-label="Ends"
-          v-model="occurrenceForm.data.ends"
-          format="MMM DD, YYYY"
-          :first-day-of-week="1"
-          :min="occurrenceForm.data.begins"
-        />
-      </q-field>-->
-    </div>
-    <div class="row">
-      <!-- repeats -->
-      <q-input
-        type="number"
-        float-label="Repeats"
-        v-model="occurrenceForm.data.repeats"
-        min="1"
-        align="center"
-        :disable="!showRepeats"
-      >
-        <template v-slot:before>
-          <q-icon name="fas fa-hashtag"/>
-        </template>
-      </q-input>
-      <!-- frequency -->
-      <q-select
-        float-label="Frequency"
-        v-model="occurrenceForm.data.frequency"
-        :options="frequencies"
-      >
-        <template v-slot:before>
-          <q-icon name="fas fa-sync"/>
-        </template>
-      </q-select>
-      <!-- isLastDayOfMonth -->
-      <q-field class="items-end">
+  <component :is="componentId" :padding="componentId === 'q-page'" :class="componentClass">
+    <div :class="{'q-mt-lg': !(isEmbedded || isModal)}" v-if="occurrenceForm.data">
+      <div class="row q-mt-lg">
+        <!-- begins -->
+        <q-input class="col-md-6 col-xs-12 q-pr-lg" v-model="occurrenceForm.data.begins">
+          <template v-slot:before>
+            <q-icon name="fas fa-hourglass-start" />
+          </template>
+          <template v-slot:prepend>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-date
+                  v-model="occurrenceForm.data.begins"
+                  mask="YYYY-MM-DD HH:mm"
+                  :first-day-of-week="1"
+                />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+          <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-time v-model="occurrenceForm.data.begins" mask="YYYY-MM-DD HH:mm" format24h />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+
+        <!-- ends -->
+        <q-input class="col-md-6 col-xs-12 q-pr-lg" v-model="occurrenceForm.data.ends">
+          <template v-slot:before>
+            <q-icon name="fas fa-hourglass-end" />
+          </template>
+          <template v-slot:prepend>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-date
+                  v-model="occurrenceForm.data.ends"
+                  mask="YYYY-MM-DD HH:mm"
+                  :first-day-of-week="1"
+                />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+          <template v-slot:append>
+            <q-icon name="access_time" class="cursor-pointer">
+              <q-popup-proxy transition-show="scale" transition-hide="scale">
+                <q-time v-model="occurrenceForm.data.ends" mask="YYYY-MM-DD HH:mm" format24h />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      <div class="row">
+        <!-- frequency -->
+        <q-select
+          class="col-md-5 col-xs-12 q-pr-lg"
+          label="Frequency"
+          v-model="occurrenceForm.data.frequency"
+          :options="frequencies"
+          emit-value
+          map-options
+        >
+          <template v-slot:before>
+            <q-icon name="fas fa-sync" />
+          </template>
+        </q-select>
+        <!-- n -->
+        <q-input
+          class="col-md-1 col-xs-12 q-pr-lg"
+          input-class="text-center"
+          type="number"
+          float-label="N"
+          v-model="occurrenceForm.data.n"
+          min="1"
+          align="center"
+          :disable="!showN"
+        >
+          <template v-slot:before>
+            <q-icon name="fas fa-hashtag" />
+          </template>
+        </q-input>
+        <!-- isLastDayOfMonth -->
         <q-toggle
+          class="items-end"
           label="Last Day of Month"
-          v-model="occurrenceForm.data.isOnLastDayOfMonth"
+          v-model="occurrenceForm.data.is_on_last_day_of_month"
           v-show="showIsOnLastDayOfMonth"
         />
-      </q-field>
-      <!-- days -->
-      <q-field class="items-end">
+        <!-- days -->
         <q-checkbox
-          class="col"
+          class="col items-end"
           v-model="occurrenceForm.data.weekdays"
           v-for="(item, index) in days"
           :key="index"
@@ -68,16 +99,31 @@
           :disable="!showDays"
           v-show="showDays"
         />
-      </q-field>
+      </div>
+      <!-- occurrences -->
+      <div class="row q-mt-lg">
+        <occurrences
+          class="col-md-3"
+          v-for="(item, index) in ['succeeded', 'skipped', 'failed', 'next']"
+          :key="index"
+          :type="item"
+          :items="occurrenceForm.data[item]"
+          @occurrence-succeed="(item) => occurrenceForm.data['succeeded'].push(item)"
+          @occurrence-skip="(item) => occurrenceForm.data['skipped'].push(item)"
+          @occurrence-fail="(item) => occurrenceForm.data['failed'].push(item)"
+        />
+      </div>
+      <!-- buttons -->
+      <form-action-buttons
+        :isModal="isModal"
+        :isEmbedded="isEmbedded"
+        :isEdit="isEdit"
+        @form-save="save"
+        @form-cancel="cancel"
+        @form-erase="erase"
+      />
     </div>
-    <!-- occurrences -->
-    <!-- <occurrences
-      class="q-my-lg"
-      :succeeded="occurrenceForm.data.succeeded"
-      :skipped="occurrenceForm.data.skipped"
-      :next="occurrenceForm.data.next"
-    /> -->
-  </q-page>
+  </component>
 </template>
 
 <script>
@@ -90,8 +136,6 @@ import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
-// TODO: (1) date-inputs
-// TODO: occurrence view
 // TODO: endless
 export default {
   name: 'OccurrenceForm',
@@ -126,7 +170,7 @@ export default {
       occurrenceItem: state => state.item,
       occurrenceForm: state => state.form
     }),
-    showRepeats () {
+    showN () {
       return this.occurrenceForm.data && !_.includes(['once'], this.occurrenceForm.data.frequency)
     },
     showIsOnLastDayOfMonth () {
@@ -162,29 +206,40 @@ export default {
       else {
         if (this.isEdit) {
           this.mode = this.$emitter.modes.UPDATE
-          this.updateOccurrence({ id: this.id, data: this.occurrenceForm.data })
+          this.updateOccurrence({ id: this.id, data: this.preSave(this.occurrenceForm.data) })
         }
         else {
           this.mode = this.$emitter.modes.CREATE
-          this.occurrenceForm.data.parent = this.parentId
-          this.createOccurrence(this.occurrenceForm.data)
+          this.createOccurrence(this.preSave(this.occurrenceForm.data))
         }
       }
     },
     erase () {
       this.mode = this.$emitter.modes.REMOVE
       this.removeOccurrence(this.id)
+    },
+    preSave (data) {
+      ['weekdays', 'next', 'succeeded', 'failed', 'skipped'].forEach(i => {
+        data[i] = data[i].length < 1 ? null : data[i]
+      })
+      return data
     }
   },
   watch: {
     'occurrenceItem.success' (newValue) {
       if (!_.isNull(newValue)) {
-        this.setOccurrence(newValue)
+        console.log(newValue);
+        const weekdays = !newValue.weekdays ? [] : newValue.weekdays
+        const next = !newValue.next ? [] : newValue.next
+        const skipped = !newValue.skipped ? [] : newValue.skipped
+        const failed = !newValue.failed ? [] : newValue.failed
+        const succeeded = !newValue.succeeded ? [] : newValue.succeeded
+        this.setOccurrence({ ...newValue, weekdays, next, skipped, failed, succeeded})
       }
     },
     'occurrenceForm.success' (newValue) {
       if (!_.isNull(newValue)) {
-        if (this.isModal) {
+        if (this.isModal || this.isEmbedded) {
           this.$emit(this.$emitter.constructEmitMessage(this.mode, 'occurrence'), newValue)
           this.setOccurrence(null)
           this.$v.occurrenceForm.$reset()
@@ -194,18 +249,19 @@ export default {
         }
         this.$q.notify({
           message: this.$emitter.constructNotifyMessage(this.mode, 'Occurrence'),
-          type: 'positive'
+          type: 'positive',
+          icon: 'mdi-check-circle-outline'
         })
       }
     },
-    'showRepeats' (newValue) {
+    'showN' (newValue) {
       if (!newValue) {
-        this.occurrenceForm.data.repeats = 1
+        this.occurrenceForm.data.n = 1
       }
     },
     'showDays' (newValue) {
       if (!newValue) {
-        this.occurrenceForm.data.days = []
+        this.occurrenceForm.data.weekdays = []
       }
     },
     'showIsOnLastDayOfMonth' (newValue) {
@@ -219,6 +275,11 @@ export default {
       }
       if (newValue === 'week') {
         this.occurrenceForm.data.weekdays = [this.days[getDay(startOfToday()) - 1].value]
+      }
+    },
+    id (newValue, oldValue) {
+      if (!_.isEqual(newValue, oldValue)) {
+        this.init()
       }
     }
   }

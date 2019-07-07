@@ -6,7 +6,7 @@ import FormActionButtons from '../components/FormActionButtons'
 export default {
   props: {
     id: {
-      type: String,
+      type: [String, Number],
       default: null
     },
     isModal: {
@@ -88,9 +88,9 @@ export default {
       data: {
         begins: {},
         ends: {},
-        repeats: {},
+        n: {},
         frequency: {},
-        isOnLastDayOfMonth: {},
+        is_on_last_day_of_month: {},
         weekdays: {},
         next: {},
         succeeded: {},
@@ -106,16 +106,10 @@ export default {
     },
     taskForm: {
       data: {
-        begins: {},
-        ends: {},
-        repeats: {},
-        frequency: {},
-        isOnLastDayOfMonth: {},
-        weekdays: {},
-        next: {},
-        succeeded: {},
-        failed: {},
-        skipped: {}
+        path: {},
+        title: {},
+        description: {},
+        tags: {}
       }
     }
   }

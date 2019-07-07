@@ -1,57 +1,57 @@
-import * as Utils from '../utils.js'
 import { getInstance } from './model.js'
-import { LocalStorage } from '../../services/local-storage'
+// import { LocalStorage } from '../../services/local-storage'
+import HTTP from '../../services/http'
 
 const moduleName = 'tasks'
-const Service = new LocalStorage(moduleName)
+const Service = HTTP(moduleName)
 
 export const find = ({ commit }, query = null) => {
-  Service.find()
+  Service.find(query)
     .then(res => {
-      commit('listSuccess', Utils.convertFirebaseResponse(res.data))
+      commit('listSuccess', res.data)
     })
     .catch(err => {
-      commit('listError', err.message)
+      commit('listError', err.response.data)
     })
 }
 
 export const get = ({ commit }, id) => {
   Service.get(id)
     .then(res => {
-      commit('itemSuccess', Utils.convertFirebaseResponse(res)[0])
+      commit('itemSuccess', { ...getInstance(), ...res.data })
     })
     .catch(err => {
-      commit('itemError', err.message)
+      commit('itemError', err.response.data)
     })
 }
 
 export const create = ({ commit }, data) => {
   Service.create(data)
     .then(res => {
-      commit('formSuccess', res)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
+      commit('formError', err.response.data)
     })
 }
 
 export const update = ({ commit }, { id, data }) => {
   Service.update(id, data)
     .then(res => {
-      commit('formSuccess', res)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
+      commit('formError', err.response.data)
     })
 }
 
 export const remove = ({ commit }, id) => {
   Service.remove(id)
     .then(res => {
-      commit('formSuccess', res)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
+      commit('formError', err.response.data)
     })
 }
 

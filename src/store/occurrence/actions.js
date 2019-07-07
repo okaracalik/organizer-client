@@ -1,77 +1,60 @@
-import * as Utils from '../utils.js'
 import { getInstance, observer } from './model.js'
-import { LocalStorage } from '../../services/local-storage'
+// import { LocalStorage } from '../../services/local-storage'
+import HTTP from '../../services/http'
 
 const moduleName = 'occurrences'
-const Service = new LocalStorage(moduleName)
+const Service = HTTP(moduleName)
 
 export const find = ({ commit }, query = null) => {
-  Utils.loading(commit)
-  Service.find()
+  Service.find(query)
     .then(res => {
-      commit('listSuccess', Utils.convertFirebaseResponse(res.data))
-      Utils.loaded(commit)
+      commit('listSuccess', res.data)
     })
     .catch(err => {
-      commit('listError', err.message)
-      Utils.loaded(commit)
+      commit('listError', err.response.data)
     })
 }
 
 export const get = ({ commit }, id) => {
-  Utils.loading(commit)
   Service.get(id)
     .then(res => {
-      commit('itemSuccess', { ...getInstance(), ...Utils.convertFirebaseResponse(res)[0] })
-      Utils.loaded(commit)
+      commit('itemSuccess', { ...getInstance(), ...res.data })
     })
     .catch(err => {
-      commit('itemError', err.message)
-      Utils.loaded(commit)
+      commit('itemError', err.response.data)
     })
 }
 
 export const create = ({ commit }, data) => {
-  Utils.loading(commit)
   Service.create(data)
     .then(res => {
-      commit('formSuccess', res)
-      Utils.loaded(commit)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
-      Utils.loaded(commit)
+      commit('formError', err.response.data)
     })
 }
 
 export const update = ({ commit }, { id, data }) => {
-  Utils.loading(commit)
   Service.update(id, data)
     .then(res => {
-      commit('formSuccess', res)
-      Utils.loaded(commit)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
-      Utils.loaded(commit)
+      commit('formError', err.response.data)
     })
 }
 
 export const remove = ({ commit }, id) => {
-  Utils.loading(commit)
   Service.remove(id)
     .then(res => {
-      commit('formSuccess', res)
-      Utils.loaded(commit)
+      commit('formSuccess', res.data)
     })
     .catch(err => {
-      commit('formError', err.message)
-      Utils.loaded(commit)
+      commit('formError', err.response.data)
     })
 }
 
 export const set = ({ commit }, data) => {
-  Utils.loading(commit)
   commit('formData', new Proxy({ ...getInstance(), ...data }, observer))
-  Utils.loaded(commit)
 }

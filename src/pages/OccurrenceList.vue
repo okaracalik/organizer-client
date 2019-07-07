@@ -1,20 +1,24 @@
 <template>
   <q-page padding>
     <!-- content -->
-    <div class="row" v-if="occurrenceList.success">
-      <q-list>
-        <q-item
-          v-for="item in occurrenceList.success"
-          v-bind:key="item.id"
-          @click.native="$router.push(`/occurrences/${item._id}`)"
-        >{{ item._id }} | {{ item.begins }} | {{ item.ends }} | {{ item.repeats }} | {{ item.frequency }} | {{ item.isOnLastDayOfMonth }} | {{ item.weekdays }} | {{ item.next.length }} | {{ item.succeeded.length }} | {{ item.failed.length }} | {{ item.skipped.length }}</q-item>
-      </q-list>
-    </div>
+    <q-list v-if="occurrenceList.success" bordered separator>
+      <q-item
+        v-for="(item, index) in occurrenceList.success.data"
+        :key="index"
+        @click.native="$router.push(`/occurrences/${item.id}`)"
+        tag="a"
+        clickable
+      >
+        <q-item-section>
+          <q-item-label>{{ item.id }} | {{ item.begins }} | {{ item.ends }} | {{ item.n }} | {{ item.frequency }} | {{ item.next.length }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
     <pre>
       {{occurrenceList.success}}
     </pre>
     <!-- fab -->
-    <floating-action-button next='/occurrences/new' />
+    <floating-action-button next="/occurrences/new" />
   </q-page>
 </template>
 

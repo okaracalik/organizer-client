@@ -1,8 +1,7 @@
-// TODO: children props: make it composite
 export const getInstance = () => ({
-  parent: null,
+  parent_id: null,
+  path: '',
   title: '',
   description: '',
-  tags: []
-  // children
+  occurrences: []
 })

@@ -1,267 +1,118 @@
 <template>
-  <div class="row">
-    <q-list class="col-md-3" striped-odd>
-      <q-header>
-        <q-icon name="fas fa-check"/>
-        Succeeded
-        <q-chip small color="green-10">{{succeeded.length}}</q-chip>
-        <q-btn
-          class="float-right"
-          size="sm"
-          icon="fas fa-plus"
-          round
-          color="teal"
-          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'succeeded'}"
-        />
-      </q-header>
-      <q-item v-for="(item, index) in succeeded.slice(0, shownItems.succeeded)" :key="index">
-        <q-item-label>{{ format(item) }}</q-item-label>
-        <q-item-section class="text-right">
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-forward"
-            color="deep-orange-6"
-            round
-            @click.native="skip(...succeeded.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-times"
-            color="red-6"
-            round
-            @click.native="fail(...succeeded.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-trash"
-            color="brown-6"
-            round
-            @click.native="() => succeeded.splice(index, 1)"
-          />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="shownItems.succeeded < succeeded.length">
-        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.succeeded += 10"/>
-      </q-item>
-    </q-list>
-    <q-list class="col-md-3" striped>
-      <q-header>
-        <q-icon name="fas fa-forward"/>
-        Skipped
-        <q-chip small color="deep-orange-10">{{skipped.length}}</q-chip>
-        <q-btn
-          class="float-right"
-          size="sm"
-          icon="fas fa-plus"
-          round
-          color="teal"
-          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'skipped'}"
-        />
-      </q-header>
-      <q-item v-for="(item, index) in skipped.slice(0, shownItems.skipped)" :key="index">
-        <q-item-label>{{ format(item) }}</q-item-label>
-        <q-item-section class="text-right">
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-check"
-            color="green-6"
-            round
-            @click.native="succeed(...skipped.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-times"
-            color="red-6"
-            round
-            @click.native="fail(...skipped.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-trash"
-            color="brown-6"
-            round
-            @click.native="() => skipped.splice(index, 1)"
-          />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="shownItems.skipped < skipped.length">
-        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.skipped += 10"/>
-      </q-item>
-    </q-list>
-    <q-list class="col-md-3" striped-odd>
-      <q-header>
-        <q-icon name="fas fa-times"/>
-        Failed
-        <q-chip small color="red-10">{{failed.length}}</q-chip>
-        <q-btn
-          class="float-right"
-          size="sm"
-          icon="fas fa-plus"
-          round
-          color="teal"
-          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'failed'}"
-        />
-      </q-header>
-      <q-item v-for="(item, index) in failed.slice(0, shownItems.failed)" :key="index">
-        <q-item-label>{{ format(item) }}</q-item-label>
-        <q-item-section class="text-right">
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-check"
-            color="green-6"
-            round
-            @click.native="succeed(...failed.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-forward"
-            color="deep-orange-6"
-            round
-            @click.native="skip(...failed.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-trash"
-            color="brown-6"
-            round
-            @click.native="() => failed.splice(index, 1)"
-          />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="shownItems.failed < failed.length">
-        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.failed += 10"/>
-      </q-item>
-    </q-list>
-    <q-list class="col-md-3" striped>
-      <q-header>
-        <q-icon name="fas fa-angle-right"/>
-        Next
-        <q-chip small color="blue-10">{{next.length}}</q-chip>
-        <q-btn
-          class="float-right"
-          size="sm"
-          icon="fas fa-plus"
-          round
-          color="teal"
-          @click.native="() => {dateModal.isOpened = true; dateModal.selected = 'next'}"
-        />
-      </q-header>
-      <q-item v-for="(item, index) in next.slice(0, shownItems.next)" :key="index">
-        <q-item-label>{{ format(item) }}</q-item-label>
-        <q-item-section class="text-right">
-          <q-btn
-            v-if="isAfter(item)"
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-check"
-            color="green-6"
-            round
-            @click.native="succeed(...next.splice(index, 1))"
-          />
-          <q-btn
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-forward"
-            color="deep-orange-6"
-            round
-            @click.native="skip(...next.splice(index, 1))"
-          />
-          <q-btn
-            v-if="isAfter(item)"
-            class="q-mr-xs"
-            size="xs"
-            icon="fas fa-times"
-            color="red-6"
-            round
-            @click.native="fail(...next.splice(index, 1))"
-          />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="shownItems.next < next.length">
-        <q-btn color="light-blue-4" class="full-width" label="Show more..." @click.native="() => shownItems.next += 10"/>
-      </q-item>
-    </q-list>
-    <q-dialog v-model="dateModal.isOpened">
-      <!-- <q-date v-model="dateModal.value" type="date"/> -->
+  <!-- list -->
+  <q-list separator bordered>
+    <!-- header -->
+    <q-item-label header class="text-bold text-capitalize">
+      <q-icon :name="properties.icon"/>
+      {{ properties.title }}
+      <q-chip :color="properties.color" text-color="white">{{items.length}}</q-chip>
+    </q-item-label>
+    <!-- items -->
+    <q-item v-for="(item, index) in items.slice(0, shownItems)" :key="index">
+      <q-item-section>{{ format(item, ' DD MMM YY, dd') }}</q-item-section>
       <q-btn
-        color="warning"
-        class="float-left"
-        label="cancel"
-        @click.native="() => {dateModal.value=null; dateModal.isOpened=false}"
+        v-if="['next', 'failed', 'skipped'].includes(properties.title) && isAfter(new Date(), item)"
+        round
+        size="sm"
+        color="green-6"
+        icon="mdi-check-bold"
+        @click.native="$emit('occurrence-succeed', items.splice(index, 1)[0])"
       />
       <q-btn
-        color="positive"
-        class="float-right"
-        label="add"
-        @click.native="() => {$props[dateModal.selected].push(dateModal.value); dateModal.selected = null; dateModal.value=null; dateModal.isOpened=false}"
+        v-if="['succeeded', 'failed', 'next'].includes(properties.title) && isAfter(new Date(), item)"
+        round
+        size="sm"
+        color="deep-orange-6"
+        icon="mdi-skip-forward"
+        @click.native="$emit('occurrence-skip', items.splice(index, 1)[0])"
       />
-    </q-dialog>
-  </div>
+      <q-btn
+        v-if="['succeeded', 'skipped', 'next'].includes(properties.title) && isAfter(new Date(), item)"
+        round
+        size="sm"
+        color="red-6"
+        icon="mdi-close-circle"
+        @click.native="$emit('occurrence-fail', items.splice(index, 1)[0])"
+      />
+      <q-btn
+        v-if="['succeeded', 'skipped', 'failed'].includes(properties.title) && isAfter(new Date(), item)"
+        round
+        size="sm"
+        color="brown-6"
+        icon="mdi-trash-can"
+        @click.native="items.splice(index, 1)"
+      />
+    </q-item>
+    <q-item v-if="shownItems < items.length">
+      <q-btn
+        color="light-blue-4"
+        class="full-width"
+        label="Show more..."
+        @click.native="() => shownItems += 10"
+      />
+    </q-item>
+  </q-list>
 </template>
 
 <script>
 import { format, isAfter } from 'date-fns'
 
+// TODO: custom date
 export default {
   name: 'Occurrences',
   props: {
-    succeeded: {
-      type: Array,
-      default: () => []
+    type: {
+      type: String,
+      required: true
     },
-    skipped: {
-      type: Array,
-      default: () => []
-    },
-    next: {
-      type: Array,
-      default: () => []
-    },
-    failed: {
+    items: {
       type: Array,
       default: () => []
     }
   },
   data () {
     return {
-      shownItems: {
-        next: 10,
-        failed: 10,
-        skipped: 10,
-        succeeded: 10
-      },
-      dateModal: {
-        isOpened: false,
-        value: null,
-        selected: null
+      shownItems: 10
+    }
+  },
+  computed: {
+    properties () {
+      if (this.type === 'succeeded') {
+        return {
+          title: this.type,
+          icon: 'mdi-check-bold',
+          color: 'green-10'
+        }
+      }
+      else if (this.type === 'skipped') {
+        return {
+          title: this.type,
+          icon: 'mdi-skip-forward',
+          color: 'deep-orange-10'
+        }
+      }
+      else if (this.type === 'failed') {
+        return {
+          title: this.type,
+          icon: 'mdi-close-circle',
+          color: 'red-10'
+        }
+      }
+      else if (this.type === 'next') {
+        return {
+          title: this.type,
+          icon: 'mdi-arrow-right-bold',
+          color: 'blue-10'
+        }
+      }
+      else {
+        return null
       }
     }
   },
   methods: {
-    format (d) {
-      return format(d, ' DD MMM YY, dd')
-    },
-    succeed (item) {
-      this.succeeded.push(item)
-    },
-    skip (item) {
-      this.skipped.push(item)
-    },
-    fail (item) {
-      this.failed.push(item)
-    },
-    isAfter (d) {
-      return isAfter(new Date(), d)
-    }
+    format,
+    isAfter
   }
 }
 </script>

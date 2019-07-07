@@ -9,10 +9,10 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered>
-      <q-list bordered separator padding>
+    <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
+      <q-list>
         <q-item-label header>Menu</q-item-label>
-        <q-item to="/tasks">
+        <q-item clickable tag="a" to="/tasks">
           <q-item-section avatar>
             <q-icon name="fas fa-tasks"/>
           </q-item-section>
@@ -21,7 +21,7 @@
             <q-item-label caption>Task List</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/occurrences">
+        <q-item clickable tag="a" to="/occurrences">
           <q-item-section avatar>
             <q-icon name="update"/>
           </q-item-section>
@@ -30,7 +30,7 @@
             <q-item-label caption>Occurrence List</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item to="/tags">
+        <q-item clickable tag="a" to="/tags">
           <q-item-section avatar>
             <q-icon name="fas fa-tag"/>
           </q-item-section>

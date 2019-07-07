@@ -10,21 +10,22 @@ import {
   isBefore,
   startOfISOWeek,
   startOfMonth,
-  startOfToday
+  startOfToday,
+  format
 } from 'date-fns'
 import _ from 'lodash'
 
 const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
-const eachWeek = (days, repeats) => {
+const eachWeek = (days, n) => {
   return _.flatMap(days, d => {
-    return repeats.map(r => {
+    return n.map(r => {
       return endOfDay(addDays(d, WEEKDAYS.indexOf(r)))
     })
   })
 }
 
-const generateOccurrences = (begins, ends, repeats, frequency, isOnLastDayOfMonth, weekdays) => {
+const generateOccurrences = (begins, ends, n, frequency, isOnLastDayOfMonth, weekdays) => {
   let temp = []
   let today = begins
   switch (frequency) {
@@ -34,28 +35,28 @@ const generateOccurrences = (begins, ends, repeats, frequency, isOnLastDayOfMont
     case 'day':
       while (!isAfter(today, ends)) {
         temp.push(endOfDay(today))
-        today = addDays(today, repeats)
+        today = addDays(today, n)
       }
       return temp
     case 'week':
       today = startOfISOWeek(begins)
       while (!isAfter(today, ends)) {
-        temp.push(today)
-        today = addWeeks(today, repeats)
+        temp.push(endOfDay(today))
+        today = addWeeks(today, n)
       }
       return _.sortBy(eachWeek(temp, weekdays)).filter(d => !isBefore(d, begins) && !isAfter(d, ends))
     case 'month':
       today = isOnLastDayOfMonth ? startOfMonth(today) : today
       while (!isAfter(today, ends)) {
         temp.push(endOfDay(isOnLastDayOfMonth ? endOfMonth(today) : today))
-        today = addMonths(today, repeats)
+        today = addMonths(today, n)
       }
       return temp
     case 'year':
       today = isOnLastDayOfMonth ? startOfMonth(today) : today
       while (!isAfter(today, ends)) {
         temp.push(endOfDay(isOnLastDayOfMonth ? endOfMonth(today) : today))
-        today = addYears(today, repeats)
+        today = addYears(today, n)
       }
       return temp
   }
@@ -64,11 +65,11 @@ const generateOccurrences = (begins, ends, repeats, frequency, isOnLastDayOfMont
 export const getInstance = () => ({
   id: null,
   task_id: null,
-  begins: startOfToday(),
-  ends: endOfToday(),
-  repeats: 1,
+  begins: format(startOfToday(), 'YYYY-MM-DD HH:mm'),
+  ends: format(endOfToday(), 'YYYY-MM-DD HH:mm'),
+  n: 1,
   frequency: 'once', // once, day, week, month, year, custom
-  isOnLastDayOfMonth: false, // for month and year
+  is_on_last_day_of_month: false, // for month and year
   weekdays: [], // for week
   next: [],
   succeeded: [],
@@ -80,8 +81,8 @@ export const observer = {
   set: function (obj, prop, value) {
     obj[prop] = value
     // any change on properties below will generate new occurrences
-    if (_.includes(['begins', 'ends', 'repeats', 'frequency', 'isOnLastDayOfMonth', 'weekdays'], prop)) {
-      obj.next = generateOccurrences(obj.begins, obj.ends, obj.repeats, obj.frequency, obj.isOnLastDayOfMonth, obj.weekdays)
+    if (_.includes(['begins', 'ends', 'n', 'frequency', 'is_on_last_day_of_month', 'weekdays'], prop)) {
+      obj.next = generateOccurrences(obj.begins, obj.ends, obj.n, obj.frequency, obj.is_on_last_day_of_month, obj.weekdays)
     }
     return true
   }

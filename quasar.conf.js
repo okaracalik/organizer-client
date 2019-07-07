@@ -71,7 +71,9 @@ module.exports = function (ctx) {
         'QCard',
         'QCardSection',
         'QBtnGroup',
-        'QPopupProxy'
+        'QPopupProxy',
+        'QTime',
+        'QPageSticky'
       ],
       directives: [
         'Ripple',
