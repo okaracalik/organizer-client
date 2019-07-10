@@ -73,7 +73,8 @@ module.exports = function (ctx) {
         'QBtnGroup',
         'QPopupProxy',
         'QTime',
-        'QPageSticky'
+        'QPageSticky',
+        'QBadge'
       ],
       directives: [
         'Ripple',

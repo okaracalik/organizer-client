@@ -84,13 +84,6 @@ export default {
           color: 'green-10'
         }
       }
-      else if (this.type === 'skipped') {
-        return {
-          title: this.type,
-          icon: 'mdi-skip-forward',
-          color: 'deep-orange-10'
-        }
-      }
       else if (this.type === 'failed') {
         return {
           title: this.type,
@@ -98,10 +91,17 @@ export default {
           color: 'red-10'
         }
       }
+      else if (this.type === 'skipped') {
+        return {
+          title: this.type,
+          icon: 'mdi-skip-forward',
+          color: 'deep-orange-10'
+        }
+      }
       else if (this.type === 'next') {
         return {
           title: this.type,
-          icon: 'mdi-arrow-right-bold',
+          icon: 'mdi-arrow-right-circle-outline',
           color: 'blue-10'
         }
       }

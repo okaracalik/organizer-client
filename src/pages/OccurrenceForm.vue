@@ -81,6 +81,19 @@
             <q-icon name="fas fa-hashtag" />
           </template>
         </q-input>
+        <!-- nonWorkingDay -->
+        <q-select
+          label="If On Working Day"
+          v-model="occurrenceForm.data.if_on_working_day"
+          :options="nonWorkingDayOptions"
+          emit-value
+          map-options
+          v-show="showWorkingDayOption"
+        >
+          <template v-slot:before>
+            <q-icon name="mdi-calendar-search"/>
+          </template>
+        </q-select>
         <!-- isLastDayOfMonth -->
         <q-toggle
           class="items-end"
@@ -127,7 +140,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
 import { isLastDayOfMonth, startOfToday, getDay } from 'date-fns'
@@ -162,6 +174,11 @@ export default {
         { label: 'Friday', value: 'fri' },
         { label: 'Saturday', value: 'sat' },
         { label: 'Sunday', value: 'sun' }
+      ],
+      nonWorkingDayOptions: [
+        { label: 'Previous Working Day', value: 'previous' },
+        { label: 'Closest Working Day', value: 'closest' },
+        { label: 'Next Working Day', value: 'next' }
       ]
     }
   },
@@ -178,6 +195,9 @@ export default {
     },
     showDays () {
       return this.occurrenceForm.data && _.includes(['week'], this.occurrenceForm.data.frequency)
+    },
+    showWorkingDayOption () {
+      return this.occurrenceForm.data && _.includes(['day', 'month', 'year'], this.occurrenceForm.data.frequency)
     }
   },
   methods: {
@@ -206,35 +226,28 @@ export default {
       else {
         if (this.isEdit) {
           this.mode = this.$emitter.modes.UPDATE
-          this.updateOccurrence({ id: this.id, data: this.preSave(this.occurrenceForm.data) })
+          this.updateOccurrence({ id: this.id, data: this.occurrenceForm.data })
         }
         else {
           this.mode = this.$emitter.modes.CREATE
-          this.createOccurrence(this.preSave(this.occurrenceForm.data))
+          this.createOccurrence(this.occurrenceForm.data)
         }
       }
     },
     erase () {
       this.mode = this.$emitter.modes.REMOVE
       this.removeOccurrence(this.id)
-    },
-    preSave (data) {
-      ['weekdays', 'next', 'succeeded', 'failed', 'skipped'].forEach(i => {
-        data[i] = data[i].length < 1 ? null : data[i]
-      })
-      return data
     }
   },
   watch: {
     'occurrenceItem.success' (newValue) {
       if (!_.isNull(newValue)) {
-        console.log(newValue);
         const weekdays = !newValue.weekdays ? [] : newValue.weekdays
         const next = !newValue.next ? [] : newValue.next
         const skipped = !newValue.skipped ? [] : newValue.skipped
         const failed = !newValue.failed ? [] : newValue.failed
         const succeeded = !newValue.succeeded ? [] : newValue.succeeded
-        this.setOccurrence({ ...newValue, weekdays, next, skipped, failed, succeeded})
+        this.setOccurrence({ ...newValue, weekdays, next, skipped, failed, succeeded })
       }
     },
     'occurrenceForm.success' (newValue) {

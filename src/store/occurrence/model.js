@@ -17,6 +17,8 @@ import _ from 'lodash'
 
 const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
+// const NON_WORKING_DAY_OPTIONS = ['closest', 'next']
+
 const eachWeek = (days, n) => {
   return _.flatMap(days, d => {
     return n.map(r => {
@@ -69,6 +71,7 @@ export const getInstance = () => ({
   ends: format(endOfToday(), 'YYYY-MM-DD HH:mm'),
   n: 1,
   frequency: 'once', // once, day, week, month, year, custom
+  if_on_working_day: 'next', // 'previous', 'closest', 'next' for day, month, year
   is_on_last_day_of_month: false, // for month and year
   weekdays: [], // for week
   next: [],
@@ -81,7 +84,7 @@ export const observer = {
   set: function (obj, prop, value) {
     obj[prop] = value
     // any change on properties below will generate new occurrences
-    if (_.includes(['begins', 'ends', 'n', 'frequency', 'is_on_last_day_of_month', 'weekdays'], prop)) {
+    if (_.includes(['begins', 'ends', 'n', 'frequency', 'if_on_working_day', 'is_on_last_day_of_month', 'weekdays'], prop)) {
       obj.next = generateOccurrences(obj.begins, obj.ends, obj.n, obj.frequency, obj.is_on_last_day_of_month, obj.weekdays)
     }
     return true
