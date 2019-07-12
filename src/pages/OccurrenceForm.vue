@@ -113,6 +113,8 @@
           v-show="showDays"
         />
       </div>
+      <!-- calendar -->
+      <calendar-month class="q-my-md" :taskList="[{ title: 'Dummy', occurrences: [occurrenceForm.data]}]"/>
       <!-- occurrences -->
       <div class="row q-mt-lg">
         <occurrences
@@ -144,6 +146,7 @@ import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
 import { isLastDayOfMonth, startOfToday, getDay } from 'date-fns'
 import Occurrences from '../components/Occurrences'
+import CalendarMonth from '../components/CalendarMonth'
 import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
@@ -153,7 +156,8 @@ export default {
   name: 'OccurrenceForm',
   mixins: [form],
   components: {
-    Occurrences
+    Occurrences,
+    CalendarMonth
   },
   data () {
     return {
@@ -176,9 +180,10 @@ export default {
         { label: 'Sunday', value: 'sun' }
       ],
       nonWorkingDayOptions: [
-        { label: 'Previous Working Day', value: 'previous' },
-        { label: 'Closest Working Day', value: 'closest' },
-        { label: 'Next Working Day', value: 'next' }
+        { label: 'None', value: null },
+        { label: 'Previous', value: 'previous' },
+        { label: 'Closest', value: 'closest' },
+        { label: 'Next', value: 'next' }
       ]
     }
   },

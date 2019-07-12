@@ -12,7 +12,7 @@
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
         <q-item-label header>Menu</q-item-label>
-        <q-item clickable tag="a" to="/">
+        <q-item clickable tag="a" to="/calendar">
           <q-item-section avatar>
             <q-icon name="mdi-calendar-month"/>
           </q-item-section>

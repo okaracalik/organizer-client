@@ -8,6 +8,13 @@ const routes = [
     ]
   },
   {
+    path: '/calendar',
+    component: () => import('layouts/MyLayout'),
+    children: [
+      { path: '', component: () => import('pages/Calendar.vue') }
+    ]
+  },
+  {
     path: '/tags',
     component: () => import('layouts/MyLayout'),
     children: [

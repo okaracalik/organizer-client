@@ -34,27 +34,27 @@
 <script>
 import CalendarWeek from './CalendarWeek'
 import { startOfMonth, addDays, format, addMonths, endOfMonth, startOfWeek, endOfWeek, isWithinRange } from 'date-fns'
-import { createNamespacedHelpers } from 'vuex'
 
-const { mapState, mapActions } = createNamespacedHelpers('task')
 // get min date for monthly view
 // get max date for monthly view
 // search occurrences where min date
 // TODO: show tasks in calendar
 export default {
   name: 'CalendarMonth',
+  props: {
+    day: {
+      type: Date,
+      default: () => new Date()
+    },
+    taskList: {
+      type: Array,
+      default: () => []
+    }
+  },
   components: {
     CalendarWeek
   },
-  data () {
-    return {
-      day: new Date()
-    }
-  },
   computed: {
-    ...mapState({
-      taskList: state => state.list
-    }),
     monthlyViewWeekBeginnings () {
       const firstViewDate = startOfWeek(startOfMonth(this.day), { weekStartsOn: 1 })
       const lastViewDate = endOfWeek(endOfMonth(this.day), { weekStartsOn: 1 })
@@ -67,7 +67,7 @@ export default {
       return beginnings
     },
     tasks () {
-      return this.taskList.success ? this.taskList.success.data.map(t => ({
+      return this.taskList.length > 0 ? this.taskList.map(t => ({
         ...t,
         occurrences: {
           next: t.occurrences.reduce((acc, i) => [...acc, ...i.next], []),
@@ -79,9 +79,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      findTasks: 'find'
-    }),
     format,
     changeMonths (amount) {
       this.day = addMonths(this.day, amount)
@@ -97,13 +94,6 @@ export default {
         }
       }))
     }
-  },
-  created () {
-    this.findTasks()
-    // const firstViewDate = startOfWeek(startOfMonth(new Date()), { weekStartsOn: 1 })
-    // const lastViewDate = endOfWeek(endOfMonth(new Date()), { weekStartsOn: 1 })
-    // console.log(firstViewDate)
-    // console.log(lastViewDate)
   }
 }
 </script>

@@ -1,13 +1,16 @@
+/* eslint-disable */
 import {
   addDays,
   addMonths,
   addWeeks,
   addYears,
+  differenceInDays,
   endOfDay,
   endOfMonth,
   endOfToday,
   isAfter,
   isBefore,
+  isWeekend,
   startOfISOWeek,
   startOfMonth,
   startOfToday,
@@ -25,6 +28,30 @@ const eachWeek = (days, n) => {
       return endOfDay(addDays(d, WEEKDAYS.indexOf(r)))
     })
   })
+}
+
+const findBusinessDay = (date, selection) => {
+  if (selection && isWeekend(date)) {
+    if (selection === 'next') {
+      return findBusinessDay(addDays(date, 1), selection)
+    }
+    else if (selection === 'previous') {
+      return findBusinessDay(addDays(date, -1), selection)
+    }
+    else {
+      const next = findBusinessDay(addDays(date, 1), 'next')
+      const previous = findBusinessDay(addDays(date, -1), 'previous')
+      if (differenceInDays(date, next, 'next') <= differenceInDays(date, previous)) {
+        return next
+      }
+      else {
+        return previous
+      }
+    }
+  }
+  else {
+    return date
+  }
 }
 
 const generateOccurrences = (begins, ends, n, frequency, isOnLastDayOfMonth, weekdays) => {
@@ -71,7 +98,7 @@ export const getInstance = () => ({
   ends: format(endOfToday(), 'YYYY-MM-DD HH:mm'),
   n: 1,
   frequency: 'once', // once, day, week, month, year, custom
-  if_on_working_day: 'next', // 'previous', 'closest', 'next' for day, month, year
+  if_on_working_day: null, // 'previous', 'closest', 'next' for day, month, year
   is_on_last_day_of_month: false, // for month and year
   weekdays: [], // for week
   next: [],
@@ -86,6 +113,7 @@ export const observer = {
     // any change on properties below will generate new occurrences
     if (_.includes(['begins', 'ends', 'n', 'frequency', 'if_on_working_day', 'is_on_last_day_of_month', 'weekdays'], prop)) {
       obj.next = generateOccurrences(obj.begins, obj.ends, obj.n, obj.frequency, obj.is_on_last_day_of_month, obj.weekdays)
+      // if_on_working_day is set, find unique days
     }
     return true
   }

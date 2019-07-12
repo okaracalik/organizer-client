@@ -3,7 +3,7 @@
     <q-card-section class="text-center">
       <span class="weekday" v-if="showWeekdays">{{ format(day, 'dddd') }}</span>
       <div>{{ format(day, 'Do') }}</div>
-      <div class="row justify-between" style="margin-bottom: 2px">
+      <div v-if="showSums" class="row justify-between" style="margin-bottom: 2px">
         <q-badge
           v-for="(occurrence, occurrenceIndex) in ['next', 'succeeded', 'failed', 'skipped']"
           :key="occurrenceIndex"
@@ -45,6 +45,10 @@ export default {
     tasks: {
       type: Object,
       required: true
+    },
+    showSums: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
