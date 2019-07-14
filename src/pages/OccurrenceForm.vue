@@ -83,6 +83,7 @@
         </q-input>
         <!-- nonWorkingDay -->
         <q-select
+          style="width: 180px"
           label="If On Working Day"
           v-model="occurrenceForm.data.if_on_working_day"
           :options="nonWorkingDayOptions"
@@ -114,7 +115,7 @@
         />
       </div>
       <!-- calendar -->
-      <calendar-month class="q-my-md" :taskList="[{ title: 'Dummy', occurrences: [occurrenceForm.data]}]"/>
+      <calendar-month class="q-my-md" @change-month="changeMonth" :day="day" :taskList="[{ title: 'Event', occurrences: [occurrenceForm.data]}]"/>
       <!-- occurrences -->
       <div class="row q-mt-lg">
         <occurrences
@@ -151,7 +152,6 @@ import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
-// TODO: endless
 export default {
   name: 'OccurrenceForm',
   mixins: [form],
@@ -161,6 +161,7 @@ export default {
   },
   data () {
     return {
+      day: new Date(),
       formName: 'occurrenceForm',
       frequencies: [
         { label: 'Once', value: 'once' },
@@ -171,13 +172,13 @@ export default {
         { label: 'Custom', value: 'custom' }
       ],
       days: [
-        { label: 'Monday', value: 'mon' },
-        { label: 'Tuesday', value: 'tue' },
-        { label: 'Wednesday', value: 'wed' },
-        { label: 'Thursday', value: 'thu' },
-        { label: 'Friday', value: 'fri' },
-        { label: 'Saturday', value: 'sat' },
-        { label: 'Sunday', value: 'sun' }
+        { label: 'Mon', value: 'mon' },
+        { label: 'Tue', value: 'tue' },
+        { label: 'Wed', value: 'wed' },
+        { label: 'Thu', value: 'thu' },
+        { label: 'Fri', value: 'fri' },
+        { label: 'Sat', value: 'sat' },
+        { label: 'Sun', value: 'sun' }
       ],
       nonWorkingDayOptions: [
         { label: 'None', value: null },
@@ -242,6 +243,9 @@ export default {
     erase () {
       this.mode = this.$emitter.modes.REMOVE
       this.removeOccurrence(this.id)
+    },
+    changeMonth (date) {
+      this.day = date
     }
   },
   watch: {

@@ -97,8 +97,8 @@ export default {
 }
 
 .day-card {
-  border-bottom: 1px solid gray;
-  border-left: 1px solid gray;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
   border-radius: 0;
 }
 </style>

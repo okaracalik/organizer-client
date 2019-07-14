@@ -1,7 +1,7 @@
 <template>
   <component :is="isEmbedded ? 'div' : 'q-page'" :padding="!isEmbedded">
     <!-- content -->
-    <calendar-month :taskList="taskList.success ? taskList.success.data : []" />
+    <calendar-month @change-month="changeMonth" :day="day" :taskList="taskList.success ? taskList.success.data : []" />
   </component>
 </template>
 
@@ -19,6 +19,11 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      day: new Date()
+    }
+  },
   components: {
     CalendarMonth
   },
@@ -30,7 +35,10 @@ export default {
   methods: {
     ...mapActions({
       findTasks: 'find'
-    })
+    }),
+    changeMonth (date) {
+      this.day = date
+    }
   },
   created () {
     this.findTasks()

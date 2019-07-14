@@ -3,13 +3,16 @@
     <!-- content -->
     <div class="q-mt-lg" v-if="taskForm.data">
       <!-- title -->
-      <q-input type="text" label="Title" v-model.trim="taskForm.data.title">
-        <template v-slot:before>
-          <q-icon name="fas fa-font" />
-        </template>
-      </q-input>
+      <div class="row justify-between">
+        <q-input class="col-md-10" type="text" label="Title" v-model.trim="taskForm.data.title">
+          <template v-slot:before>
+            <q-icon name="fas fa-font" />
+          </template>
+        </q-input>
+        <q-toggle class="self-end" v-model="showDescriptionInput" label="Show Description Field" />
+      </div>
       <!-- description -->
-      <q-input type="textarea" label="Description" v-model.trim="taskForm.data.description">
+      <q-input v-if="showDescriptionInput" type="textarea" label="Description" v-model.trim="taskForm.data.description">
         <template v-slot:before>
           <q-icon name="fas fa-paragraph" />
         </template>
@@ -69,6 +72,7 @@ export default {
   data () {
     return {
       formName: 'taskForm',
+      showDescriptionInput: false,
       occurrence: {
         pickedId: null
       }

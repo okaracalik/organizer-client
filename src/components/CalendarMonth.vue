@@ -1,22 +1,27 @@
 <template>
   <div>
-    <q-btn-group class="col-md-12 full-width q-mb-xs" outline>
+    <q-btn
+      class="q-mb-xs q-mr-md"
+      outline
+      color="grey-8"
+      label="Today"
+      @click.native="() => $emit('change-month', new Date())"
+    />
+    <q-btn-group class="q-mb-xs q-mr-xs" outline>
       <q-btn
-        class="col-md-1"
         outline
         icon="fas fa-chevron-left"
-        @click="changeMonths(-1)"
+        @click.native="() => $emit('change-month', addMonths(day, -1))"
         color="grey-8"
       />
-      <q-btn class="col-md-10" outline :label="format(day, 'MMMM, YYYY')" color="grey-8" />
       <q-btn
-        class="col-md-1"
         outline
         icon="fas fa-chevron-right"
-        @click="changeMonths(1)"
+        @click.native="() => $emit('change-month', addMonths(day, 1))"
         color="grey-8"
       />
     </q-btn-group>
+    <span class="text-h6 text-grey-9">{{ format(day, 'MMMM, YYYY') }}</span>
     <div class="weeks">
       <calendar-week
         class="row"
@@ -38,7 +43,6 @@ import { startOfMonth, addDays, format, addMonths, endOfMonth, startOfWeek, endO
 // get min date for monthly view
 // get max date for monthly view
 // search occurrences where min date
-// TODO: show tasks in calendar
 export default {
   name: 'CalendarMonth',
   props: {
@@ -80,9 +84,7 @@ export default {
   },
   methods: {
     format,
-    changeMonths (amount) {
-      this.day = addMonths(this.day, amount)
-    },
+    addMonths,
     filterTasks (start, end) {
       return this.tasks.map(t => ({
         ...t,
@@ -100,7 +102,7 @@ export default {
 
 <style scoped>
 .weeks {
-  border-top: 1px solid gray;
-  border-right: 1px solid gray;
+  border-top: 1px solid lightgray;
+  border-right: 1px solid lightgray;
 }
 </style>
