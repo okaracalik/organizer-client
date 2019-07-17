@@ -12,11 +12,58 @@
         <q-toggle class="self-end" v-model="showDescriptionInput" label="Show Description Field" />
       </div>
       <!-- description -->
-      <q-input v-if="showDescriptionInput" type="textarea" label="Description" v-model.trim="taskForm.data.description">
+      <q-input
+        v-if="showDescriptionInput"
+        type="textarea"
+        label="Description"
+        v-model.trim="taskForm.data.description"
+      >
         <template v-slot:before>
           <q-icon name="fas fa-paragraph" />
         </template>
       </q-input>
+      <!-- colors -->
+      <div class="row">
+        <!-- color -->
+        <q-input v-model="color" :rules="['anyColor']" class="text-center col-md-6">
+          <template v-slot:before>
+            <q-icon name="mdi-format-color-fill" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="colorize" class="cursor-pointer text-center">
+              <q-popup-proxy
+                class="text-center"
+                transition-show="scale"
+                transition-hide="scale"
+                style="width:350px"
+              >
+                <q-color v-model="color" />
+                <div class="text-center">
+                  <q-btn
+                    class="q-my-md"
+                    icon="mdi-plus"
+                    color="primary"
+                    v-close-popup
+                    @click.native="() => {taskForm.data.colors ? taskForm.data.colors.push(color) : taskForm.data.colors = [color]; color='#FFFFFF'}"
+                  />
+                </div>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <!-- colors -->
+        <div class="q-mt-md q-pl-md col-md-6">
+          <q-chip
+            v-for="(color, index) in taskForm.data.colors"
+            :key="color"
+            removable
+            @remove="taskForm.data.colors.splice(index, 1)"
+            :style="{ backgroundColor: color, color: 'white' }"
+            text-color="white"
+            :label="color"
+          />
+        </div>
+      </div>
       <!-- occurrences -->
       <q-list class="q-mt-md" bordered separator>
         <q-item-label header>Occurrences</q-item-label>
@@ -25,7 +72,12 @@
             <q-item-label>No occurrences inserted.</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-for="(item, index) in taskForm.data.occurrences" :key="index" clickable @click.native="pickOccurrence(item)">
+        <q-item
+          v-for="(item, index) in taskForm.data.occurrences"
+          :key="index"
+          clickable
+          @click.native="pickOccurrence(item)"
+        >
           <q-item-section>
             <q-item-label>{{ item.id }} | {{ item.begins }} | {{ item.ends }} | {{ item.n }} | {{ item.frequency }} | {{ item.next.length }}</q-item-label>
           </q-item-section>
@@ -75,7 +127,8 @@ export default {
       showDescriptionInput: false,
       occurrence: {
         pickedId: null
-      }
+      },
+      color: '#FFFFFF'
     }
   },
   computed: {

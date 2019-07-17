@@ -2,7 +2,7 @@
   <q-page padding>
     <!-- form -->
     <div class="q-mt-lg" v-if="tagForm.data">
-      <div class="row">
+      <div class="row justify-between">
         <!-- name -->
         <q-input class="col-md-11" type="text" label="Name" v-model="tagForm.data.name">
           <template v-slot:before>
@@ -16,56 +16,70 @@
           :label="tagForm.data.enabled ? 'Enabled' : 'Disabled'"
         />
       </div>
-
-      <!-- color -->
-      <q-input v-model="color" :rules="['anyColor']" class="text-center">
-        <template v-slot:before>
-          <q-icon name="mdi-format-color-fill" />
-        </template>
-        <template v-slot:append>
-          <q-icon name="colorize" class="cursor-pointer text-center">
-            <q-popup-proxy
-              class="text-center"
-              transition-show="scale"
-              transition-hide="scale"
-              style="width:350px"
-            >
-              <q-color v-model="color" />
-              <div class="text-center">
-                <q-btn
-                  class="q-my-md"
-                  icon="mdi-plus"
-                  color="primary"
-                  v-close-popup
-                  @click.native="() => {tagForm.data.colors.push(color); color='#FFFFFF'}"
-                />
-              </div>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
-      </q-input>
-      <!-- colors -->
-      <div class="q-mt-md">
-        <q-chip
-          v-for="(color, index) in tagForm.data.colors"
-          :key="color"
-          removable
-          @remove="removeColor(index)"
-          :style="{ backgroundColor: color }"
-          text-color="white"
-          :label="color"
-        />
+      <div class="row">
+        <!-- color -->
+        <q-input v-model="color" :rules="['anyColor']" class="text-center col-md-6">
+          <template v-slot:before>
+            <q-icon name="mdi-format-color-fill" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="colorize" class="cursor-pointer text-center">
+              <q-popup-proxy
+                class="text-center"
+                transition-show="scale"
+                transition-hide="scale"
+                style="width:350px"
+              >
+                <q-color v-model="color" />
+                <div class="text-center">
+                  <q-btn
+                    class="q-my-md"
+                    icon="mdi-plus"
+                    color="primary"
+                    v-close-popup
+                    @click.native="() => {tagForm.data.colors.push(color); color='#FFFFFF'}"
+                  />
+                </div>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+        <!-- colors -->
+        <div class="q-mt-md q-pl-md col-md-6">
+          <q-chip
+            v-for="(color, index) in tagForm.data.colors"
+            :key="color"
+            removable
+            @remove="removeColor(index)"
+            :style="{ backgroundColor: color, color: 'white' }"
+            text-color="white"
+            :label="color"
+          />
+        </div>
       </div>
       <!-- icon -->
-      <q-input v-model="iconFilter" label="Icon" class="q-mb-md">
-        <template v-slot:before>
-          <q-icon name="mdi-information-variant" />
-        </template>
-      </q-input>
+      <div class="row q-mb-md">
+        <q-select
+          class="col-md-2"
+          :options="iconSet.options"
+          v-model="iconSet.selected"
+          map-options
+          emit-value
+        >
+          <template v-slot:before>
+            <q-icon name="mdi-information-outline" />
+          </template>
+        </q-select>
+        <q-input class="col-md-9" v-model="iconFilter" label="Icon">
+          <template v-slot:before>
+            <q-icon name="mdi-information-variant" />
+          </template>
+        </q-input>
+      </div>
       <q-icon-picker
         v-model="tagForm.data.icon"
         :filter="iconFilter"
-        icon-set="mdi-v3"
+        :icon-set="iconSet.selected"
         :pagination.sync="iconPagination"
         tooltips
         style="height: 150px;"
@@ -96,6 +110,14 @@ export default {
     return {
       formName: 'tagForm',
       color: '#FFFFFF',
+      iconSet: {
+        selected: 'mdi-v3',
+        options: [
+          { label: 'MDI', value: 'mdi-v3' },
+          { label: 'Font Awesome', value: 'fontawesome-v5' },
+          { label: 'Material Icons', value: 'material-icons' }
+        ]
+      },
       iconFilter: '',
       iconPagination: {
         itemsPerPage: 60,

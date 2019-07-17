@@ -92,7 +92,7 @@
           v-show="showWorkingDayOption"
         >
           <template v-slot:before>
-            <q-icon name="mdi-calendar-search"/>
+            <q-icon name="mdi-calendar-search" />
           </template>
         </q-select>
         <!-- isLastDayOfMonth -->
@@ -115,7 +115,12 @@
         />
       </div>
       <!-- calendar -->
-      <calendar-month class="q-my-md" @change-month="changeMonth" :day="day" :taskList="[{ title: 'Event', occurrences: [occurrenceForm.data]}]"/>
+      <calendar-month
+        class="q-my-md"
+        @change-month="changeMonth"
+        :day="day"
+        :taskList="[{ title: 'Event', occurrences: [occurrenceForm.data]}]"
+      />
       <!-- occurrences -->
       <div class="row q-mt-lg">
         <occurrences

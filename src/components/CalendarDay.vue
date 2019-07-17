@@ -19,7 +19,8 @@
           style="margin-bottom: 2px"
           v-for="(nextItem, nextIndex) in tasks[occurrence]"
           :key="nextIndex"
-          :color="getColor(occurrence)"
+          :color="getColor(nextItem.colors, occurrence)"
+          :style="{backgroundColor: getColor(nextItem.colors, occurrence), color: nextItem.colors && nextItem.colors.length > 1 ? nextItem.colors[1] : 'white'}"
         >
           <q-icon :name="getIcon(occurrence)" />
           {{ nextItem.title }}
@@ -61,7 +62,10 @@ export default {
     getDayInMonth (date) {
       return format(date, 'Do')
     },
-    getColor (occurrence) {
+    getColor (colors, occurrence) {
+      if (colors && colors.length > 0) {
+        return colors[0]
+      }
       switch (occurrence) {
         case 'succeeded':
           return 'green-10'

@@ -96,7 +96,7 @@ export default {
         skipped: union(...t.occurrences.map(o => o.skipped)),
         failed: union(...t.occurrences.map(o => o.failed))
       }))
-      return sortBy(temp, [(o) => o.next[0]])
+      return sortBy(temp, [(o) => min(o.next)])
     }
   },
   methods: {
