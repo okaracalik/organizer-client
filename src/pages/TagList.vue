@@ -3,17 +3,20 @@
     <!-- content -->
     <div v-if="tagList.success" class="row justify-center">
       <q-card
-        v-for="item in tagList.success"
+        v-for="item in tagList.success.data"
         v-bind:key="item.id"
-        @click.native="$router.push(`/tags/${item._id}`)"
-        :class="[!item.active ? 'disabled' : '', 'col-md-2 col-xs-5 q-ma-xs text-bold']"
+        @click.native="$router.push(`/tags/${item.id}`)"
+        :class="['col-md-2 col-xs-5 q-ma-xs text-bold cursor-pointer']"
         :style="getColors(item.colors)"
       >
-        <q-card-section class="column text-center cursor-pointer">{{ item.name }}</q-card-section>
+        <q-card-section class="text-center">
+          <q-icon :name="item.icon" />
+          {{ item.name }}
+        </q-card-section>
       </q-card>
     </div>
     <!-- fab -->
-    <floating-action-button next='/tags/new' />
+    <floating-action-button next="/tags/new" />
   </q-page>
 </template>
 

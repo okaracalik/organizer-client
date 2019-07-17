@@ -1,51 +1,90 @@
 <template>
   <q-page padding>
     <!-- form -->
-    <div v-if="tagForm.data">
+    <div class="q-mt-lg" v-if="tagForm.data">
       <div class="row">
         <!-- name -->
-        <q-input type="text" label="Name" v-model.trim="tagForm.data.name">
+        <q-input class="col-md-11" type="text" label="Name" v-model="tagForm.data.name">
           <template v-slot:before>
-            <q-icon name="fas fa-font"/>
+            <q-icon name="fas fa-font" />
           </template>
         </q-input>
-        <!-- color -->
-        <q-icon v-model="color">
-          <template v-slot:append>
-            <q-icon name="colorize" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-color v-model="color"/>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-icon>
+        <!-- enabled -->
         <q-toggle
-          v-model="tagForm.data.active"
-          :label="tagForm.data.active ? 'Active' : 'Inactive'"
+          class="self-end"
+          v-model="tagForm.data.enabled"
+          :label="tagForm.data.enabled ? 'Enabled' : 'Disabled'"
         />
       </div>
+
+      <!-- color -->
+      <q-input v-model="color" :rules="['anyColor']" class="text-center">
+        <template v-slot:before>
+          <q-icon name="mdi-format-color-fill" />
+        </template>
+        <template v-slot:append>
+          <q-icon name="colorize" class="cursor-pointer text-center">
+            <q-popup-proxy
+              class="text-center"
+              transition-show="scale"
+              transition-hide="scale"
+              style="width:350px"
+            >
+              <q-color v-model="color" />
+              <div class="text-center">
+                <q-btn
+                  class="q-my-md"
+                  icon="mdi-plus"
+                  color="primary"
+                  v-close-popup
+                  @click.native="() => {tagForm.data.colors.push(color); color='#FFFFFF'}"
+                />
+              </div>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
       <!-- colors -->
       <div class="q-mt-md">
         <q-chip
           v-for="(color, index) in tagForm.data.colors"
-          v-bind:key="color"
-          closable
-          @hide="removeColor(index)"
-          :style="{ backgroundColor: color, color: '#FFF' }"
-        >{{ color }}</q-chip>
+          :key="color"
+          removable
+          @remove="removeColor(index)"
+          :style="{ backgroundColor: color }"
+          text-color="white"
+          :label="color"
+        />
       </div>
+      <!-- icon -->
+      <q-input v-model="iconFilter" label="Icon" class="q-mb-md">
+        <template v-slot:before>
+          <q-icon name="mdi-information-variant" />
+        </template>
+      </q-input>
+      <q-icon-picker
+        v-model="tagForm.data.icon"
+        :filter="iconFilter"
+        icon-set="mdi-v3"
+        :pagination.sync="iconPagination"
+        tooltips
+        style="height: 150px;"
+      />
       <!-- buttons -->
-      <div class="q-mt-md row justify-between">
-        <q-btn color="positive" @click="save()" icon="fas fa-save"/>
-        <q-btn v-if="id" color="negative" @click="erase()" icon="fas fa-trash"/>
-      </div>
+      <form-action-buttons
+        :isModal="isModal"
+        :isEdit="isEdit"
+        @form-save="save"
+        @form-cancel="cancel"
+        @form-erase="erase"
+      />
     </div>
   </q-page>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import _ from 'lodash'
+import { isUndefined, isNull } from 'lodash'
 import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
@@ -56,7 +95,12 @@ export default {
   data () {
     return {
       formName: 'tagForm',
-      color: '#FFFFFF'
+      color: '#FFFFFF',
+      iconFilter: '',
+      iconPagination: {
+        itemsPerPage: 60,
+        page: 0
+      }
     }
   },
   computed: {
@@ -65,7 +109,7 @@ export default {
       tagForm: state => state.form
     }),
     isProperty () {
-      return !_.isUndefined(this.$route.name) && !_.isUndefined(this.$route.color) && !_.isUndefined(this.$route.active)
+      return !isUndefined(this.$route.name) && !isUndefined(this.$route.color) && !isUndefined(this.$route.active)
     }
   },
   methods: {
@@ -124,12 +168,12 @@ export default {
   },
   watch: {
     'tagItem.success' (newValue) {
-      if (!_.isNull(newValue)) {
+      if (!isNull(newValue)) {
         this.setTag(newValue)
       }
     },
     'tagForm.success' (newValue) {
-      if (!_.isNull(newValue)) {
+      if (!isNull(newValue)) {
         if (this.isModal) {
           this.$emit(this.$emitter.constructEmitMessage(this.mode, 'tag'), newValue)
           this.setTag(null)

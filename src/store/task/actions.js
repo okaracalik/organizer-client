@@ -1,5 +1,4 @@
 import { getInstance } from './model.js'
-// import { LocalStorage } from '../../services/local-storage'
 import HTTP from '../../services/http'
 
 const moduleName = 'tasks'

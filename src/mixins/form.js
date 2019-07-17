@@ -101,7 +101,9 @@ export default {
     tagForm: {
       data: {
         name: { required, minLength: minLength(2) },
-        active: { required }
+        enabled: { required },
+        icon: { },
+        colors: { }
       }
     },
     taskForm: {

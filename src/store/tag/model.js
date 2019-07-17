@@ -1,5 +1,6 @@
 export const getInstance = () => ({
   name: '',
+  icon: '',
   colors: [],
-  active: true
+  enabled: true
 })
