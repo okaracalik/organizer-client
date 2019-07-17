@@ -18,6 +18,7 @@ import {
   startOfDay
 } from 'date-fns'
 import _ from 'lodash'
+import { uniqDates } from '../../services/utils'
 
 const WEEKDAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
@@ -51,6 +52,7 @@ const findBusinessDay = (date, selection) => {
   }
 }
 
+// TODO: local holidays
 const generateOccurrences = (
   begins,
   ends,
@@ -72,10 +74,7 @@ const generateOccurrences = (
         temp.push(endOfDay(businessDay))
         today = addDays(today, n)
       }
-      return temp.filter(
-        (date, i, self) =>
-          self.findIndex(d => d.getTime() === date.getTime()) === i
-      )
+      return uniqDates(temp)
     case 'week':
       today = startOfISOWeek(begins)
       while (!isAfter(today, ends)) {

@@ -24,7 +24,7 @@ const { mapState, mapActions } = createNamespacedHelpers('tag')
 
 import FloatingActionButton from '../components/FloatingActionButton'
 
-// TODO: search
+// TODO: tag search
 export default {
   name: 'TagList',
   components: {

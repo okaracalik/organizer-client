@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- FIXME -->
     <q-field :error="isNoResult" error-label="You can add new by clicking plus icon.">
       <q-search
         stack-label="Tag"
@@ -46,7 +45,7 @@ import TagPropertyList from './TagPropertyList'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
 
-// TODO: autofocus
+// TODO: upgrade components
 export default {
   name: 'TagPropertyForm',
   components: {

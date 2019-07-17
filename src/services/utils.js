@@ -1,11 +1,13 @@
-import format from 'date-fns/format'
 import _ from 'lodash'
+
+export const uniqDates = arr =>
+  arr.filter(
+    (date, i, self) => self.findIndex(d => d.getTime() === date.getTime()) === i
+  )
 
 export const shorten = (text, len) => {
   return text.length > len ? `${text.substring(0, len)}...` : text
 }
-
-export const formatDate = text => format(text, 'DD.MM.YY')
 
 export const getCurrencySymbol = currency => {
   switch (_.upperCase(currency)) {
@@ -24,15 +26,11 @@ export const findIndexById = (data, id) => {
   return _.findIndex(data, item => _.isEqual(item.id, id))
 }
 
-const upperFirst = (text) => {
-  text = text.split(' ').map(_.upperFirst).join(' ')
-  text = text.split('-').map(_.upperFirst).join('-')
-  return text
-}
-
 export const getLabels = (item, removedKeys = []) => {
   if (item) {
-    const keys = _.keys(item).filter(k => !k.endsWith('id') && !removedKeys.includes(k))
+    const keys = _.keys(item).filter(
+      k => !k.endsWith('id') && !removedKeys.includes(k)
+    )
     let labels = keys.reduce((acc, k) => {
       if (k) {
         if (_.isArray(item[k])) {
@@ -54,4 +52,16 @@ export const getLabels = (item, removedKeys = []) => {
   else {
     return '-'
   }
+}
+
+const upperFirst = text => {
+  text = text
+    .split(' ')
+    .map(_.upperFirst)
+    .join(' ')
+  text = text
+    .split('-')
+    .map(_.upperFirst)
+    .join('-')
+  return text
 }

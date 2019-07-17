@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="day-card">
+  <q-card flat :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1']">
     <q-card-section class="text-center">
       <span class="weekday" v-if="showWeekdays">{{ format(day, 'dddd') }}</span>
       <div>{{ format(day, 'Do') }}</div>
@@ -21,15 +21,16 @@
           :key="nextIndex"
           :color="getColor(occurrence)"
         >
-        <q-icon :name="getIcon(occurrence)"/>
-        {{ nextItem.title }}</q-badge>
+          <q-icon :name="getIcon(occurrence)" />
+          {{ nextItem.title }}
+        </q-badge>
       </span>
     </q-card-section>
   </q-card>
 </template>
 
 <script>
-import { format } from 'date-fns'
+import { format, isWeekend } from 'date-fns'
 
 export default {
   name: 'CalendarDay',
@@ -53,6 +54,7 @@ export default {
   },
   methods: {
     format,
+    isWeekend,
     getWeekday (date) {
       return format(date, 'dddd')
     },

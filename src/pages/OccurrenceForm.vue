@@ -120,13 +120,14 @@
       <div class="row q-mt-lg">
         <occurrences
           class="col-md-3"
-          v-for="(item, index) in ['succeeded', 'skipped', 'failed', 'next']"
+          v-for="(type, index) in ['succeeded', 'skipped', 'failed', 'next']"
           :key="index"
-          :type="item"
-          :items="occurrenceForm.data[item]"
+          :type="type"
+          :items="occurrenceForm.data[type]"
           @occurrence-succeed="(item) => occurrenceForm.data['succeeded'].push(item)"
           @occurrence-skip="(item) => occurrenceForm.data['skipped'].push(item)"
           @occurrence-fail="(item) => occurrenceForm.data['failed'].push(item)"
+          @add-custom-date="({type, item}) => occurrenceForm.data[type] = [...occurrenceForm.data[type], item].sort(compareAsc)"
         />
       </div>
       <!-- buttons -->
@@ -145,7 +146,7 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import { isLastDayOfMonth, startOfToday, getDay } from 'date-fns'
+import { isLastDayOfMonth, startOfToday, getDay, compareAsc } from 'date-fns'
 import Occurrences from '../components/Occurrences'
 import CalendarMonth from '../components/CalendarMonth'
 import form from '../mixins/form'
@@ -246,7 +247,8 @@ export default {
     },
     changeMonth (date) {
       this.day = date
-    }
+    },
+    compareAsc
   },
   watch: {
     'occurrenceItem.success' (newValue) {

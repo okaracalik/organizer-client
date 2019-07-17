@@ -9,29 +9,49 @@
           <q-item-label caption>{{ item.description }}</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ format(item.next[0], 'DD.MM.YYYY') }}</q-item-label>
+          <q-item-label>{{ format(min(...item.next), 'DD.MM.YYYY') }}</q-item-label>
           <q-item-label
             caption
-          >{{ distanceInWords(item.next[0], new Date()) }} {{ getDueSituation(item.next[0]) }}</q-item-label>
+          >{{ distanceInWordsToNow(min(...item.next)) }} {{ getDueSituation(min(...item.next)) }}</q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
-            <q-chip color="blue-10" text-color="white">{{ item.next.length }}</q-chip>
+            <q-chip
+              color="blue-10"
+              text-color="white"
+              icon="mdi-checkbox-blank-outline"
+              :label="item.next.length"
+            />
           </q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
-            <q-chip color="green-10" text-color="white">{{ item.succeeded.length }}</q-chip>
+            <q-chip
+              color="green-10"
+              text-color="white"
+              icon="mdi-checkbox-marked-outline"
+              :label="item.succeeded.length"
+            />
           </q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
-            <q-chip color="red-10" text-color="white">{{ item.failed.length }}</q-chip>
+            <q-chip
+              color="red-10"
+              text-color="white"
+              icon="mdi-close-circle-outline"
+              :label="item.failed.length"
+            />
           </q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
-            <q-chip color="deep-orange-10" text-color="white">{{ item.skipped.length }}</q-chip>
+            <q-chip
+              color="deep-orange-10"
+              text-color="white"
+              icon="mdi-chevron-double-right"
+              :label="item.skipped.length"
+            />
           </q-item-label>
         </q-item-section>
         <q-item-section side>
@@ -53,7 +73,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import { sortBy, union } from 'lodash'
-import { distanceInWords, format, isAfter } from 'date-fns'
+import { distanceInWordsToNow, format, isAfter, min, isPast } from 'date-fns'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
@@ -86,7 +106,9 @@ export default {
     getDueSituation (d) {
       return isAfter(d, new Date()) ? 'left.' : 'passed.'
     },
-    distanceInWords,
+    distanceInWordsToNow,
+    min,
+    isPast,
     format
   },
   created () {

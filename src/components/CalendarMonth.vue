@@ -22,6 +22,32 @@
       />
     </q-btn-group>
     <span class="text-h6 text-grey-9">{{ format(day, 'MMMM, YYYY') }}</span>
+    <span class="text-h6 text-grey-9 q-ml-md">
+      <q-chip
+        color="blue-10"
+        text-color="white"
+        icon="mdi-checkbox-blank-outline"
+        :label="monthTasks.reduce((acc, i) => acc + i.occurrences.next.length, 0)"
+      />
+      <q-chip
+        color="green-10"
+        text-color="white"
+        icon="mdi-checkbox-marked-outline"
+        :label="monthTasks.reduce((acc, i) => acc + i.occurrences.succeeded.length, 0)"
+      />
+      <q-chip
+        color="red-10"
+        text-color="white"
+        icon="mdi-close-circle-outline"
+        :label="monthTasks.reduce((acc, i) => acc + i.occurrences.failed.length, 0)"
+      />
+      <q-chip
+        color="deep-orange-10"
+        text-color="white"
+        icon="mdi-chevron-double-right"
+        :label="monthTasks.reduce((acc, i) => acc + i.occurrences.skipped.length, 0)"
+      />
+    </span>
     <div class="weeks">
       <calendar-week
         class="row"
@@ -80,6 +106,9 @@ export default {
           skipped: t.occurrences.reduce((acc, i) => [...acc, ...(i.skipped || [])], [])
         }
       })) : []
+    },
+    monthTasks () {
+      return this.filterTasks(startOfMonth(this.day), endOfMonth(this.day))
     }
   },
   methods: {
