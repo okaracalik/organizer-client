@@ -25,7 +25,12 @@
       <!-- colors -->
       <div class="row">
         <!-- color -->
-        <q-input v-model="color" :rules="['anyColor']" class="text-center col-md-6">
+        <q-input
+          v-model="color"
+          :rules="['anyColor']"
+          class="text-center col-md-6"
+          @keyup.enter="addColor"
+        >
           <template v-slot:before>
             <q-icon name="mdi-format-color-fill" />
           </template>
@@ -44,7 +49,7 @@
                     icon="mdi-plus"
                     color="primary"
                     v-close-popup
-                    @click.native="() => {taskForm.data.colors ? taskForm.data.colors.push(color) : taskForm.data.colors = [color]; color='#FFFFFF'}"
+                    @click.native="addColor"
                   />
                 </div>
               </q-popup-proxy>
@@ -57,7 +62,7 @@
             v-for="(color, index) in taskForm.data.colors"
             :key="color"
             removable
-            @remove="taskForm.data.colors.splice(index, 1)"
+            @remove="removeColor(index)"
             :style="{ backgroundColor: color, color: 'white' }"
             text-color="white"
             :label="color"
@@ -195,6 +200,13 @@ export default {
     removeOccurrence (item) {
       this.taskForm.data.occurrences.splice(findIndexById(this.taskForm.data.occurrences, item.id), 1)
       this.occurrence.pickedId = null
+    },
+    addColor () {
+      this.taskForm.data.colors ? this.taskForm.data.colors.push(this.color) : this.taskForm.data.colors = [this.color]
+      this.color = '#FFFFFF'
+    },
+    removeColor (index) {
+      this.taskForm.data.colors.splice(index, 1)
     }
   },
   watch: {

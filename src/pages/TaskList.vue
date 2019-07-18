@@ -72,8 +72,8 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { sortBy, union } from 'lodash'
-import { distanceInWordsToNow, format, isAfter, min, isPast } from 'date-fns'
+import { union } from 'lodash'
+import { distanceInWordsToNow, format, isAfter, min, isPast, compareAsc, parse } from 'date-fns'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
@@ -91,12 +91,13 @@ export default {
     sortedTasks () {
       const temp = this.taskList.success.data.map(t => ({
         ...t,
-        next: union(...t.occurrences.map(o => o.next)),
-        succeeded: union(...t.occurrences.map(o => o.succeeded)),
-        skipped: union(...t.occurrences.map(o => o.skipped)),
-        failed: union(...t.occurrences.map(o => o.failed))
+        next: union(...t.occurrences.map(o => o.next)).map(parse),
+        succeeded: union(...t.occurrences.map(o => o.succeeded)).map(parse),
+        skipped: union(...t.occurrences.map(o => o.skipped)).map(parse),
+        failed: union(...t.occurrences.map(o => o.failed)).map(parse)
       }))
-      return sortBy(temp, [(o) => min(o.next)])
+      return temp.sort((a, b) => compareAsc(min(...a.next), min(...b.next))
+      )
     }
   },
   methods: {
