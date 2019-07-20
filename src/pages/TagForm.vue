@@ -8,6 +8,18 @@
           <template v-slot:before>
             <q-icon name="fas fa-font" />
           </template>
+          <template v-slot:prepend>
+            <q-icon name="far fa-smile" class="cursor-pointer text-center">
+              <q-popup-proxy
+                class="text-center"
+                transition-show="scale"
+                transition-hide="scale"
+                style="width:350px"
+              >
+                <picker set="google" @select="addEmoji" />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
         </q-input>
         <!-- enabled -->
         <q-toggle
@@ -18,7 +30,12 @@
       </div>
       <div class="row">
         <!-- color -->
-        <q-input v-model="color" :rules="['anyColor']" class="text-center col-md-6">
+        <q-input
+          v-model="color"
+          :rules="['anyColor']"
+          class="text-center col-md-6"
+          @keyup.enter="addColor"
+        >
           <template v-slot:before>
             <q-icon name="mdi-format-color-fill" />
           </template>
@@ -37,7 +54,7 @@
                     icon="mdi-plus"
                     color="primary"
                     v-close-popup
-                    @click.native="() => {tagForm.data.colors.push(color); color='#FFFFFF'}"
+                    @click.native="addColor"
                   />
                 </div>
               </q-popup-proxy>
@@ -51,39 +68,12 @@
             :key="color"
             removable
             @remove="removeColor(index)"
-            :style="{ backgroundColor: color, color: 'white' }"
-            text-color="white"
+            :style="getChipStyle(color)"
+            :text-color=" color.toUpperCase() === '#FFFFFF' ? 'black' : 'white'"
             :label="color"
           />
         </div>
       </div>
-      <!-- icon -->
-      <div class="row q-mb-md">
-        <q-select
-          class="col-md-2"
-          :options="iconSet.options"
-          v-model="iconSet.selected"
-          map-options
-          emit-value
-        >
-          <template v-slot:before>
-            <q-icon name="mdi-information-outline" />
-          </template>
-        </q-select>
-        <q-input class="col-md-9" v-model="iconFilter" label="Icon">
-          <template v-slot:before>
-            <q-icon name="mdi-information-variant" />
-          </template>
-        </q-input>
-      </div>
-      <q-icon-picker
-        v-model="tagForm.data.icon"
-        :filter="iconFilter"
-        :icon-set="iconSet.selected"
-        :pagination.sync="iconPagination"
-        tooltips
-        style="height: 150px;"
-      />
       <!-- buttons -->
       <form-action-buttons
         :isModal="isModal"
@@ -100,29 +90,21 @@
 import { createNamespacedHelpers } from 'vuex'
 import { isUndefined, isNull } from 'lodash'
 import form from '../mixins/form'
+import { Picker } from 'emoji-mart-vue-fast'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
 
 export default {
   name: 'TagForm',
   mixins: [form],
+  components: {
+    Picker
+  },
   data () {
     return {
       formName: 'tagForm',
-      color: '#FFFFFF',
-      iconSet: {
-        selected: 'mdi-v3',
-        options: [
-          { label: 'MDI', value: 'mdi-v3' },
-          { label: 'Font Awesome', value: 'fontawesome-v5' },
-          { label: 'Material Icons', value: 'material-icons' }
-        ]
-      },
-      iconFilter: '',
-      iconPagination: {
-        itemsPerPage: 60,
-        page: 0
-      }
+      color: '#FFFFFF'
     }
   },
   computed: {
@@ -186,6 +168,23 @@ export default {
     },
     removeColor (index) {
       this.tagForm.data.colors.splice(index, 1)
+    },
+    addEmoji (emoji) {
+      console.log(emoji)
+      this.tagForm.data.name += emoji.native
+    },
+    addColor () {
+      this.tagForm.data.colors.push(this.color)
+      this.color = '#FFFFFF'
+    },
+    getChipStyle (color) {
+      return {
+        backgroundColor: color,
+        color: color.toUpperCase() === '#FFFFFF' ? 'black' : 'white',
+        borderStyle: color.toUpperCase() === '#FFFFFF' ? 'solid' : '',
+        borderWidth: color.toUpperCase() === '#FFFFFF' ? '1px' : '',
+        borderColor: color.toUpperCase() === '#FFFFFF' ? 'black' : ''
+      }
     }
   },
   watch: {

@@ -69,6 +69,47 @@
           />
         </div>
       </div>
+      <!-- tag-search -->
+      <q-select
+        v-model="tag.terms"
+        use-input
+        hide-selected
+        fill-input
+        input-debounce="1"
+        :options="tag.options"
+        @filter="searchTag"
+        hide-dropdown-icon
+        hint="Please type at least 2 characters to search tag."
+      >
+        <template v-slot:before>
+          <q-icon name="fas fa-tag" />
+        </template>
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">No results</q-item-section>
+          </q-item>
+        </template>
+        <template v-slot:append>
+          <q-icon
+            v-if="tag.isListEmpty"
+            class="cursor-pointer"
+            name="add"
+            @click.stop="tag.isModalOpen = true"
+          />
+          <q-icon
+            v-if="tag.terms !== null"
+            class="cursor-pointer"
+            name="clear"
+            @click.stop="tag.terms = null"
+          />
+        </template>
+      </q-select>
+      <tag-property-list
+        class="q-my-md"
+        :tags="taskForm.data.tags ? taskForm.data.tags : []"
+        :editable="true"
+        @remove-tag="(index) => taskForm.data.tags.splice(index, 1)"
+      />
       <!-- occurrences -->
       <q-list class="q-mt-md" bordered separator>
         <q-item-label header>Occurrences</q-item-label>
@@ -114,7 +155,10 @@ import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
 import form from '../mixins/form'
 import OccurrenceForm from '../pages/OccurrenceForm'
+
 import { findIndexById } from '../services/utils.js'
+import Search from '../services/search'
+import TagPropertyList from '../components/TagPropertyList'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
@@ -124,7 +168,8 @@ export default {
   name: 'TaskForm',
   mixins: [form],
   components: {
-    OccurrenceForm
+    OccurrenceForm,
+    TagPropertyList
   },
   data () {
     return {
@@ -133,7 +178,13 @@ export default {
       occurrence: {
         pickedId: null
       },
-      color: '#FFFFFF'
+      color: '#FFFFFF',
+      tag: {
+        terms: null,
+        options: [],
+        isListEmpty: false,
+        isModalOpen: false
+      }
     }
   },
   computed: {
@@ -186,7 +237,6 @@ export default {
       return data
     },
     pickOccurrence (item) {
-      console.log(item)
       this.occurrence.pickedId = item.id
     },
     createOccurrence (item) {
@@ -202,11 +252,31 @@ export default {
       this.occurrence.pickedId = null
     },
     addColor () {
-      this.taskForm.data.colors ? this.taskForm.data.colors.push(this.color) : this.taskForm.data.colors = [this.color]
+      this.taskForm.data.colors = this.taskForm.data.colors ? [...this.taskForm.data.colors, this.color] : [this.color]
       this.color = '#FFFFFF'
     },
     removeColor (index) {
       this.taskForm.data.colors.splice(index, 1)
+    },
+    searchTag (terms, update, abort) {
+      if (terms.length < 2) {
+        abort()
+        return
+      }
+      update(() => {
+        Search.apply('tags', terms).then((res) => {
+          this.tag.isListEmpty = _.isEqual(res.data.total, 0)
+          this.tag.options = Search.prepareSearchResult(res, ['colors', 'enabled'])
+        }).catch((err) => {
+          this.$q.notify({
+            message: `${err}.`,
+            color: 'negative',
+            icon: 'mdi-close-circle',
+            timeout: 0,
+            closeBtn: true
+          })
+        })
+      })
     }
   },
   watch: {
@@ -229,6 +299,12 @@ export default {
           message: this.$emitter.constructNotifyMessage(this.mode, 'Task'),
           type: 'positive'
         })
+      }
+    },
+    'tag.terms' (newValue) {
+      if (_.has(newValue, 'id')) {
+        this.taskForm.data.tags = this.taskForm.data.tags ? [...this.taskForm.data.tags, newValue.id] : [newValue.id]
+        this.tag.terms = ''
       }
     }
   }

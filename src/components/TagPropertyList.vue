@@ -1,25 +1,28 @@
 <template>
-  <draggable v-model="tags" :options="{handle: '.tag-props'}" @start="drag=true" @end="drag=false" element="span">
+  <div v-if="tags.length > 0 && tagList.success">
     <q-chip
-      v-for="(tag, index) in tags"
-      v-bind:key="tag.name"
-      @click="() => editable ? tag.active = !tag.active : ''"
-      :closable="editable"
-      @hide="remove(index)"
-      :class="[!tag.active ? 'lower-opacity' : '', 'tag-props']"
-      :style="getColors(tag.colors)"
-    >{{ tag.name }}</q-chip>
-  </draggable>
+      v-for="(item, index) in tagList.success.data"
+      :key="index"
+      :removable="editable"
+      :class="[!item.enabled ? 'lower-opacity' : '', 'tag-props']"
+      :style="getStyleColors(item.colors)"
+      :text-color="item.colors && item.colors.length > 1 ? item.colors[1] : 'white'"
+      :label="item.name"
+      @click="() => editable ? item.enabled = !item.enabled : ''"
+      @remove="$emit('remove-tag', index)"
+    />
+  </div>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+import { createNamespacedHelpers } from 'vuex'
+
+import { getStyleColors } from '../services/utils'
+
+const { mapState, mapActions } = createNamespacedHelpers('tag')
 
 export default {
   name: 'TagPropertyList',
-  components: {
-    draggable
-  },
   props: {
     tags: {
       type: Array,
@@ -30,15 +33,26 @@ export default {
       default: false
     }
   },
+  computed: {
+    ...mapState({
+      tagList: state => state.list
+    })
+  },
   methods: {
-    remove (index) {
-      this.tags.splice(index, 1)
-    },
-    getColors (colors) {
-      return {
-        backgroundColor: colors && colors.length > 0 ? colors[0] : '#000',
-        color: colors && colors.length > 1 ? colors[1] : '#FFF',
-        cursor: 'grab'
+    ...mapActions({
+      findTags: 'find'
+    }),
+    getStyleColors
+  },
+  created () {
+    if (this.tags.length > 0) {
+      this.findTags({ params: { 'id[$in]': this.tags } })
+    }
+  },
+  watch: {
+    tags (newValue) {
+      if (newValue.length > 0) {
+        this.findTags({ params: { 'id[$in]': newValue } })
       }
     }
   }

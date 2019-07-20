@@ -69,6 +69,7 @@ import { startOfMonth, addDays, format, addMonths, endOfMonth, startOfWeek, endO
 // get min date for monthly view
 // get max date for monthly view
 // search occurrences where min date
+// TODO: on calendar edit
 export default {
   name: 'CalendarMonth',
   props: {

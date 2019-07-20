@@ -1,5 +1,13 @@
 import _ from 'lodash'
 
+export const getStyleColors = colors => ({
+  backgroundColor: colors && colors.length > 0 ? colors[0] : 'black',
+  color: colors && colors.length > 1 ? colors[1] : 'white',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  borderColor: colors && colors.length > 1 ? colors[1] : 'white'
+})
+
 export const uniqDates = arr =>
   arr.filter(
     (date, i, self) => self.findIndex(d => d.getTime() === date.getTime()) === i

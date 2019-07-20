@@ -5,7 +5,12 @@
       <q-item-label header>Tasks</q-item-label>
       <q-item v-for="(item, index) in sortedTasks" :key="index">
         <q-item-section>
-          <q-item-label>{{ item.title }}</q-item-label>
+          <q-item-label>
+            <q-badge :style="getStyleColors(item.colors)">
+              <q-icon name="mdi-checkbox-blank-circle" />
+            </q-badge>
+            {{ item.title }}
+          </q-item-label>
           <q-item-label caption>{{ item.description }}</q-item-label>
         </q-item-section>
         <q-item-section>
@@ -74,6 +79,7 @@
 import { createNamespacedHelpers } from 'vuex'
 import { union } from 'lodash'
 import { distanceInWordsToNow, format, isAfter, min, isPast, compareAsc, parse } from 'date-fns'
+import { getStyleColors } from '../services/utils'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
@@ -107,6 +113,7 @@ export default {
     getDueSituation (d) {
       return isAfter(d, new Date()) ? 'left.' : 'passed.'
     },
+    getStyleColors,
     distanceInWordsToNow,
     min,
     isPast,

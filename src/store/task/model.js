@@ -3,6 +3,7 @@ export const getInstance = () => ({
   path: '',
   title: '',
   colors: [],
+  tags: [],
   description: '',
   occurrences: []
 })
