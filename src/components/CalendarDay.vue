@@ -1,8 +1,10 @@
 <template>
-  <q-card flat :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1']">
+  <q-card flat :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1', isPast(day) && !isToday(day) ? 'light-dimmed' : '']">
     <q-card-section class="text-center">
       <span class="weekday" v-if="showWeekdays">{{ format(day, 'dddd') }}</span>
-      <div>{{ format(day, 'Do') }}</div>
+      <div>
+        <component :is="isToday(day) ? 'q-badge' : 'span'" :color="isToday(day) ? 'primary' : ''">{{ format(day, 'Do') }}</component>
+      </div>
       <div v-if="showSums" class="row justify-between" style="margin-bottom: 2px">
         <q-badge
           v-for="(occurrence, occurrenceIndex) in ['next', 'succeeded', 'failed', 'skipped']"
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import { format, isWeekend } from 'date-fns'
+import { format, isWeekend, isToday, isPast } from 'date-fns'
 
 export default {
   name: 'CalendarDay',
@@ -56,6 +58,8 @@ export default {
   methods: {
     format,
     isWeekend,
+    isToday,
+    isPast,
     getWeekday (date) {
       return format(date, 'dddd')
     },

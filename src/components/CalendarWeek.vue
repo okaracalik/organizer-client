@@ -43,15 +43,6 @@ export default {
   methods: {
     eachDay,
     filterTasks (day) {
-      // return this.tasks.map(t => ({
-      //   ...t,
-      //   occurrences: {
-      //     next: t.occurrences.next.filter(d => isSameDay(d, day)),
-      //     succeeded: t.occurrences.succeeded.filter(d => isSameDay(d, day)),
-      //     failed: t.occurrences.failed.filter(d => isSameDay(d, day)),
-      //     skipped: t.occurrences.skipped.filter(d => isSameDay(d, day))
-      //   }
-      // }))
       return this.tasks.reduce((acc, t) => ({
         next: [...acc.next, ...t.occurrences.next.reduce((a, i) => isSameDay(i, day) ? [...a, omit(t, 'occurrences')] : a, [])],
         succeeded: [...acc.succeeded, ...t.occurrences.succeeded.reduce((a, i) => isSameDay(i, day) ? [...a, omit(t, 'occurrences')] : a, [])],

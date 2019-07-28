@@ -4,7 +4,7 @@
     <q-list v-if="taskList.success" bordered separator>
       <q-item-label header>Tasks</q-item-label>
       <q-item v-for="(item, index) in sortedTasks" :key="index">
-        <q-item-section>
+        <q-item-section class="cursor-pointer" @click="$router.push(`/tasks/${item.id}`)">
           <q-item-label>
             <q-badge :style="getStyleColors(item.colors)">
               <q-icon name="mdi-checkbox-blank-circle" />

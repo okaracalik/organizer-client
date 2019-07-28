@@ -170,7 +170,6 @@ export default {
       this.tagForm.data.colors.splice(index, 1)
     },
     addEmoji (emoji) {
-      console.log(emoji)
       this.tagForm.data.name += emoji.native
     },
     addColor () {
