@@ -8,6 +8,18 @@
           <template v-slot:before>
             <q-icon name="fas fa-font" />
           </template>
+          <template v-slot:prepend>
+            <q-icon name="far fa-smile" class="cursor-pointer text-center">
+              <q-popup-proxy
+                class="text-center"
+                transition-show="scale"
+                transition-hide="scale"
+                style="width:350px"
+              >
+                <picker set="google" @select="(emoji) => taskForm.data.title += emoji.native" />
+              </q-popup-proxy>
+            </q-icon>
+          </template>
         </q-input>
         <q-toggle class="self-end" v-model="showDescriptionInput" label="Show Description Field" />
       </div>
@@ -153,6 +165,8 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
+import { Picker } from 'emoji-mart-vue-fast'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
 import form from '../mixins/form'
 import OccurrenceForm from '../pages/OccurrenceForm'
 
@@ -169,7 +183,8 @@ export default {
   mixins: [form],
   components: {
     OccurrenceForm,
-    TagPropertyList
+    TagPropertyList,
+    Picker
   },
   data () {
     return {
