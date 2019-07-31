@@ -136,7 +136,7 @@ export default {
       if (this.$v.tagForm.$invalid) {
         this.$q.notify({
           message: 'Please fill the form correctly.',
-          type: 'warning'
+          color: 'warning'
         })
       }
       else {
@@ -204,7 +204,7 @@ export default {
         }
         this.$q.notify({
           message: this.$emitter.constructNotifyMessage(this.mode, 'Tag'),
-          type: 'positive'
+          color: 'positive'
         })
       }
     },

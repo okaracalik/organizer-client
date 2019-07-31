@@ -1,5 +1,73 @@
 import _ from 'lodash'
 
+export const getTaskColor = type => {
+  switch (type) {
+    case 'next':
+      return 'blue-6'
+    case 'succeeded':
+      return 'green-6'
+    case 'failed':
+      return 'red-6'
+    case 'skipped':
+      return 'deep-orange-6'
+    case 'removed':
+      return 'brown-6'
+    default:
+      return 'white'
+  }
+}
+
+export const getTaskColorDarker = type => {
+  switch (type) {
+    case 'next':
+      return 'blue-10'
+    case 'succeeded':
+      return 'green-10'
+    case 'failed':
+      return 'red-10'
+    case 'skipped':
+      return 'deep-orange-10'
+    case 'removed':
+      return 'brown-10'
+    default:
+      return 'white'
+  }
+}
+
+export const getTaskIcon = type => {
+  switch (type) {
+    case 'next':
+      return 'mdi-checkbox-blank-outline'
+    case 'succeeded':
+      return 'mdi-checkbox-marked-outline'
+    case 'failed':
+      return 'mdi-close-circle-outline'
+    case 'skipped':
+      return 'mdi-cancel'
+    case 'removed':
+      return 'mdi-trash-can-outline'
+    default:
+      return 'mdi-exclamation'
+  }
+}
+
+export const getTaskIconAlt = type => {
+  switch (type) {
+    case 'next':
+      return 'mdi-checkbox-blank-outline'
+    case 'succeeded':
+      return 'mdi-check-bold'
+    case 'failed':
+      return 'mdi-close-circle'
+    case 'skipped':
+      return 'mdi-skip-forward'
+    case 'removed':
+      return 'mdi-trash-can'
+    default:
+      return 'mdi-exclamation'
+  }
+}
+
 export const getStyleColors = colors => ({
   backgroundColor: colors && colors.length > 0 ? colors[0] : 'black',
   color: colors && colors.length > 1 ? colors[1] : 'white',

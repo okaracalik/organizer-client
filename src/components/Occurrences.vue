@@ -3,44 +3,44 @@
   <q-list separator bordered>
     <!-- header -->
     <q-item-label header class="text-bold text-capitalize">
-      <q-icon :name="properties.icon" />
-      {{ properties.title }}
-      <q-badge :color="properties.color" text-color="white">{{items.length}}</q-badge>
+      <q-icon :name="getTaskIconAlt(type)" />
+      {{ type }}
+      <q-badge :color="getTaskColorDarker(type)" text-color="white">{{items.length}}</q-badge>
       <q-btn  flat color="primary" icon="mdi-plus-circle" @click="customDate.isOpen = true" />
     </q-item-label>
     <!-- items -->
     <q-item v-for="(item, index) in items.slice(0, shownItems)" :key="index">
       <q-item-section>{{ format(item, ' DD MMM YY, dd') }}</q-item-section>
       <q-btn
-        v-if="['next', 'failed', 'skipped'].includes(properties.title) && isDue(item)"
+        v-if="['next', 'failed', 'skipped'].includes(type) && isDue(item)"
         round
         size="sm"
-        color="green-6"
-        icon="mdi-check-bold"
+        :color="getTaskColor('succeeded')"
+        :icon="getTaskIconAlt('succeeded')"
         @click.native="$emit('occurrence-succeed', items.splice(index, 1)[0])"
       />
       <q-btn
-        v-if="['succeeded', 'failed', 'next'].includes(properties.title) && isDue(item)"
+        v-if="['succeeded', 'failed', 'next'].includes(type) && isDue(item)"
         round
         size="sm"
-        color="deep-orange-6"
-        icon="mdi-skip-forward"
+        :color="getTaskColor('skipped')"
+        :icon="getTaskIconAlt('skipped')"
         @click.native="$emit('occurrence-skip', items.splice(index, 1)[0])"
       />
       <q-btn
-        v-if="['succeeded', 'skipped', 'next'].includes(properties.title) && isDue(item)"
+        v-if="['succeeded', 'skipped', 'next'].includes(type) && isDue(item)"
         round
         size="sm"
-        color="red-6"
-        icon="mdi-close-circle"
+        :color="getTaskColor('failed')"
+        :icon="getTaskIconAlt('failed')"
         @click.native="$emit('occurrence-fail', items.splice(index, 1)[0])"
       />
       <q-btn
-        v-if="['succeeded', 'skipped', 'failed'].includes(properties.title) && isDue(item)"
+        v-if="['succeeded', 'skipped', 'failed'].includes(type) && isDue(item)"
         round
         size="sm"
-        color="brown-6"
-        icon="mdi-trash-can"
+        :color="getTaskColor('removed')"
+        :icon="getTaskIconAlt('removed')"
         @click.native="items.splice(index, 1)"
       />
     </q-item>
@@ -73,6 +73,7 @@
 
 <script>
 import { format, isAfter, isToday, isPast } from 'date-fns'
+import { getTaskColor, getTaskColorDarker, getTaskIconAlt } from '../services/utils'
 
 export default {
   name: 'Occurrences',
@@ -95,44 +96,12 @@ export default {
       }
     }
   },
-  computed: {
-    properties () {
-      if (this.type === 'succeeded') {
-        return {
-          title: this.type,
-          icon: 'mdi-check-bold',
-          color: 'green-10'
-        }
-      }
-      else if (this.type === 'failed') {
-        return {
-          title: this.type,
-          icon: 'mdi-close-circle',
-          color: 'red-10'
-        }
-      }
-      else if (this.type === 'skipped') {
-        return {
-          title: this.type,
-          icon: 'mdi-skip-forward',
-          color: 'deep-orange-10'
-        }
-      }
-      else if (this.type === 'next') {
-        return {
-          title: this.type,
-          icon: 'mdi-arrow-right-circle-outline',
-          color: 'blue-10'
-        }
-      }
-      else {
-        return null
-      }
-    }
-  },
   methods: {
     format,
     isAfter,
+    getTaskColor,
+    getTaskColorDarker,
+    getTaskIconAlt,
     isDue (date) {
       return isToday(date) || isPast(date)
     },
