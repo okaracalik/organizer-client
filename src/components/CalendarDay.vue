@@ -1,30 +1,38 @@
 <template>
-  <q-card flat :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1', isPast(day) && !isToday(day) ? 'light-dimmed' : '']">
+  <q-card
+    flat
+    :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1', isPast(day) && !isToday(day) && tasks.next.length < 1 ? 'light-dimmed' : '']"
+  >
     <q-card-section class="text-center">
       <span class="weekday" v-if="showWeekdays">{{ format(day, 'dddd') }}</span>
       <div>
-        <component :is="isToday(day) ? 'q-badge' : 'span'" :color="isToday(day) ? 'primary' : ''">{{ format(day, 'Do') }}</component>
+        <component
+          :is="isToday(day) ? 'q-badge' : 'span'"
+          :color="isToday(day) ? 'primary' : ''"
+        >{{ format(day, 'Do') }}</component>
       </div>
       <div v-if="showSums" class="row justify-between" style="margin-bottom: 2px">
         <q-badge
           v-for="(occurrence, occurrenceIndex) in ['next', 'succeeded', 'failed', 'skipped']"
           :key="occurrenceIndex"
           :color="getColor(occurrence)"
-        >{{ tasks[occurrence].length }}</q-badge>
+          :label="tasks[occurrence].length"
+        />
       </div>
       <span
         v-for="(occurrence, occurrenceIndex) in ['next', 'succeeded', 'failed', 'skipped']"
         :key="occurrenceIndex"
       >
         <q-badge
-          class="full-width text-bold"
+          class="full-width text-bold cursor-pointer"
           style="margin-bottom: 2px"
           v-for="(nextItem, nextIndex) in tasks[occurrence]"
           :key="nextIndex"
           :color="getColor(nextItem.colors, occurrence)"
           :style="{backgroundColor: getColor(nextItem.colors, occurrence), color: nextItem.colors && nextItem.colors.length > 1 ? nextItem.colors[1] : 'white'}"
+          @click="() => $emit('pick-task', { from: occurrence, taskId: nextItem.id })"
         >
-          <q-icon :name="getIcon(occurrence)" />
+          <q-icon :name="getTaskIcon(occurrence)" />
           {{ nextItem.title }}
         </q-badge>
       </span>
@@ -34,6 +42,7 @@
 
 <script>
 import { format, isWeekend, isToday, isPast } from 'date-fns'
+import { getTaskIcon, getTaskColor } from '../services/utils'
 
 export default {
   name: 'CalendarDay',
@@ -60,6 +69,7 @@ export default {
     isWeekend,
     isToday,
     isPast,
+    getTaskIcon,
     getWeekday (date) {
       return format(date, 'dddd')
     },
@@ -70,31 +80,8 @@ export default {
       if (colors && colors.length > 0) {
         return colors[0]
       }
-      switch (occurrence) {
-        case 'succeeded':
-          return 'green-10'
-        case 'skipped':
-          return 'deep-orange-10'
-        case 'failed':
-          return 'red-10'
-        case 'next':
-          return 'blue-10'
-        default:
-          return 'gray'
-      }
-    },
-    getIcon (occurrence) {
-      switch (occurrence) {
-        case 'succeeded':
-          return 'mdi-checkbox-marked-outline'
-        case 'failed':
-          return 'mdi-close-circle-outline'
-        case 'skipped':
-          return 'mdi-cancel'
-        case 'next':
-          return 'mdi-checkbox-blank-outline'
-        default:
-          return 'gray'
+      else {
+        return getTaskColor(occurrence)
       }
     }
   }

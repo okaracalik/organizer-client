@@ -8,13 +8,14 @@
       :day="item"
       :tasks="filterTasks(item)"
       :showWeekdays="showWeekdays"
+      @pick-task="({from, taskId}) => $emit('pick-task', {from, taskId, day: endOfDay(item)})"
     />
   </div>
 </template>
 
 <script>
 import CalendarDay from './CalendarDay'
-import { eachDay, isSameDay } from 'date-fns'
+import { eachDay, isSameDay, endOfDay } from 'date-fns'
 import { omit } from 'lodash'
 
 export default {
@@ -42,6 +43,7 @@ export default {
   },
   methods: {
     eachDay,
+    endOfDay,
     filterTasks (day) {
       return this.tasks.reduce((acc, t) => ({
         next: [...acc.next, ...t.occurrences.next.reduce((a, i) => isSameDay(i, day) ? [...a, omit(t, 'occurrences')] : a, [])],

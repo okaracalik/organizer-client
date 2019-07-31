@@ -158,6 +158,7 @@ import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
+// TODO: problem on loading edit form
 export default {
   name: 'OccurrenceForm',
   mixins: [form],
@@ -232,7 +233,7 @@ export default {
       if (this.$v.occurrenceForm.$invalid) {
         this.$q.notify({
           message: 'Please fill the form correctly.',
-          type: 'warning'
+          color: 'warning'
         })
       }
       else {
@@ -278,7 +279,7 @@ export default {
         }
         this.$q.notify({
           message: this.$emitter.constructNotifyMessage(this.mode, 'Occurrence'),
-          type: 'positive',
+          color: 'positive',
           icon: 'mdi-check-circle-outline'
         })
       }
