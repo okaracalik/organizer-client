@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
   addDays,
   addMonths,
@@ -14,8 +13,7 @@ import {
   startOfISOWeek,
   startOfToday,
   subDays,
-  format,
-  startOfDay
+  format
 } from 'date-fns'
 import _ from 'lodash'
 import { uniqDates } from '../../services/utils'
@@ -43,11 +41,13 @@ const findBusinessDay = (date, selection) => {
       const previous = findBusinessDay(subDays(date, 1), 'previous')
       if (differenceInDays(next, date) <= differenceInDays(date, previous)) {
         return next
-      } else {
+      }
+      else {
         return previous
       }
     }
-  } else {
+  }
+  else {
     return date
   }
 }
@@ -58,7 +58,7 @@ const generateOccurrences = (
   ends,
   n,
   frequency,
-  if_on_working_day,
+  ifOnWorkingDay,
   isOnLastDayOfMonth,
   weekdays
 ) => {
@@ -70,7 +70,7 @@ const generateOccurrences = (
       return temp
     case 'day':
       while (!isAfter(today, ends)) {
-        let businessDay = findBusinessDay(today, if_on_working_day)
+        let businessDay = findBusinessDay(today, ifOnWorkingDay)
         temp.push(endOfDay(businessDay))
         today = addDays(today, n)
       }
@@ -87,7 +87,7 @@ const generateOccurrences = (
     case 'month':
       while (!isAfter(today, ends)) {
         today = endOfDay(isOnLastDayOfMonth ? endOfMonth(today) : today)
-        let businessDay = findBusinessDay(today, if_on_working_day)
+        let businessDay = findBusinessDay(today, ifOnWorkingDay)
         temp.push(businessDay)
         today = addMonths(today, n)
       }
@@ -95,7 +95,7 @@ const generateOccurrences = (
     case 'year':
       while (!isAfter(today, ends)) {
         today = endOfDay(isOnLastDayOfMonth ? endOfMonth(today) : today)
-        let businessDay = findBusinessDay(today, if_on_working_day)
+        let businessDay = findBusinessDay(today, ifOnWorkingDay)
         temp.push(businessDay)
         today = addYears(today, n)
       }
@@ -120,7 +120,7 @@ export const getInstance = () => ({
 })
 
 export const observer = {
-  set: function(obj, prop, value) {
+  set: function (obj, prop, value) {
     obj[prop] = value
     // any change on properties below will generate new occurrences
     if (

@@ -32,7 +32,7 @@
           <template v-slot:before>
             <q-icon name="fas fa-hourglass-end" />
           </template>
-          <template v-slot:prepend>
+          <template v-slot:before>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
                 <q-date

@@ -1,111 +1,102 @@
 <template>
   <div>
-    <q-field :error="isNoResult" error-label="You can add new by clicking plus icon.">
-      <q-search
-        stack-label="Tag"
-        v-model="term"
-        placeholder="Please start typing tag name."
-        :after="[{
-            icon:'fas fa-plus-circle',
-            handler () {
-              isModalOpen = true
-            }
-          }, {
-            icon:'fas fa-times-circle',
-            content: true,
-            handler () {
-              term = ''
-              isNoResult = false
-            }
-          }]"
-        :error="isNoResult"
-        :autofocus="focus"
-      >
-        <q-autocomplete
-          separator
-          :min-characters="2"
-          :static-data="{field: 'name', list: tagOptions }"
-          :filter="myFilter"
-          @selected="selected"
+    <q-select
+      v-model="terms"
+      use-input
+      hide-selected
+      fill-input
+      input-debounce="1"
+      :options="options"
+      @filter="searchTag"
+      hide-dropdown-icon
+      hint="Please type at least 2 characters to search "
+    >
+      <template v-slot:before>
+        <q-icon name="fas fa-tag" />
+      </template>
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey">No results</q-item-section>
+        </q-item>
+      </template>
+      <template v-slot:append>
+        <q-icon
+          v-if="isListEmpty"
+          class="cursor-pointer"
+          name="add"
+          @click.stop="isModalOpen = true"
         />
-      </q-search>
-    </q-field>
-    <tag-property-list :tags="tags" :editable="true"/>
-    <q-modal :content-css="{height: 'auto', width: 'auto'}" v-model="isModalOpen" minimized>
-      <tag-form :is-modal="true" @close-tag-modal="selected"/>
-    </q-modal>
+        <q-icon
+          v-if="terms !== null"
+          class="cursor-pointer"
+          name="clear"
+          @click.stop="terms = null"
+        />
+      </template>
+    </q-select>
+    <tag-property-list
+      class="q-my-md"
+      :tags="tags"
+      :editable="true"
+      @remove-tag="(index) => $emit('remove-tag', index)"
+    />
   </div>
 </template>
 
 <script>
 import _ from 'lodash'
-import { createNamespacedHelpers } from 'vuex'
-import TagForm from '../pages/TagForm'
+
+import Search from '../services/search'
 import TagPropertyList from './TagPropertyList'
 
-const { mapState, mapActions } = createNamespacedHelpers('tag')
-
-// TODO: upgrade components
 export default {
   name: 'TagPropertyForm',
-  components: {
-    TagForm,
-    TagPropertyList
-  },
   props: {
     tags: {
       type: Array,
-      required: true
-    },
-    focus: {
-      type: Boolean,
-      default: false
+      default: () => []
     }
+  },
+  components: {
+    TagPropertyList
   },
   data () {
     return {
-      term: '',
+      terms: null,
+      options: [],
+      isListEmpty: false,
       isModalOpen: false
     }
   },
-  computed: {
-    ...mapState({
-      tagList: state => state.list
-    }),
-    tagOptions () {
-      return _.map(this.tagList.success, i => ({
-        ...i,
-        label: i.name,
-        icon: 'fas fa-tag',
-        leftColor: i.color
-      }))
-    },
-    isNoResult () {
-      return this.tagOptions.length < 1
-    }
-  },
   methods: {
-    ...mapActions({
-      findTags: 'find'
-    }),
-    selected (item, keyboard) {
-      if (!keyboard && item) {
-        this.tags.push({
-          name: item.name,
-          colors: item.colors,
-          active: item.active
-        })
-        this.isModalOpen = false
-        this.term = ''
+    searchTag (terms, update, abort) {
+      if (terms.length < 2) {
+        abort()
+        return
       }
-    },
-    myFilter (terms, { field, list }) {
-      const token = terms.toLowerCase()
-      return list.filter(item => item.name.toLowerCase().search(new RegExp(token, 'g')) > -1)
+      update(() => {
+        Search.apply('tags', terms).then((res) => {
+          this.isListEmpty = _.isEqual(res.data.total, 0)
+          this.options = Search.prepareSearchResult(res, ['colors', 'enabled'])
+        }).catch((err) => {
+          this.$q.notify({
+            message: `${err}.`,
+            color: 'negative',
+            icon: 'mdi-close-circle',
+            timeout: 0,
+            closeBtn: true
+          })
+        })
+      })
     }
   },
-  created () {
-    this.findTags()
+  watch: {
+    terms (newValue) {
+      if (_.has(newValue, 'id')) {
+        this.$emit('add-tag', newValue.id)
+        this.terms = ''
+      }
+    }
   }
 }
 </script>

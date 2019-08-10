@@ -61,7 +61,7 @@ export default {
       this.$router.go(-1)
     }
   },
-  created () {
+  mounted () {
     this.init()
   },
   beforeRouteLeave (to, from, next) {
@@ -112,6 +112,15 @@ export default {
         title: {},
         description: {},
         tags: {}
+      }
+    },
+    logForm: {
+      data: {
+        when: { required },
+        what: { required },
+        where: {},
+        how: {},
+        with: {}
       }
     }
   }
