@@ -40,6 +40,15 @@ const routes = [
       { path: 'new', component: () => import('pages/TaskForm'), props: true, meta: { title: 'New Task' } },
       { path: ':id', component: () => import('pages/TaskForm'), props: true, meta: { title: 'Edit Task' } }
     ]
+  },
+  {
+    path: '/logs',
+    component: () => import('layouts/MyLayout'),
+    children: [
+      { path: '', component: () => import('pages/LogList'), meta: { title: 'Logs' } },
+      { path: 'new', component: () => import('pages/LogForm'), props: true, meta: { title: 'New Log' } },
+      { path: ':id', component: () => import('pages/LogForm'), props: true, meta: { title: 'Edit Log' } }
+    ]
   }
 ]
 

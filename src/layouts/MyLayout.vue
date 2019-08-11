@@ -29,6 +29,15 @@
             <q-item-label caption>Task List</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable tag="a" to="/logs">
+          <q-item-section avatar>
+            <q-icon name="far fa-list-alt"/>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Logs</q-item-label>
+            <q-item-label caption>Log List</q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable tag="a" to="/occurrences">
           <q-item-section avatar>
             <q-icon name="update"/>

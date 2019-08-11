@@ -1,6 +1,7 @@
 <template>
   <div>
     <q-select
+      label="Tag"
       v-model="terms"
       use-input
       hide-selected
