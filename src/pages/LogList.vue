@@ -10,7 +10,10 @@
         clickable
       >
         <q-item-section>
-          <q-item-label>{{ item.id }} | {{ item.when }} | {{ item.action }} | {{ item.what }} | {{ item.where }} | {{ item.how.length }} | {{ item.with.length }} | {{ item.tags.length }}</q-item-label>
+          <q-item-label>
+            {{ item.id }} | {{ item.when }} | {{ item.action }} | {{ item.what }} | {{ item.where }} | {{ item.how.length }} | {{ item.with.length }} |
+            <tag-property-list :tagIds="item.tags" />
+          </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -28,11 +31,13 @@ import { createNamespacedHelpers } from 'vuex'
 const { mapState, mapActions } = createNamespacedHelpers('log')
 
 import FloatingActionButton from '../components/FloatingActionButton'
+import TagPropertyList from '../components/TagPropertyList'
 
 export default {
   name: 'LogList',
   components: {
-    FloatingActionButton
+    FloatingActionButton,
+    TagPropertyList
   },
   computed: {
     ...mapState({

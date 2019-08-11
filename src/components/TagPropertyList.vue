@@ -1,7 +1,7 @@
 <template>
-  <div v-if="tags.length > 0 && tagList.success">
+  <span v-if="tagIds.length > 0 && tags.list">
     <q-chip
-      v-for="(item, index) in tagList.success.data"
+      v-for="(item, index) in tags.list.data"
       :key="index"
       :removable="editable"
       :class="[!item.enabled ? 'lower-opacity' : '', 'tag-props']"
@@ -11,20 +11,17 @@
       @click="() => editable ? item.enabled = !item.enabled : ''"
       @remove="$emit('remove-tag', index)"
     />
-  </div>
+  </span>
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-
+import Search from '../services/search'
 import { getStyleColors } from '../services/utils'
-
-const { mapState, mapActions } = createNamespacedHelpers('tag')
 
 export default {
   name: 'TagPropertyList',
   props: {
-    tags: {
+    tagIds: {
       type: Array,
       required: true
     },
@@ -33,26 +30,36 @@ export default {
       default: false
     }
   },
-  computed: {
-    ...mapState({
-      tagList: state => state.list
-    })
+  data  () {
+    return {
+      tags: {
+        list: null,
+        err: null
+      }
+    }
   },
   methods: {
-    ...mapActions({
-      findTags: 'find'
-    }),
-    getStyleColors
+    getStyleColors,
+    searchTag (tags) {
+      console.log('searchTag')
+      Search.find('tags', {
+        'id[$in]': tags
+      }).then(res => {
+        this.tags.list = res.data
+      }).catch(err => {
+        this.tags.err = err.response.data
+      })
+    }
   },
   created () {
-    if (this.tags.length > 0) {
-      this.findTags({ params: { 'id[$in]': this.tags } })
+    if (this.tagIds.length > 0) {
+      this.searchTag(this.tagIds)
     }
   },
   watch: {
-    tags (newValue) {
+    tagIds (newValue) {
       if (newValue.length > 0) {
-        this.findTags({ params: { 'id[$in]': newValue } })
+        this.searchTag(newValue)
       }
     }
   }

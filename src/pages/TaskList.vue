@@ -21,6 +21,11 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>
+            <tag-property-list :tagIds="item.tags"/>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>
             <q-chip
               color="blue-10"
               text-color="white"
@@ -65,7 +70,6 @@
               icon="mdi-subdirectory-arrow-left"
               @click="$router.push(`/tasks/new?parent_id=${item.id}&path=${item.path}`)"
             />
-            <q-btn icon="mdi-pencil" @click="$router.push(`/tasks/${item.id}`)" />
           </div>
         </q-item-section>
       </q-item>
@@ -84,11 +88,13 @@ import { getStyleColors } from '../services/utils'
 const { mapState, mapActions } = createNamespacedHelpers('task')
 
 import FloatingActionButton from '../components/FloatingActionButton'
+import TagPropertyList from '../components/TagPropertyList'
 
 export default {
   name: 'TaskList',
   components: {
-    FloatingActionButton
+    FloatingActionButton,
+    TagPropertyList
   },
   computed: {
     ...mapState({

@@ -1,6 +1,7 @@
 <template>
   <div>
     <q-select
+      class="q-mb-xs"
       label="Tag"
       v-model="terms"
       use-input
@@ -37,7 +38,7 @@
     </q-select>
     <tag-property-list
       class="q-my-md"
-      :tags="tags"
+      :tagIds="tags"
       :editable="true"
       @remove-tag="(index) => $emit('remove-tag', index)"
     />

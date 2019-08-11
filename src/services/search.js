@@ -5,6 +5,9 @@ export default {
   apply (service, term, sortColumn = 'id') {
     return Service(service).find(this.composeSearchQuery(term, sortColumn))
   },
+  find (service, params) {
+    return Service(service).find({ params })
+  },
   composeSearchQuery (term, sortColumn) {
     return {
       params: {
