@@ -11,9 +11,24 @@
       >
         <q-item-section>
           <q-item-label>
-            {{ item.id }} | {{ item.when }} | {{ item.action }} | {{ item.what }} | {{ item.where }} | {{ item.how.length }} | {{ item.with.length }} |
             <tag-property-list :tagIds="item.tags" />
           </q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ format(item.when, 'DD.MM.YY') }}</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ item.action }}</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>
+            {{ item.what }}
+            <span v-for="(h, hIndex) in item.how" :key="hIndex">{{ h }}</span>
+            <span v-for="(w, wIndex) in item.with" :key="wIndex">{{ w }}</span>
+          </q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ item.where }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -27,6 +42,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+import { format } from 'date-fns'
 
 const { mapState, mapActions } = createNamespacedHelpers('log')
 
@@ -47,7 +63,8 @@ export default {
   methods: {
     ...mapActions({
       findLogs: 'find'
-    })
+    }),
+    format
   },
   created () {
     this.findLogs()

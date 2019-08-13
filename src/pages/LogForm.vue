@@ -301,7 +301,7 @@ export default {
           where: newValue.where,
           how: newValue.how,
           with: newValue.with,
-          tag: newValue.tag
+          tags: newValue.tags
         }
       }
     }

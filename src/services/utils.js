@@ -73,7 +73,7 @@ export const getStyleColors = colors => ({
   color: colors && colors.length > 1 ? colors[1] : 'white',
   borderStyle: 'solid',
   borderWidth: '1px',
-  borderColor: colors && colors.length > 1 ? colors[1] : 'white'
+  borderColor: colors && colors.length > 1 ? colors[1] : colors[0]
 })
 
 export const uniqDates = arr =>
