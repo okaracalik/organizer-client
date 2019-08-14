@@ -6,7 +6,7 @@ export const getInstance = () => ({
   action: '',
   what: '',
   where: null,
-  how: [],
-  with: [],
+  how: null,
+  with: null,
   tags: []
 })

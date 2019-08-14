@@ -47,7 +47,7 @@
         </template>
       </q-select>
       <!-- action -->
-      <q-input label="Action" v-model="logForm.data.action">
+      <q-input label="Action" v-model="logForm.data.action" hint="Eat, cook, prepare, wash, clean...">
         <template v-slot:before>
           <q-icon name="mdi-walk" />
         </template>
@@ -63,7 +63,7 @@
                 set="google"
                 :auto-focus="true"
                 :showPreview="false"
-                @select="(emoji) => logForm.data.action += emoji.native"
+                @select="(emoji) => logForm.data.action += `${emoji.native} `"
               />
             </q-popup-proxy>
           </q-icon>
@@ -73,12 +73,16 @@
             v-if="logForm.data.action !== null"
             class="cursor-pointer"
             name="clear"
-            @click.stop="logForm.data.action = ''"
+            @click.stop="logForm.data.action = null"
           />
         </template>
       </q-input>
       <!-- what -->
-      <q-input label="What" v-model="logForm.data.what">
+      <q-input
+        label="What"
+        v-model="logForm.data.what"
+        @blur="logForm.data.what = sortString(logForm.data.what)"
+      >
         <template v-slot:before>
           <q-icon name="mdi-circle" />
         </template>
@@ -93,7 +97,7 @@
               <picker
                 set="google"
                 :auto-focus="true"
-                @select="(emoji) => logForm.data.what += emoji.native"
+                @select="(emoji) => logForm.data.what += `${emoji.native} `"
               />
             </q-popup-proxy>
           </q-icon>
@@ -103,7 +107,7 @@
             v-if="logForm.data.what !== null"
             class="cursor-pointer"
             name="clear"
-            @click.stop="logForm.data.what = ''"
+            @click.stop="logForm.data.what = null"
           />
         </template>
       </q-input>
@@ -127,6 +131,31 @@
         <template v-slot:before>
           <q-icon name="mdi-help" />
         </template>
+        <template v-slot:prepend>
+          <q-icon name="far fa-smile" class="cursor-pointer text-center">
+            <q-popup-proxy
+              class="text-center"
+              transition-show="scale"
+              transition-hide="scale"
+              style="width:350px"
+            >
+              <picker
+                set="google"
+                :auto-focus="true"
+                :showPreview="false"
+                @select="(emoji) => logForm.data.how += `${emoji.native} `"
+              />
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+        <template v-slot:append>
+          <q-icon
+            v-if="logForm.data.how !== null"
+            class="cursor-pointer"
+            name="clear"
+            @click.stop="logForm.data.how = null"
+          />
+        </template>
       </q-select>
       <!-- with -->
       <q-select
@@ -141,6 +170,31 @@
       >
         <template v-slot:before>
           <q-icon name="mdi-hand" />
+        </template>
+        <template v-slot:prepend>
+          <q-icon name="far fa-smile" class="cursor-pointer text-center">
+            <q-popup-proxy
+              class="text-center"
+              transition-show="scale"
+              transition-hide="scale"
+              style="width:350px"
+            >
+              <picker
+                set="google"
+                :auto-focus="true"
+                :showPreview="false"
+                @select="(emoji) => logForm.data.with += `${emoji.native} `"
+              />
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+        <template v-slot:append>
+          <q-icon
+            v-if="logForm.data.with !== null"
+            class="cursor-pointer"
+            name="clear"
+            @click.stop="logForm.data.with = null"
+          />
         </template>
       </q-select>
       <!-- tags -->
@@ -268,6 +322,9 @@ export default {
           icon: 'mdi-alert-circle'
         })
       }
+    },
+    sortString (text) {
+      return text.replace(', ', ',').split(',').sort().join(', ')
     }
   },
   watch: {
