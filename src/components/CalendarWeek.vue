@@ -6,8 +6,8 @@
       v-for="(item, index) in eachDay(starts, ends)"
       :key="index"
       :day="item"
-      :tasks="filterTasks(item)"
       :showWeekdays="showWeekdays"
+      :tasks="filterTasks(item)"
       @pick-task="({from, taskId}) => $emit('pick-task', {from, taskId, day: endOfDay(item)})"
     />
   </div>
@@ -18,6 +18,8 @@ import CalendarDay from './CalendarDay'
 import { eachDay, isSameDay, endOfDay } from 'date-fns'
 import { omit } from 'lodash'
 
+// TODO: make it slotted
+// TODO: generalize tasks
 export default {
   name: 'CalendarWeek',
   components: {

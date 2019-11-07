@@ -72,8 +72,8 @@
         :key="index"
         :starts="item[0]"
         :ends="item[1]"
-        :tasks="filterTasksByTags(filterTasksByDate(tasks, item[0], item[1]), tags.selected)"
         :showWeekdays="index < 1"
+        :tasks="filterTasksByTags(filterTasksByDate(tasks, item[0], item[1]), tags.selected)"
         @pick-task="(item) => dialog = {isOpen: true, item: { ...item, to: item.from }}"
       />
     </div>

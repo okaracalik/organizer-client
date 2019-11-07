@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { format, isAfter, isToday, isPast } from 'date-fns'
+import { format, isAfter, isToday, isPast, parse } from 'date-fns'
 import { getTaskColor, getTaskColorDarker, getTaskIconAlt } from '../services/utils'
 
 export default {
@@ -106,7 +106,8 @@ export default {
       return isToday(date) || isPast(date)
     },
     addCustomDate () {
-      this.$emit('add-custom-date', { type: this.type, item: this.customDate.input })
+      console.log(parse(this.customDate.input))
+      this.$emit('add-custom-date', { type: this.type, item: parse(this.customDate.input) })
       this.customDate.input = new Date()
       this.customDate.isOpen = false
     }

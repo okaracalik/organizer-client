@@ -132,7 +132,7 @@
           @occurrence-succeed="(item) => occurrenceForm.data['succeeded'].push(item)"
           @occurrence-skip="(item) => occurrenceForm.data['skipped'].push(item)"
           @occurrence-fail="(item) => occurrenceForm.data['failed'].push(item)"
-          @add-custom-date="({type, item}) => occurrenceForm.data[type] = [...occurrenceForm.data[type], item].sort(compareAsc)"
+          @add-custom-date="addCustomDate"
         />
       </div>
       <!-- buttons -->
@@ -253,6 +253,12 @@ export default {
     },
     changeMonth (date) {
       this.day = date
+    },
+    addCustomDate ({ type, item }) {
+      this.occurrenceForm.data[type] = [
+        ...this.occurrenceForm.data[type] ? this.occurrenceForm.data[type] : [],
+        item
+      ].sort(compareAsc)
     },
     compareAsc
   },

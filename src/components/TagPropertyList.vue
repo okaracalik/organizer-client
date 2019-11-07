@@ -41,7 +41,6 @@ export default {
   methods: {
     getStyleColors,
     searchTag (tags) {
-      console.log('searchTag')
       Search.find('tags', {
         'id[$in]': tags
       }).then(res => {

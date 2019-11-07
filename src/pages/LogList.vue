@@ -67,7 +67,7 @@ export default {
     format
   },
   created () {
-    this.findLogs()
+    this.findLogs({ params: { '$sort[when]': -1, '$sort[id]': -1 } })
   }
 }
 </script>

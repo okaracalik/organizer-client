@@ -100,6 +100,7 @@ const generateOccurrences = (
         today = addYears(today, n)
       }
       return temp
+    // TODO: next: only gets incoming one from the last occurrence
   }
 }
 

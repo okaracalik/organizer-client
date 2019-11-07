@@ -118,15 +118,10 @@
         </template>
       </q-input>
       <!-- how -->
-      <q-select
+      <q-input
         label="How"
         v-model="logForm.data.how"
-        use-input
-        use-chips
-        multiple
-        hide-dropdown-icon
-        input-debounce="0"
-        @new-value="createValue"
+        @blur="logForm.data.how = sortString(logForm.data.how)"
       >
         <template v-slot:before>
           <q-icon name="mdi-help" />
@@ -142,7 +137,6 @@
               <picker
                 set="google"
                 :auto-focus="true"
-                :showPreview="false"
                 @select="(emoji) => logForm.data.how += `${emoji.native} `"
               />
             </q-popup-proxy>
@@ -156,7 +150,7 @@
             @click.stop="logForm.data.how = null"
           />
         </template>
-      </q-select>
+      </q-input>
       <!-- with -->
       <q-select
         label="With"
