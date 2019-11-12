@@ -57,6 +57,14 @@
             <q-item-label caption>Tag List</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable tag="a" to="/lists">
+          <q-item-section avatar>
+            <q-icon name="mdi-format-list-checkbox" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Lists</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 

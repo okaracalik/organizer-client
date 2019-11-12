@@ -49,6 +49,15 @@ const routes = [
       { path: 'new', component: () => import('pages/LogForm'), props: true, meta: { title: 'New Log' } },
       { path: ':id', component: () => import('pages/LogForm'), props: true, meta: { title: 'Edit Log' } }
     ]
+  },
+  {
+    path: '/lists',
+    component: () => import('layouts/MyLayout'),
+    children: [
+      { path: '', component: () => import('pages/ListList'), meta: { title: 'Lists' } },
+      { path: 'new', component: () => import('pages/ListForm'), props: true, meta: { title: 'New List' } },
+      { path: ':id', component: () => import('pages/ListForm'), props: true, meta: { title: 'Edit List' } }
+    ]
   }
 ]
 

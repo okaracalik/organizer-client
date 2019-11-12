@@ -2,6 +2,7 @@ const INIT = 0
 const CREATE = 1
 const UPDATE = 2
 const REMOVE = 3
+const ADD = 4
 
 const constructEmitMessage = (mode, module) => {
   switch (mode) {
@@ -11,6 +12,8 @@ const constructEmitMessage = (mode, module) => {
       return `update-${module}`
     case REMOVE:
       return `remove-${module}`
+    case ADD:
+      return `add-${module}`
     default:
       return 'Unhandled message!!!'
   }
@@ -24,6 +27,8 @@ const constructNotifyMessage = (mode, value) => {
       return `${value} successfully updated.`
     case REMOVE:
       return `${value} successfully deleted.`
+    case ADD:
+      return `${value} successfully added.`
     default:
       return 'Unhandled message!!!'
   }
@@ -35,7 +40,8 @@ export default ({ Vue }) => {
       INIT,
       CREATE,
       UPDATE,
-      REMOVE
+      REMOVE,
+      ADD
     },
     constructEmitMessage,
     constructNotifyMessage

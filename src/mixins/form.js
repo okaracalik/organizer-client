@@ -122,6 +122,24 @@ export default {
         how: {},
         with: {}
       }
+    },
+    labelForm: {
+      data: {
+        when: { },
+        what: { },
+        where: {},
+        how: {},
+        with: {}
+      }
+    },
+    listForm: {
+      data: {
+        when: { },
+        what: { },
+        where: {},
+        how: {},
+        with: {}
+      }
     }
   }
 }
