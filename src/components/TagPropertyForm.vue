@@ -38,10 +38,15 @@
     </q-select>
     <tag-property-list
       class="q-my-md"
-      :tagIds="tags"
+      :tags="tags"
+      :new-tags="newTags"
       :editable="true"
       @remove-tag="(index) => $emit('remove-tag', index)"
+      @remove-new-tag="(index) => $emit('remove-new-tag', index)"
     />
+    <q-dialog v-model="isModalOpen" transition-show="slide-up" transition-hide="slide-down">
+      <tag-form :is-modal="true" :is-property="true" @add-tag="addTag" />
+    </q-dialog>
   </div>
 </template>
 
@@ -50,6 +55,7 @@ import _ from 'lodash'
 
 import Search from '../services/search'
 import TagPropertyList from './TagPropertyList'
+import TagForm from './../pages/TagForm'
 
 export default {
   name: 'TagPropertyForm',
@@ -57,10 +63,15 @@ export default {
     tags: {
       type: Array,
       default: () => []
+    },
+    newTags: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
-    TagPropertyList
+    TagPropertyList,
+    TagForm
   },
   data () {
     return {
@@ -90,12 +101,16 @@ export default {
           })
         })
       })
+    },
+    addTag (data) {
+      this.$emit('add-new-tag', data)
+      this.isModalOpen = false
     }
   },
   watch: {
     terms (newValue) {
       if (_.has(newValue, 'id')) {
-        this.$emit('add-tag', newValue.id)
+        this.$emit('add-tag', { id: newValue.id, data: newValue })
         this.terms = ''
       }
     }

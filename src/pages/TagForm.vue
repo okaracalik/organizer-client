@@ -1,29 +1,17 @@
 <template>
-  <q-page padding>
+  <component :is="componentId" :padding="componentId === 'q-page'" :class="componentClass">
     <!-- form -->
     <div class="q-mt-lg" v-if="tagForm.data">
       <div class="row justify-between">
         <!-- name -->
-        <q-input class="col-md-11" type="text" label="Name" v-model="tagForm.data.name">
+        <q-input class="col-md-6 col-xs-6" type="text" label="Name" v-model="tagForm.data.name">
           <template v-slot:before>
             <q-icon name="fas fa-font" />
-          </template>
-          <template v-slot:prepend>
-            <q-icon name="far fa-smile" class="cursor-pointer text-center">
-              <q-popup-proxy
-                class="text-center"
-                transition-show="scale"
-                transition-hide="scale"
-                style="width:350px"
-              >
-                <picker set="google" @select="addEmoji" />
-              </q-popup-proxy>
-            </q-icon>
           </template>
         </q-input>
         <!-- enabled -->
         <q-toggle
-          class="self-end"
+          class="self-end col-xs-12"
           v-model="tagForm.data.enabled"
           :label="tagForm.data.enabled ? 'Enabled' : 'Disabled'"
         />
@@ -33,7 +21,7 @@
         <q-input
           v-model="color"
           :rules="['anyColor']"
-          class="text-center col-md-6"
+          class="text-center col-md-6 col-xs-12"
           @keyup.enter="addColor"
         >
           <template v-slot:before>
@@ -62,7 +50,7 @@
           </template>
         </q-input>
         <!-- colors -->
-        <div class="q-mt-md q-pl-md col-md-6">
+        <div class="q-mt-md q-pl-md col-md-6 col-xs-12">
           <q-chip
             v-for="(color, index) in tagForm.data.colors"
             :key="color"
@@ -83,23 +71,24 @@
         @form-erase="erase"
       />
     </div>
-  </q-page>
+  </component>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { isUndefined, isNull } from 'lodash'
+import { isNull } from 'lodash'
 import form from '../mixins/form'
-import { Picker } from 'emoji-mart-vue-fast'
-import 'emoji-mart-vue-fast/css/emoji-mart.css'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
 
 export default {
   name: 'TagForm',
   mixins: [form],
-  components: {
-    Picker
+  props: {
+    isProperty: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
@@ -111,10 +100,7 @@ export default {
     ...mapState({
       tagItem: state => state.item,
       tagForm: state => state.form
-    }),
-    isProperty () {
-      return !isUndefined(this.$route.name) && !isUndefined(this.$route.color) && !isUndefined(this.$route.active)
-    }
+    })
   },
   methods: {
     ...mapActions({
@@ -144,18 +130,19 @@ export default {
           this.tagForm.data.colors.push(this.color)
         }
         if (this.isProperty) {
+          this.mode = this.$emitter.modes.ADD
           this.$emit(this.$emitter.constructEmitMessage(this.mode, 'tag'), this.tagForm.data)
           this.setTag(null)
           this.$v.tagForm.$reset()
         }
-        else if (this.isEdit) {
-          this.mode = this.$emitter.modes.UPDATE
-          this.updateTag({ id: this.id, data: this.tagForm.data })
-        }
-        else {
-          this.mode = this.$emitter.modes.CREATE
-          this.createTag(this.tagForm.data)
-        }
+        // else if (this.isEdit) {
+        //   this.mode = this.$emitter.modes.UPDATE
+        //   this.updateTag({ id: this.id, data: this.tagForm.data })
+        // }
+        // else {
+        //   this.mode = this.$emitter.modes.CREATE
+        //   this.createTag(this.tagForm.data)
+        // }
       }
     },
     erase () {
