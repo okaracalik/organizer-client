@@ -6,6 +6,9 @@ import tag from './tag'
 import occurrence from './occurrence'
 import task from './task'
 import log from './log'
+import list from './list'
+import item from './item'
+import listItem from './list-item'
 
 Vue.use(Vuex)
 
@@ -21,7 +24,10 @@ export default function (/* { ssrContext } */) {
       tag,
       occurrence,
       task,
-      log
+      log,
+      list,
+      item,
+      listItem
     }
   })
 
