@@ -140,6 +140,15 @@ export default {
         how: {},
         with: {}
       }
+    },
+    itemForm: {
+      data: {
+        when: { },
+        what: { },
+        where: {},
+        how: {},
+        with: {}
+      }
     }
   }
 }

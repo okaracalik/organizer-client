@@ -65,6 +65,14 @@
             <q-item-label>Lists</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable tag="a" to="/items">
+          <q-item-section avatar>
+            <q-icon name="mdi-arrow-right-drop-circle" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Items</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
