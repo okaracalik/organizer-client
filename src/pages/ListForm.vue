@@ -23,6 +23,8 @@
         :new-items="listForm.data.items"
         @add-item="({ id, data }) => {listForm.data.items = [...listForm.data.items, data]}"
         @remove-item="(index) => {listForm.data.items.splice(index, 1)}"
+        @move-item="moveItem"
+        @check-item="checkItem"
       />
       <!-- buttons -->
       <form-action-buttons
@@ -100,6 +102,33 @@ export default {
     erase () {
       this.mode = this.$emitter.modes.REMOVE
       this.removeList(this.id)
+    },
+    moveItem (data) {
+      console.log(data)
+      data.forEach(it => {
+        let i = _.findIndex(this.listForm.data.items, o => o.pk_items === it.pk_items)
+        this.listForm.data.items[i] = it
+      })
+      console.log(this.listForm.data.items.map(i => ({ d: i.description, i: i.list_items.order, l: i.list_items.checked })))
+    },
+    checkItem ({ data, mode, checked }) {
+      console.log(data)
+      let i = _.findIndex(this.listForm.data.items, o => o.pk_items === data.pk_items)
+      data.list_items.checked = checked
+      if (mode === 'Append') {
+        data.list_items.order = _.maxBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).list_items.order + 1
+      }
+      else {
+        data.list_items.order = _.minBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).list_items.order - 1
+      }
+      this.listForm.data.items[i] = data
+      const c = _.sortBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).map((item, index) => {
+        return { ...item, list_items: { ...item.list_items, order: index } }
+      })
+      const u = _.sortBy(this.listForm.data.items.filter(i => i.list_items.checked !== checked), o => o.list_items.order).map((item, index) => {
+        return { ...item, list_items: { ...item.list_items, order: index } }
+      })
+      this.listForm.data.items = [...u, ...c]
     }
   },
   watch: {

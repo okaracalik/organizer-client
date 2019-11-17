@@ -1,8 +1,13 @@
 <template>
-  <div class="row" v-if="items.length > 0">
-    <q-list class="col-md-6 col-xs-12" separator bordered>
-      <q-item-label header>Unchecked</q-item-label>
-      <q-item v-for="(item, index) in unchecked" :key="index">
+  <q-list class="col-md-6 col-xs-12" separator bordered>
+    <q-item-label header>{{ title }}</q-item-label>
+    <draggable
+      handle=".unchecked-handle"
+      @start="drag=true"
+      @end="log"
+      v-model="d"
+    >
+      <q-item v-for="(item, index) in d" :key="index">
         <q-item-section side>
           <q-item-label>
             <q-btn
@@ -11,17 +16,17 @@
               icon="fas fa-grip-vertical"
               :style="{ cursor: 'grab', width: '12px' }"
             />
-            <q-toggle
-              v-model="item.list_items.checked"
-              checked-icon="check"
-              color="green"
-              unchecked-icon="clear"
+            <q-btn
+              flat
+              :icon="item.list_items.checked ? 'fas fa-check-square' : 'far fa-square'"
+              @click="$emit('check-item', item)"
             />
           </q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
             {{ item.description }}
+            {{ item.list_items.order }}
             <tag-property-list :tags="item.tags" />
           </q-item-label>
         </q-item-section>
@@ -30,62 +35,48 @@
           <q-toggle v-model="item.enabled" />
         </q-item-section>
       </q-item>
-    </q-list>
-    <q-list class="col-md-6 col-xs-12" separator bordered>
-      <q-item-label header>Checked</q-item-label>
-      <q-item v-for="(item, index) in checked" :key="index">
-        <q-item-section side>
-          <q-item-label>
-            <q-btn
-              class="unchecked-handle"
-              flat
-              icon="fas fa-grip-vertical"
-              :style="{ cursor: 'grab', width: '12px' }"
-            />
-            <q-toggle
-              v-model="item.list_items.checked"
-              checked-icon="check"
-              color="green"
-              unchecked-icon="clear"
-            />
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>
-            {{ item.description }}
-            <tag-property-list :tags="item.tags" />
-          </q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <q-toggle v-model="item.enabled" />
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </div>
+    </draggable>
+  </q-list>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import TagPropertyList from './TagPropertyList'
 
-// TODO: dragging
+// TODO: enable/disable
 export default {
   name: 'ItemPropertyList',
   components: {
+    draggable,
     TagPropertyList
   },
   props: {
+    title: {
+      type: String,
+      required: true
+    },
     items: {
       type: Array,
       required: true
     }
   },
-  computed: {
-    unchecked () {
-      return this.items.filter(i => !i.list_items.checked)
-    },
-    checked () {
-      return this.items.filter(i => i.list_items.checked)
+  data () {
+    return {
+      d: this.items
+    }
+  },
+  methods: {
+    log (evt) {
+      console.log(this.d.map(i => ({ d: i.description, i: i.list_items.order, l: i.list_items.checked })))
+      this.$emit('move-item', this.d.map((item, index) => {
+        return { ...item, list_items: { ...item.list_items, order: index } }
+      }))
+      return true
+    }
+  },
+  watch: {
+    items (newValue) {
+      this.d = newValue
     }
   }
 }

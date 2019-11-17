@@ -36,13 +36,31 @@
         />
       </template>
     </q-select>
-    <item-property-list
-      class="q-my-md"
-      :items="items"
-      :new-items="newItems"
-      :editable="true"
-      @remove-item="(index) => $emit('remove-item', index)"
-    />
+    <div class="row reverse">
+      <q-toggle
+        :label="mode"
+        color="deep-purple"
+        false-value="Prepend"
+        true-value="Append"
+        unchecked-icon="fas fa-reply"
+        checked-icon="fas fa-share"
+        v-model="mode"
+      />
+    </div>
+    <div class="row" v-if="items.length > 0">
+      <item-property-list
+        title="Unchecked"
+        :items="unchecked"
+        @move-item="(data) => $emit('move-item', data)"
+        @check-item="(data) => $emit('check-item', { data, mode, checked: true })"
+      />
+      <item-property-list
+        title="Checked"
+        :items="checked"
+        @move-item="(data) => $emit('move-item', data)"
+        @check-item="(data) => $emit('check-item', { data, mode, checked: false })"
+      />
+    </div>
   </div>
 </template>
 
@@ -52,6 +70,7 @@ import _ from 'lodash'
 import Search from '../services/search'
 import ItemPropertyList from './ItemPropertyList'
 
+// TODO: fix search/add
 export default {
   name: 'ItemPropertyForm',
   props: {
@@ -72,7 +91,16 @@ export default {
       terms: null,
       options: [],
       isListEmpty: false,
-      isModalOpen: false
+      isModalOpen: false,
+      mode: 'Append'
+    }
+  },
+  computed: {
+    unchecked () {
+      return _.sortBy(this.items.filter(i => !i.list_items.checked), o => o.list_items.order)
+    },
+    checked () {
+      return _.sortBy(this.items.filter(i => i.list_items.checked), o => o.list_items.order)
     }
   },
   methods: {
@@ -84,7 +112,7 @@ export default {
       update(() => {
         Search.apply('items', terms).then((res) => {
           this.isListEmpty = _.isEqual(res.data.total, 0)
-          this.options = Search.prepareSearchResult(res, ['pk_items', 'tags'])
+          this.options = Search.prepareSearchResult(res, ['pk_items', 's'])
         }).catch((err) => {
           this.$q.notify({
             message: `${err}.`,
@@ -95,12 +123,24 @@ export default {
           })
         })
       })
+    },
+    log (evt) {
+      this.$emit('move-item', evt.relatedContext.list.map((item, index) => {
+        return { ...item, list_items: { ...item.list_items, order: index } }
+      }))
+      return true
     }
   },
   watch: {
     terms (newValue) {
       if (_.has(newValue, 'pk_items')) {
-        this.$emit('add-item', { id: newValue.id, data: newValue })
+        /* eslint-disable camelcase */
+        const list_items = {
+          path: null,
+          checked: false,
+          order: 0
+        }
+        this.$emit('add-item', { id: newValue.id, data: { ...newValue, list_items } })
         this.terms = ''
       }
     }
