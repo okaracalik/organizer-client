@@ -51,23 +51,6 @@
         <template v-slot:before>
           <q-icon name="mdi-walk" />
         </template>
-        <template v-slot:prepend>
-          <q-icon name="far fa-smile" class="cursor-pointer text-center">
-            <q-popup-proxy
-              class="text-center"
-              transition-show="scale"
-              transition-hide="scale"
-              style="width:350px"
-            >
-              <picker
-                set="google"
-                :auto-focus="true"
-                :showPreview="false"
-                @select="(emoji) => logForm.data.action += `${emoji.native} `"
-              />
-            </q-popup-proxy>
-          </q-icon>
-        </template>
         <template v-slot:append>
           <q-icon
             v-if="logForm.data.action !== null"
@@ -85,22 +68,6 @@
       >
         <template v-slot:before>
           <q-icon name="mdi-circle" />
-        </template>
-        <template v-slot:prepend>
-          <q-icon name="far fa-smile" class="cursor-pointer text-center">
-            <q-popup-proxy
-              class="text-center"
-              transition-show="scale"
-              transition-hide="scale"
-              style="width:350px"
-            >
-              <picker
-                set="google"
-                :auto-focus="true"
-                @select="(emoji) => logForm.data.what += `${emoji.native} `"
-              />
-            </q-popup-proxy>
-          </q-icon>
         </template>
         <template v-slot:append>
           <q-icon
@@ -126,22 +93,6 @@
         <template v-slot:before>
           <q-icon name="mdi-help" />
         </template>
-        <template v-slot:prepend>
-          <q-icon name="far fa-smile" class="cursor-pointer text-center">
-            <q-popup-proxy
-              class="text-center"
-              transition-show="scale"
-              transition-hide="scale"
-              style="width:350px"
-            >
-              <picker
-                set="google"
-                :auto-focus="true"
-                @select="(emoji) => logForm.data.how += `${emoji.native} `"
-              />
-            </q-popup-proxy>
-          </q-icon>
-        </template>
         <template v-slot:append>
           <q-icon
             v-if="logForm.data.how !== null"
@@ -164,23 +115,6 @@
       >
         <template v-slot:before>
           <q-icon name="mdi-hand" />
-        </template>
-        <template v-slot:prepend>
-          <q-icon name="far fa-smile" class="cursor-pointer text-center">
-            <q-popup-proxy
-              class="text-center"
-              transition-show="scale"
-              transition-hide="scale"
-              style="width:350px"
-            >
-              <picker
-                set="google"
-                :auto-focus="true"
-                :showPreview="false"
-                @select="(emoji) => logForm.data.with += `${emoji.native} `"
-              />
-            </q-popup-proxy>
-          </q-icon>
         </template>
         <template v-slot:append>
           <q-icon
@@ -213,8 +147,6 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import { Picker } from 'emoji-mart-vue-fast'
-import 'emoji-mart-vue-fast/css/emoji-mart.css'
 
 import form from '../mixins/form'
 import Search from '../services/search'
@@ -226,8 +158,7 @@ export default {
   name: 'LogForm',
   mixins: [form],
   components: {
-    TagPropertyForm,
-    Picker
+    TagPropertyForm
   },
   data () {
     return {

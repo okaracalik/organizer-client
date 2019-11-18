@@ -135,14 +135,14 @@ export default {
           this.setTag(null)
           this.$v.tagForm.$reset()
         }
-        // else if (this.isEdit) {
-        //   this.mode = this.$emitter.modes.UPDATE
-        //   this.updateTag({ id: this.id, data: this.tagForm.data })
-        // }
-        // else {
-        //   this.mode = this.$emitter.modes.CREATE
-        //   this.createTag(this.tagForm.data)
-        // }
+        else if (this.isEdit) {
+          this.mode = this.$emitter.modes.UPDATE
+          this.updateTag({ id: this.id, data: this.tagForm.data })
+        }
+        else {
+          this.mode = this.$emitter.modes.CREATE
+          this.createTag(this.tagForm.data)
+        }
       }
     },
     erase () {
@@ -155,9 +155,6 @@ export default {
     },
     removeColor (index) {
       this.tagForm.data.colors.splice(index, 1)
-    },
-    addEmoji (emoji) {
-      this.tagForm.data.name += emoji.native
     },
     addColor () {
       this.tagForm.data.colors.push(this.color)

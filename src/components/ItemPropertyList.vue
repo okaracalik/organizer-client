@@ -31,9 +31,6 @@
           </q-item-label>
         </q-item-section>
         <q-item-section></q-item-section>
-        <q-item-section side>
-          <q-toggle v-model="item.enabled" />
-        </q-item-section>
       </q-item>
     </draggable>
   </q-list>
