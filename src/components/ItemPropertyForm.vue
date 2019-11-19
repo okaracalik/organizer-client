@@ -36,31 +36,25 @@
         />
       </template>
     </q-select>
-    <div class="row reverse">
-      <q-toggle
-        :label="mode"
-        color="deep-purple"
-        false-value="Prepend"
-        true-value="Append"
-        unchecked-icon="fas fa-reply"
-        checked-icon="fas fa-share"
-        v-model="mode"
-      />
-    </div>
     <div class="row" v-if="items.length > 0">
       <item-property-list
         title="Unchecked"
-        :items="unchecked"
+        :items="us"
         @move-item="(data) => $emit('move-item', data)"
-        @check-item="(data) => $emit('check-item', { data, mode, checked: true })"
+        @check-item="(data) => $emit('check-item', { data, checked: true })"
+        @enable-item="(data) => $emit('enable-item', data)"
       />
       <item-property-list
         title="Checked"
-        :items="checked"
+        :items="cs"
         @move-item="(data) => $emit('move-item', data)"
-        @check-item="(data) => $emit('check-item', { data, mode, checked: false })"
+        @check-item="(data) => $emit('check-item', { data, checked: false })"
+        @enable-item="(data) => $emit('enable-item', data)"
       />
     </div>
+    <q-dialog v-model="isModalOpen" transition-show="slide-up" transition-hide="slide-down">
+      <item-form :is-modal="true" :is-property="true" @add-item="addItem" />
+    </q-dialog>
   </div>
 </template>
 
@@ -69,8 +63,8 @@ import _ from 'lodash'
 
 import Search from '../services/search'
 import ItemPropertyList from './ItemPropertyList'
+import ItemForm from './../pages/ItemForm'
 
-// TODO: fix search/add
 export default {
   name: 'ItemPropertyForm',
   props: {
@@ -81,18 +75,26 @@ export default {
     newItems: {
       type: Array,
       default: () => []
+    },
+    us: {
+      type: Array,
+      default: () => []
+    },
+    cs: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
-    ItemPropertyList
+    ItemPropertyList,
+    ItemForm
   },
   data () {
     return {
       terms: null,
       options: [],
       isListEmpty: false,
-      isModalOpen: false,
-      mode: 'Append'
+      isModalOpen: false
     }
   },
   computed: {
@@ -112,7 +114,7 @@ export default {
       update(() => {
         Search.apply('items', terms).then((res) => {
           this.isListEmpty = _.isEqual(res.data.total, 0)
-          this.options = Search.prepareSearchResult(res, ['pk_items', 's'])
+          this.options = Search.prepareSearchResult(res, ['pk_items', 'tags'])
         }).catch((err) => {
           this.$q.notify({
             message: `${err}.`,
@@ -124,23 +126,23 @@ export default {
         })
       })
     },
-    log (evt) {
-      this.$emit('move-item', evt.relatedContext.list.map((item, index) => {
-        return { ...item, list_items: { ...item.list_items, order: index } }
-      }))
-      return true
+    getNewListItem () {
+      return {
+        path: null,
+        checked: false,
+        order: null,
+        enabled: true
+      }
+    },
+    addItem (data) {
+      this.$emit('add-new-item', { data: { ...data, list_items: this.getNewListItem() } })
+      this.isModalOpen = false
     }
   },
   watch: {
     terms (newValue) {
       if (_.has(newValue, 'pk_items')) {
-        /* eslint-disable camelcase */
-        const list_items = {
-          path: null,
-          checked: false,
-          order: 0
-        }
-        this.$emit('add-item', { id: newValue.id, data: { ...newValue, list_items } })
+        this.$emit('add-item', { data: { ...newValue, list_items: this.getNewListItem() } })
         this.terms = ''
       }
     }

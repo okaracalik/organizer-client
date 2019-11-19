@@ -30,7 +30,13 @@
             <tag-property-list :tags="item.tags" />
           </q-item-label>
         </q-item-section>
-        <q-item-section></q-item-section>
+        <q-item-section side>
+          <q-btn
+            flat
+            :icon="item.list_items.enabled ? 'fas fa-eye' : 'far fa-eye-slash'"
+            @click="$emit('enable-item', item)"
+          />
+        </q-item-section>
       </q-item>
     </draggable>
   </q-list>

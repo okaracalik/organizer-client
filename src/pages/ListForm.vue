@@ -17,14 +17,28 @@
         @add-new-tag="(data) => {listForm.data.new_tags = [...listForm.data.new_tags, data]}"
         @remove-new-tag="(index) => {listForm.data.new_tags.splice(index, 1)}"
       />
-      <!-- tags -->
+      <div class="row reverse">
+        <q-toggle
+          color="deep-purple"
+          false-value="PREPEND"
+          true-value="APPEND"
+          unchecked-icon="fas fa-reply"
+          checked-icon="fas fa-share"
+          v-model="listForm.data.mode"
+        />
+      </div>
+      <!-- items -->
       <item-property-form
         :items="listForm.data.items"
         :new-items="listForm.data.items"
-        @add-item="({ id, data }) => {listForm.data.items = [...listForm.data.items, data]}"
+        :us="unchecked"
+        :cs="checked"
+        @add-item="addItem"
+        @add-new-item="addNewItem"
         @remove-item="(index) => {listForm.data.items.splice(index, 1)}"
         @move-item="moveItem"
         @check-item="checkItem"
+        @enable-item="enableItem"
       />
       <!-- buttons -->
       <form-action-buttons
@@ -47,6 +61,8 @@ import ItemPropertyForm from '../components/ItemPropertyForm'
 
 const { mapState, mapActions } = createNamespacedHelpers('list')
 
+// TODO: remove item
+// TODO: enable item
 export default {
   name: 'ListForm',
   mixins: [form],
@@ -63,7 +79,15 @@ export default {
     ...mapState({
       listItem: state => state.item,
       listForm: state => state.form
-    })
+    }),
+    unchecked () {
+      const temp = [...this.listForm.data.items, ...this.listForm.data.new_items]
+      return _.sortBy(temp.filter(i => !i.list_items.checked), o => o.list_items.order)
+    },
+    checked () {
+      const temp = [...this.listForm.data.items, ...this.listForm.data.new_items]
+      return _.sortBy(temp.filter(i => i.list_items.checked), o => o.list_items.order)
+    }
   },
   methods: {
     ...mapActions({
@@ -103,32 +127,96 @@ export default {
       this.mode = this.$emitter.modes.REMOVE
       this.removeList(this.id)
     },
-    moveItem (data) {
-      console.log(data)
-      data.forEach(it => {
-        let i = _.findIndex(this.listForm.data.items, o => o.pk_items === it.pk_items)
-        this.listForm.data.items[i] = it
-      })
-      console.log(this.listForm.data.items.map(i => ({ d: i.description, i: i.list_items.order, l: i.list_items.checked })))
-    },
-    checkItem ({ data, mode, checked }) {
-      console.log(data)
-      let i = _.findIndex(this.listForm.data.items, o => o.pk_items === data.pk_items)
-      data.list_items.checked = checked
-      if (mode === 'Append') {
-        data.list_items.order = _.maxBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).list_items.order + 1
+    addItem ({ data }) {
+      if (this.listForm.data.mode === 'APPEND') {
+        const order = this.unchecked.length > 0 ? this.unchecked[this.unchecked.length - 1].order + 1 : 1
+        data.list_items = { ...data.list_items, order }
       }
       else {
-        data.list_items.order = _.minBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).list_items.order - 1
+        data.list_items = { ...data.list_items, order: -1 }
       }
-      this.listForm.data.items[i] = data
-      const c = _.sortBy(this.listForm.data.items.filter(i => i.list_items.checked === checked), o => o.list_items.order).map((item, index) => {
-        return { ...item, list_items: { ...item.list_items, order: index } }
+      this.listForm.data.items.push(data)
+      this.sortItems()
+    },
+    addNewItem ({ data }) {
+      if (this.listForm.data.mode === 'APPEND') {
+        const order = this.unchecked.length > 0 ? this.unchecked[this.unchecked.length - 1].order + 1 : 1
+        data.list_items = { ...data.list_items, order }
+      }
+      else {
+        data.list_items = { ...data.list_items, order: -1 }
+      }
+      this.listForm.data.new_items.push(data)
+      this.sortItems()
+    },
+    moveItem (items) {
+      let i, itemType
+      items.forEach(it => {
+        if (it.pk_items) {
+          itemType = 'items'
+          i = _.findIndex(this.listForm.data[itemType], o => o.pk_items === it.pk_items)
+        }
+        else {
+          itemType = 'new_items'
+          i = _.findIndex(this.listForm.data[itemType], o => o.description === it.description)
+        }
+        this.listForm.data[itemType][i] = it
       })
-      const u = _.sortBy(this.listForm.data.items.filter(i => i.list_items.checked !== checked), o => o.list_items.order).map((item, index) => {
-        return { ...item, list_items: { ...item.list_items, order: index } }
-      })
-      this.listForm.data.items = [...u, ...c]
+      this.sortItems()
+    },
+    checkItem ({ data, checked }) {
+      let i, itemType, order
+      // find item
+      if (data.pk_items) {
+        itemType = 'items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.pk_items === data.pk_items)
+      }
+      else {
+        itemType = 'new_items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.description === data.description)
+      }
+      // adding logic
+      if (this.listForm.data.mode === 'APPEND') {
+        const group = (checked ? this.checked : this.unchecked)
+        order = group.length > 0 ? group[group.length - 1].order + 1 : 1
+      }
+      else {
+        order = -1
+      }
+      data.list_items = { ...data.list_items, order, checked }
+      this.listForm.data[itemType][i] = data
+      this.sortItems()
+    },
+    enableItem (data) {
+      let i, itemType
+      // find item
+      if (data.pk_items) {
+        itemType = 'items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.pk_items === data.pk_items)
+      }
+      else {
+        itemType = 'new_items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.description === data.description)
+      }
+      data.list_items = { ...data.list_items, enabled: true }
+      console.log(data.list_items)
+      this.listForm.data[itemType][i] = data
+    },
+    sortItems () {
+      let us = [...this.listForm.data.items.filter(i => !i.list_items.checked), ...this.listForm.data.new_items.filter(i => !i.list_items.checked)]
+      let cs = [...this.listForm.data.items.filter(i => i.list_items.checked), ...this.listForm.data.new_items.filter(i => i.list_items.checked)]
+      us = _
+        .sortBy(us, o => o.list_items.order)
+        .map((item, index) => {
+          return { ...item, list_items: { ...item.list_items, order: index } }
+        })
+      cs = _
+        .sortBy(cs, o => o.list_items.order)
+        .map((item, index) => {
+          return { ...item, list_items: { ...item.list_items, order: index } }
+        })
+      this.listForm.data.items = [...us.filter(i => i.pk_items), ...cs.filter(i => i.pk_items)]
+      this.listForm.data.new_items = [...us.filter(i => !i.pk_items), ...cs.filter(i => !i.pk_items)]
     }
   },
   watch: {

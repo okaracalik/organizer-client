@@ -14,9 +14,6 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <pre>
-      {{listList.success}}
-    </pre>
     <!-- fab -->
     <floating-action-button next="/lists/new" />
   </q-page>
