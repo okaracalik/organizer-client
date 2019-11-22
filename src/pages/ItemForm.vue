@@ -43,12 +43,6 @@ export default {
   components: {
     TagPropertyForm
   },
-  props: {
-    isProperty: {
-      type: Boolean,
-      default: false
-    }
-  },
   data () {
     return {
       formName: 'itemForm'
@@ -84,13 +78,7 @@ export default {
         })
       }
       else {
-        if (this.isProperty) {
-          this.mode = this.$emitter.modes.ADD
-          this.$emit(this.$emitter.constructEmitMessage(this.mode, 'item'), this.itemForm.data)
-          this.setItem(null)
-          this.$v.itemForm.$reset()
-        }
-        else if (this.isEdit) {
+        if (this.isEdit) {
           this.mode = this.$emitter.modes.UPDATE
           this.updateItem({ id: this.id, data: this.itemForm.data })
         }
@@ -125,11 +113,6 @@ export default {
           message: this.$emitter.constructNotifyMessage(this.mode, 'Item'),
           color: 'positive'
         })
-      }
-    },
-    isProperty (newValue) {
-      if (newValue) {
-        // this.setItem({ name: newValue.name, color: newValue.color, active: newValue.color })
       }
     }
   }

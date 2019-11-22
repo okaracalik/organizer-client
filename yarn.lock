@@ -1025,19 +1025,19 @@
   resolved "https://registry.yarnpkg.com/@quasar/fastclick/-/fastclick-1.1.4.tgz#21ed3e9a4387dcb43022a08af4ef08a5f1abf159"
   integrity sha512-i9wbyV4iT+v4KhtHJynUFhH5LiEPvAEgSnwMqPN4hf/8uRe82nDl5qP5agrp2el1h0HzyBpbvHaW7NB0BPrtvA==
 
-"@quasar/quasar-app-extension-qiconpicker@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@quasar/quasar-app-extension-qiconpicker/-/quasar-app-extension-qiconpicker-1.0.11.tgz#85af9e7753d053363e7cc3f2a78498ea9cd4bbd0"
-  integrity sha512-UkMrKewB+7PHgm8DBrspFBOyAbtE5/S1G4+96MXxrDlfH1nC0CI4RvgUfaquN5YaJOty/46lPbkl4cb09DZM+w==
+"@quasar/quasar-app-extension-qiconpicker@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-app-extension-qiconpicker/-/quasar-app-extension-qiconpicker-1.0.12.tgz#795acb94603998bce5d0051308ee0d39ef599fca"
+  integrity sha512-4O/9tBftNAG3sGXl8adizIilhUUnsHYLiezycIGWrqRzOyjbkvagZhwI6X+1vIAAb/hSLzbpTd6pCFN2jGZ8Eg==
   dependencies:
-    "@quasar/quasar-ui-qiconpicker" "^1.0.6"
+    "@quasar/quasar-ui-qiconpicker" "^1.0.7"
 
-"@quasar/quasar-ui-qiconpicker@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qiconpicker/-/quasar-ui-qiconpicker-1.0.6.tgz#97ba3d772e27c1d24942c961399ccf32eedd012e"
-  integrity sha512-363VvwSphzLq/ho3Ug9XKHKFmXBNa9BtoVv/F8ZuOzxPZJ589zpE/l483qDhUTUT00KV7LdrEYyNarym15NeEA==
+"@quasar/quasar-ui-qiconpicker@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qiconpicker/-/quasar-ui-qiconpicker-1.0.7.tgz#1d7d8a74106db4462ef89057f573361e6442ccc1"
+  integrity sha512-/4KFW3RvGfy6qvBrao00XpRtpNb1Yj9zB40WIVLEEotWW1qxGTMzKhYHoOlEMHQkxy0j2H7YxtylViBYgIaHeg==
   dependencies:
-    q-colorize-mixin "^1.0.0"
+    q-colorize-mixin "^1.0.3"
 
 "@types/events@*":
   version "3.0.0"
@@ -7075,10 +7075,10 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-q-colorize-mixin@^1.0.0:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/q-colorize-mixin/-/q-colorize-mixin-1.0.3.tgz#08690707faf4beb4ae3085504d4b5a5f213fa259"
-  integrity sha512-rux6iG9HFMV8EaNPL/SXZ70toJvic6EHHsTtyVZk3F4DCyWnDBshtYpJ03JAKr+kIToLl0aFV8ihD1E114xHdA==
+q-colorize-mixin@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/q-colorize-mixin/-/q-colorize-mixin-1.0.4.tgz#8a6f36d75ab740e94d56cb089c30b499d0a81423"
+  integrity sha512-ZaYVt5QcPMvuJawaBFcBKFG61MXBHUou5MvsR9J2yjBkTXb0UoqzNwUUchyRFDAOWFpeKhrRczF5nQftfjNVLA==
 
 q@^1.1.2:
   version "1.5.1"
@@ -7095,10 +7095,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quasar@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.4.4.tgz#6e290c5fecdf64e63bfaf4150ff755955427ef1f"
-  integrity sha512-3sdNDPrkLX0LGoTEqA3nimvl0Qj6KnTq9uvpbs8UrPLRdBhlHvE/LRYb33jcy4uNNbMTkat0VCPyHKOaf7CUHw==
+quasar@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/quasar/-/quasar-1.4.5.tgz#abdefe4628fd7f51f2b53c02e702ebe6b4d89807"
+  integrity sha512-LzLQ0kb8L9m4yFffPRh9Wmf/lewDXeED27XIO+WgQUzB4f+SVxnaAr64WL/Cj4m8Xd44VteXRzNq1vc/bk4Eiw==
 
 query-string@^4.1.0:
   version "4.3.4"

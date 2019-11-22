@@ -26,7 +26,7 @@
           v-if="isListEmpty"
           class="cursor-pointer"
           name="add"
-          @click.stop="isModalOpen = true"
+          @click.stop="modal = { isOpen: true, selectedItem: getNewItem(), isEdit: false }"
         />
         <q-icon
           v-if="terms !== null"
@@ -36,24 +36,26 @@
         />
       </template>
     </q-select>
-    <div class="row" v-if="items.length > 0">
+    <div class="row">
       <item-property-list
         title="Unchecked"
-        :items="us"
+        :items="unchecked"
         @move-item="(data) => $emit('move-item', data)"
         @check-item="(data) => $emit('check-item', { data, checked: true })"
         @enable-item="(data) => $emit('enable-item', data)"
+        @pick-item="(data) => { modal = { isOpen: true, selectedItem: { ...getNewItem(), ...data }, isEdit: true } }"
       />
       <item-property-list
         title="Checked"
-        :items="cs"
+        :items="checked"
         @move-item="(data) => $emit('move-item', data)"
         @check-item="(data) => $emit('check-item', { data, checked: false })"
         @enable-item="(data) => $emit('enable-item', data)"
+        @pick-item="(data) => { modal = { isOpen: true, selectedItem: { ...getNewItem(), ...data }, isEdit: true} }"
       />
     </div>
-    <q-dialog v-model="isModalOpen" transition-show="slide-up" transition-hide="slide-down">
-      <item-form :is-modal="true" :is-property="true" @add-item="addItem" />
+    <q-dialog v-model="modal.isOpen" transition-show="slide-up" transition-hide="slide-down">
+      <list-item-form :item="modal.selectedItem" :is-edit="modal.isEdit" @add-new-item="addNewItem" @close-item="closeItem" @remove-item="removeItem" />
     </q-dialog>
   </div>
 </template>
@@ -63,46 +65,35 @@ import _ from 'lodash'
 
 import Search from '../services/search'
 import ItemPropertyList from './ItemPropertyList'
-import ItemForm from './../pages/ItemForm'
+import ListItemForm from './ListItemForm'
 
+// TODO: edit item
 export default {
   name: 'ItemPropertyForm',
   props: {
-    items: {
+    unchecked: {
       type: Array,
       default: () => []
     },
-    newItems: {
-      type: Array,
-      default: () => []
-    },
-    us: {
-      type: Array,
-      default: () => []
-    },
-    cs: {
+    checked: {
       type: Array,
       default: () => []
     }
   },
   components: {
     ItemPropertyList,
-    ItemForm
+    ListItemForm
   },
   data () {
     return {
       terms: null,
       options: [],
       isListEmpty: false,
-      isModalOpen: false
-    }
-  },
-  computed: {
-    unchecked () {
-      return _.sortBy(this.items.filter(i => !i.list_items.checked), o => o.list_items.order)
-    },
-    checked () {
-      return _.sortBy(this.items.filter(i => i.list_items.checked), o => o.list_items.order)
+      modal: {
+        isOpen: false,
+        isEdit: false,
+        selectedItem: null
+      }
     }
   },
   methods: {
@@ -126,6 +117,13 @@ export default {
         })
       })
     },
+    getNewItem () {
+      return {
+        description: '',
+        tags: [],
+        new_tags: []
+      }
+    },
     getNewListItem () {
       return {
         path: null,
@@ -134,9 +132,30 @@ export default {
         enabled: true
       }
     },
-    addItem (data) {
-      this.$emit('add-new-item', { data: { ...data, list_items: this.getNewListItem() } })
-      this.isModalOpen = false
+    addNewItem (item) {
+      this.$emit('add-new-item', { data: { ...item, list_items: this.getNewListItem() } })
+      this.modal = {
+        isOpen: false,
+        isEdit: false,
+        selectedItem: null
+      }
+    },
+    closeItem (item) {
+      console.log('CloseItem')
+      this.$emit('edit-item', { data: item })
+      this.modal = {
+        isOpen: false,
+        isEdit: false,
+        selectedItem: null
+      }
+    },
+    removeItem (item) {
+      this.$emit('remove-item', { data: item })
+      this.modal = {
+        isOpen: false,
+        isEdit: false,
+        selectedItem: null
+      }
     }
   },
   watch: {

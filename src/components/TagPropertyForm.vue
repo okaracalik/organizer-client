@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-select
-      class="q-mb-xs"
+      class="q-mb-md"
       label="Tag"
       v-model="terms"
       use-input
@@ -37,7 +37,7 @@
       </template>
     </q-select>
     <tag-property-list
-      class="q-my-md"
+      class="q-mt-md"
       :tags="tags"
       :new-tags="newTags"
       :editable="true"

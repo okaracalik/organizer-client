@@ -29,13 +29,12 @@
       </div>
       <!-- items -->
       <item-property-form
-        :items="listForm.data.items"
-        :new-items="listForm.data.items"
-        :us="unchecked"
-        :cs="checked"
+        :unchecked="unchecked"
+        :checked="checked"
         @add-item="addItem"
         @add-new-item="addNewItem"
-        @remove-item="(index) => {listForm.data.items.splice(index, 1)}"
+        @edit-item="editItem"
+        @remove-item="removeItem"
         @move-item="moveItem"
         @check-item="checkItem"
         @enable-item="enableItem"
@@ -62,7 +61,6 @@ import ItemPropertyForm from '../components/ItemPropertyForm'
 const { mapState, mapActions } = createNamespacedHelpers('list')
 
 // TODO: remove item
-// TODO: enable item
 export default {
   name: 'ListForm',
   mixins: [form],
@@ -149,6 +147,32 @@ export default {
       this.listForm.data.new_items.push(data)
       this.sortItems()
     },
+    editItem ({ data }) {
+      let i, itemType
+      if (data.pk_items) {
+        itemType = 'items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.pk_items === data.pk_items)
+      }
+      else {
+        itemType = 'new_items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.description === data.description)
+      }
+      this.listForm.data[itemType].splice(i, 1, data)
+      this.sortItems()
+    },
+    removeItem ({ data }) {
+      let i, itemType
+      if (data.pk_items) {
+        itemType = 'items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.pk_items === data.pk_items)
+      }
+      else {
+        itemType = 'new_items'
+        i = _.findIndex(this.listForm.data[itemType], o => o.description === data.description)
+      }
+      this.listForm.data[itemType].splice(i, 1)
+      this.sortItems()
+    },
     moveItem (items) {
       let i, itemType
       items.forEach(it => {
@@ -198,8 +222,7 @@ export default {
         itemType = 'new_items'
         i = _.findIndex(this.listForm.data[itemType], o => o.description === data.description)
       }
-      data.list_items = { ...data.list_items, enabled: true }
-      console.log(data.list_items)
+      data.list_items = { ...data.list_items, enabled: !data.list_items.enabled }
       this.listForm.data[itemType][i] = data
     },
     sortItems () {
