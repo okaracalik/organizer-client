@@ -10,7 +10,24 @@
         clickable
       >
         <q-item-section>
-          <q-item-label>{{ item.pk_lists }} | {{ item.title }} <tag-property-list :tags="item.tags" /></q-item-label>
+          <q-item-label>
+            {{ item.title }}
+            <tag-property-list :tags="sortBy(item.tags, t => t.name)" />
+          </q-item-label>
+        </q-item-section>
+        <q-item-section side>
+          <q-item-label>
+            <q-chip
+              icon="fa fa-times"
+              color="red"
+              text-color="white"
+            >{{ item.items.filter(i => !i.list_items.checked && i.list_items.enabled).length }}</q-chip>
+            <q-chip
+              icon="fa fa-check"
+              color="green"
+              text-color="white"
+            >{{ item.items.filter(i => i.list_items.checked && i.list_items.enabled).length }}</q-chip>
+          </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -21,7 +38,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-
+import { sortBy } from 'lodash'
 const { mapState, mapActions } = createNamespacedHelpers('list')
 
 import FloatingActionButton from '../components/FloatingActionButton'
@@ -41,10 +58,11 @@ export default {
   methods: {
     ...mapActions({
       findLists: 'find'
-    })
+    }),
+    sortBy
   },
   created () {
-    this.findLists({ params: { '$sort[pk_lists]': -1 } })
+    this.findLists({ params: { '$sort[pk_lists]': 1 } })
   }
 }
 </script>

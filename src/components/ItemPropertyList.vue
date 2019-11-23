@@ -18,10 +18,9 @@
             />
           </q-item-label>
         </q-item-section>
-        <q-item-section @click="$emit('pick-item', item)">
+        <q-item-section @click="$emit('pick-item', item)" class="cursor-pointer">
           <q-item-label>
             {{ item.description }}
-            {{ item.list_items.order }}
             <tag-property-list :tags="item.tags" />
           </q-item-label>
         </q-item-section>
@@ -42,7 +41,6 @@
 import draggable from 'vuedraggable'
 import TagPropertyList from './TagPropertyList'
 
-// TODO: enable/disable
 export default {
   name: 'ItemPropertyList',
   components: {

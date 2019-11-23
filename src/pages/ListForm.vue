@@ -3,11 +3,22 @@
     <!-- content -->
     <div class="q-mt-lg" v-if="listForm.data">
       <!-- title -->
-      <q-input class="col-md-10" type="text" label="Title" v-model.trim="listForm.data.title">
-        <template v-slot:before>
-          <q-icon name="fas fa-font" />
-        </template>
-      </q-input>
+      <div class="row justify-between">
+        <q-input class="col-md-11" type="text" label="Title" v-model.trim="listForm.data.title">
+          <template v-slot:before>
+            <q-icon name="fas fa-font" />
+          </template>
+        </q-input>
+        <q-toggle
+          class="self-end"
+          color="deep-purple"
+          false-value="PREPEND"
+          true-value="APPEND"
+          unchecked-icon="fas fa-reply"
+          checked-icon="fas fa-share"
+          v-model="listForm.data.mode"
+        />
+      </div>
       <!-- tags -->
       <tag-property-form
         :tags="listForm.data.tags"
@@ -17,16 +28,6 @@
         @add-new-tag="(data) => {listForm.data.new_tags = [...listForm.data.new_tags, data]}"
         @remove-new-tag="(index) => {listForm.data.new_tags.splice(index, 1)}"
       />
-      <div class="row reverse">
-        <q-toggle
-          color="deep-purple"
-          false-value="PREPEND"
-          true-value="APPEND"
-          unchecked-icon="fas fa-reply"
-          checked-icon="fas fa-share"
-          v-model="listForm.data.mode"
-        />
-      </div>
       <!-- items -->
       <item-property-form
         :unchecked="unchecked"
@@ -60,7 +61,6 @@ import ItemPropertyForm from '../components/ItemPropertyForm'
 
 const { mapState, mapActions } = createNamespacedHelpers('list')
 
-// TODO: remove item
 export default {
   name: 'ListForm',
   mixins: [form],

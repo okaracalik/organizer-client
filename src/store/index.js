@@ -5,7 +5,6 @@ import app from './app'
 import tag from './tag'
 import occurrence from './occurrence'
 import task from './task'
-import log from './log'
 import list from './list'
 import item from './item'
 import listItem from './list-item'
@@ -24,7 +23,6 @@ export default function (/* { ssrContext } */) {
       tag,
       occurrence,
       task,
-      log,
       list,
       item,
       listItem

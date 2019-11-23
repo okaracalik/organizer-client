@@ -12,7 +12,12 @@
     <q-drawer v-model="leftDrawerOpen" bordered content-class="bg-grey-2">
       <q-list>
         <q-item-label header>Menu</q-item-label>
-        <q-expansion-item icon="fas fa-tasks" label="Tasks" default-opened :content-inset-level="1">
+        <q-expansion-item
+          icon="fas fa-tasks"
+          label="Tasks"
+          default-opened
+          :content-inset-level="0.3"
+        >
           <q-item clickable tag="a" to="/calendar">
             <q-item-section avatar>
               <q-icon name="mdi-calendar-month" />
@@ -29,48 +34,44 @@
               <q-item-label>List</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item clickable tag="a" to="/occurrences">
+            <q-item-section avatar>
+              <q-icon name="update" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Occurrences</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-expansion-item>
-        <q-item clickable tag="a" to="/logs">
-          <q-item-section avatar>
-            <q-icon name="far fa-list-alt" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Logs</q-item-label>
-            <q-item-label caption>Log List</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" to="/occurrences">
-          <q-item-section avatar>
-            <q-icon name="update" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Occurrences</q-item-label>
-            <q-item-label caption>Occurrence List</q-item-label>
-          </q-item-section>
-        </q-item>
+        <q-expansion-item
+          icon="mdi-format-list-checkbox"
+          label="Lists"
+          default-opened
+          :content-inset-level="0.3"
+        >
+          <q-item clickable tag="a" to="/lists">
+            <q-item-section avatar>
+              <q-icon name="mdi-format-list-bulleted-square" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Overview</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable tag="a" to="/items">
+            <q-item-section avatar>
+              <q-icon name="mdi-square-inc" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Items</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
         <q-item clickable tag="a" to="/tags">
           <q-item-section avatar>
             <q-icon name="fas fa-tag" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Tags</q-item-label>
-            <q-item-label caption>Tag List</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" to="/lists">
-          <q-item-section avatar>
-            <q-icon name="mdi-format-list-checkbox" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Lists</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable tag="a" to="/items">
-          <q-item-section avatar>
-            <q-icon name="mdi-arrow-right-drop-circle" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Items</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

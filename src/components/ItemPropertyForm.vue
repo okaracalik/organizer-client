@@ -55,7 +55,13 @@
       />
     </div>
     <q-dialog v-model="modal.isOpen" transition-show="slide-up" transition-hide="slide-down">
-      <list-item-form :item="modal.selectedItem" :is-edit="modal.isEdit" @add-new-item="addNewItem" @close-item="closeItem" @remove-item="removeItem" />
+      <list-item-form
+        :item="modal.selectedItem"
+        :is-edit="modal.isEdit"
+        @add-new-item="addNewItem"
+        @close-item="closeItem"
+        @remove-item="removeItem"
+      />
     </q-dialog>
   </div>
 </template>
@@ -67,7 +73,6 @@ import Search from '../services/search'
 import ItemPropertyList from './ItemPropertyList'
 import ListItemForm from './ListItemForm'
 
-// TODO: edit item
 export default {
   name: 'ItemPropertyForm',
   props: {

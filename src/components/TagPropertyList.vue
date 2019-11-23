@@ -4,11 +4,11 @@
       v-for="(item, index) in tags"
       :key="index"
       :removable="editable"
-      :class="[!item.enabled ? 'lower-opacity' : '', 'tag-props']"
+      :class="[!item.enabled ? 'lower-opacity' : '', 'cursor-pointer tag-props']"
       :style="getStyleColors(item.colors)"
       :text-color="item.colors && item.colors.length > 1 ? item.colors[1] : 'white'"
       :label="item.name"
-      @click="() => editable ? item.enabled = !item.enabled : ''"
+      @click.native="editable ? item.enabled = !item.enabled : ''"
       @remove="$emit('remove-tag', index)"
     />
     <q-chip
@@ -19,7 +19,7 @@
       :style="getStyleColors(item.colors)"
       :text-color="item.colors && item.colors.length > 1 ? item.colors[1] : 'white'"
       :label="item.name"
-      @click="() => editable ? item.enabled = !item.enabled : ''"
+      @click.native="editable ? item.enabled = !item.enabled : ''"
       @remove="$emit('remove-new-tag', index)"
     />
   </span>
@@ -28,6 +28,7 @@
 <script>
 import { getStyleColors } from '../services/utils'
 
+// TODO: disable tag
 export default {
   name: 'TagPropertyList',
   props: {
@@ -36,10 +37,6 @@ export default {
       required: true
     },
     newTags: {
-      type: Array,
-      default: () => []
-    },
-    tagIds: {
       type: Array,
       default: () => []
     },
