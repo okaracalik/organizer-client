@@ -1,0 +1,55 @@
+{
+  "name": "organizer-server",
+  "description": "Backend for Organizer App",
+  "version": "0.0.0",
+  "homepage": "",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Orkut Karacalik",
+    "email": "orkutkaracalik@hotmail.com"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": "^10.0.0",
+    "yarn": ">= 0.18.0"
+  },
+  "scripts": {
+    "test": "yarn run eslint && NODE_ENV= yarn run jest",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "dev": "nodemon src/",
+    "start": "node src/",
+    "jest": "jest"
+  },
+  "dependencies": {
+    "@feathersjs/authentication-oauth": "^4.3.7",
+    "@feathersjs/configuration": "^4.3.7",
+    "@feathersjs/errors": "^4.3.7",
+    "@feathersjs/express": "^4.3.7",
+    "@feathersjs/feathers": "^4.3.7",
+    "async": "^3.1.0",
+    "compression": "^1.7.3",
+    "cors": "^2.8.5",
+    "feathers-sequelize": "^4.0.0",
+    "helmet": "^3.21.1",
+    "pg": "^7.12.1",
+    "sequelize": "^4.44.3",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
