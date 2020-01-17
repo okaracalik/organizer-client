@@ -21,7 +21,7 @@
         color="grey-8"
       />
     </q-btn-group>
-    <span class="text-h6 text-grey-9">{{ format(day, 'MMMM, YYYY') }}</span>
+    <span class="text-h6 text-grey-9">{{ format(day, 'MMMM, yyyy') }}</span>
     <span class="text-h6 text-grey-9 q-ml-md">
       <q-chip
         color="blue-10"
@@ -64,7 +64,7 @@
 
 <script>
 import CalendarWeek from './CalendarWeek'
-import { startOfMonth, addDays, format, addMonths, endOfMonth, startOfWeek, endOfWeek, isWithinRange } from 'date-fns'
+import { startOfMonth, addDays, format, addMonths, endOfMonth, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns'
 
 // get min date for monthly view
 // get max date for monthly view
@@ -118,10 +118,10 @@ export default {
       return this.tasks.map(t => ({
         ...t,
         occurrences: {
-          next: t.occurrences.next.filter(d => isWithinRange(d, start, end)),
-          succeeded: t.occurrences.succeeded.filter(d => isWithinRange(d, start, end)),
-          failed: t.occurrences.failed.filter(d => isWithinRange(d, start, end)),
-          skipped: t.occurrences.skipped.filter(d => isWithinRange(d, start, end))
+          next: t.occurrences.next.filter(d => isWithinInterval(d, { start, end })),
+          succeeded: t.occurrences.succeeded.filter(d => isWithinInterval(d, { start, end })),
+          failed: t.occurrences.failed.filter(d => isWithinInterval(d, { start, end })),
+          skipped: t.occurrences.skipped.filter(d => isWithinInterval(d, { start, end }))
         }
       }))
     }

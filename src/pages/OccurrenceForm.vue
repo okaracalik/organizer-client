@@ -1,81 +1,143 @@
 <template>
   <component :is="componentId" :padding="componentId === 'q-page'" :class="componentClass">
+    <!-- content -->
     <div :class="{'q-mt-lg': !(isEmbedded || isModal)}" v-if="occurrenceForm.data">
       <div class="row q-mt-lg">
         <!-- begins -->
-        <q-input class="col-md-6 col-xs-12 q-pr-lg" v-model="occurrenceForm.data.begins">
+        <q-input class="col" :value="format(occurrenceForm.data.begins, 'MMM do, yyyy HH:mm')">
           <template v-slot:before>
             <q-icon name="fas fa-hourglass-start" />
           </template>
           <template v-slot:prepend>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date
-                  v-model="occurrenceForm.data.begins"
-                  mask="YYYY-MM-DD HH:mm"
-                  :first-day-of-week="1"
-                />
+            <q-btn icon="fas fa-calendar-day" flat>
+              <q-popup-proxy
+                @before-show="() => { proxy.begins = format(occurrenceForm.data.begins, 'yyyy/MM/dd') }"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="proxy.begins">
+                  <div class="row items-center justify-end q-gutter-sm">
+                    <q-btn label="Cancel" color="primary" flat v-close-popup />
+                    <q-btn
+                      label="OK"
+                      color="primary"
+                      flat
+                      @click="() => {
+                        temp =  parse(proxy.begins, 'yyyy/MM/dd', occurrenceForm.data.begins)
+                        occurrenceForm.data.begins = set(occurrenceForm.data.begins, {year: temp.getFullYear(), month: temp.getMonth(), date: temp.getDate()})
+                      }"
+                      v-close-popup
+                    />
+                  </div>
+                </q-date>
               </q-popup-proxy>
-            </q-icon>
+            </q-btn>
           </template>
           <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="occurrenceForm.data.begins" mask="YYYY-MM-DD HH:mm" format24h />
+            <q-btn icon="fas fa-clock" flat>
+              <q-popup-proxy
+                @before-show="() => { proxy.begins = format(occurrenceForm.data.begins, 'HH:mm') }"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-time v-model="proxy.begins" format24h>
+                  <div class="row items-center justify-end q-gutter-sm">
+                    <q-btn label="Cancel" color="primary" flat v-close-popup />
+                    <q-btn
+                      label="OK"
+                      color="primary"
+                      flat
+                      @click="() => {
+                        let temp =  parse(proxy.begins, 'HH:mm', occurrenceForm.data.begins)
+                        occurrenceForm.data.begins = set(occurrenceForm.data.begins, {hours: temp.getHours(), minutes: temp.getMinutes()})
+                      }"
+                      v-close-popup
+                    />
+                  </div>
+                </q-time>
               </q-popup-proxy>
-            </q-icon>
+            </q-btn>
           </template>
         </q-input>
-
         <!-- ends -->
-        <q-input class="col-md-6 col-xs-12 q-pr-lg" v-model="occurrenceForm.data.ends">
+        <q-input class="col" :value="format(occurrenceForm.data.ends, 'MMM do, yyyy HH:mm')">
           <template v-slot:before>
-            <q-icon name="fas fa-hourglass-end" />
+            <q-icon name="fas fa-hourglass-start" />
           </template>
-          <template v-slot:before>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date
-                  v-model="occurrenceForm.data.ends"
-                  mask="YYYY-MM-DD HH:mm"
-                  :first-day-of-week="1"
-                />
+          <template v-slot:prepend>
+            <q-btn icon="fas fa-calendar-day" flat>
+              <q-popup-proxy
+                @before-show="() => { proxy.ends = format(occurrenceForm.data.ends, 'yyyy/MM/dd') }"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="proxy.ends">
+                  <div class="row items-center justify-end q-gutter-sm">
+                    <q-btn label="Cancel" color="primary" flat v-close-popup />
+                    <q-btn
+                      label="OK"
+                      color="primary"
+                      flat
+                      @click="() => {
+                        temp =  parse(proxy.ends, 'yyyy/MM/dd', occurrenceForm.data.ends)
+                        occurrenceForm.data.ends = set(occurrenceForm.data.ends, {year: temp.getFullYear(), month: temp.getMonth(), date: temp.getDate()})
+                      }"
+                      v-close-popup
+                    />
+                  </div>
+                </q-date>
               </q-popup-proxy>
-            </q-icon>
+            </q-btn>
           </template>
           <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="occurrenceForm.data.ends" mask="YYYY-MM-DD HH:mm" format24h />
+            <q-btn icon="fas fa-clock" flat>
+              <q-popup-proxy
+                @before-show="() => { proxy.ends = format(occurrenceForm.data.ends, 'HH:mm') }"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-time v-model="proxy.ends" format24h>
+                  <div class="row items-center justify-end q-gutter-sm">
+                    <q-btn label="Cancel" color="primary" flat v-close-popup />
+                    <q-btn
+                      label="OK"
+                      color="primary"
+                      flat
+                      @click="() => {
+                        let temp =  parse(proxy.ends, 'HH:mm', occurrenceForm.data.ends)
+                        occurrenceForm.data.ends = set(occurrenceForm.data.ends, {hours: temp.getHours(), minutes: temp.getMinutes()})
+                      }"
+                      v-close-popup
+                    />
+                  </div>
+                </q-time>
               </q-popup-proxy>
-            </q-icon>
+            </q-btn>
           </template>
         </q-input>
       </div>
       <div class="row">
         <!-- frequency -->
         <q-select
-          class="col-md-5 col-xs-12 q-pr-lg"
+          class="col-md-5 col-xs-12 q-pr-lg text-capitalize"
           label="Frequency"
           v-model="occurrenceForm.data.frequency"
-          :options="frequencies"
-          emit-value
-          map-options
+          :options="['once', 'day', 'week', 'month', 'year', 'custom']"
         >
           <template v-slot:before>
             <q-icon name="fas fa-sync" />
           </template>
         </q-select>
-        <!-- n -->
+        <!-- repeats -->
         <q-input
           class="col-md-1 col-xs-12 q-pr-lg"
           input-class="text-center"
           type="number"
-          float-label="N"
-          v-model="occurrenceForm.data.n"
+          float-label="Repeats"
+          v-model="occurrenceForm.data.repeats"
           min="1"
           align="center"
-          :disable="!showN"
+          :disable="['once', 'custom'].includes(occurrenceForm.data.frequency)"
         >
           <template v-slot:before>
             <q-icon name="fas fa-hashtag" />
@@ -83,13 +145,14 @@
         </q-input>
         <!-- nonWorkingDay -->
         <q-select
+          class="text-capitalize"
           style="width: 180px"
           label="If On Working Day"
           v-model="occurrenceForm.data.if_on_working_day"
-          :options="nonWorkingDayOptions"
+          :options="[null, 'previous', 'closest', 'next']"
           emit-value
           map-options
-          v-show="showWorkingDayOption"
+          v-show="['day', 'month', 'year'].includes(occurrenceForm.data.frequency)"
         >
           <template v-slot:before>
             <q-icon name="mdi-calendar-search" />
@@ -100,26 +163,25 @@
           class="items-end"
           label="Last Day of Month"
           v-model="occurrenceForm.data.is_on_last_day_of_month"
-          v-show="showIsOnLastDayOfMonth"
+          v-show="['month', 'year'].includes(occurrenceForm.data.frequency)"
         />
         <!-- days -->
         <q-checkbox
-          class="col items-end"
+          class="col items-end text-capitalize"
           v-model="occurrenceForm.data.weekdays"
-          v-for="(item, index) in days"
+          v-for="(item, index) in ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']"
           :key="index"
-          :val="item.value"
-          :label="item.label"
-          :disable="!showDays"
-          v-show="showDays"
+          :val="item"
+          :label="item"
+          v-show="['week'].includes(occurrenceForm.data.frequency)"
         />
       </div>
       <!-- calendar -->
       <calendar-month
         class="q-my-md"
-        @change-month="changeMonth"
         :day="day"
         :taskList="[{ title: 'Event', occurrences: [occurrenceForm.data]}]"
+        @change-month="changeMonth"
       />
       <!-- occurrences -->
       <div class="row q-mt-lg">
@@ -151,14 +213,14 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import { isLastDayOfMonth, startOfToday, getDay, compareAsc } from 'date-fns'
+import { parse, format, set, compareAsc } from 'date-fns'
+
+import form from '../mixins/form'
 import Occurrences from '../components/Occurrences'
 import CalendarMonth from '../components/CalendarMonth'
-import form from '../mixins/form'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
-// TODO: problem on loading edit form
 export default {
   name: 'OccurrenceForm',
   mixins: [form],
@@ -168,50 +230,19 @@ export default {
   },
   data () {
     return {
-      day: new Date(),
       formName: 'occurrenceForm',
-      frequencies: [
-        { label: 'Once', value: 'once' },
-        { label: 'Day', value: 'day' },
-        { label: 'Week', value: 'week' },
-        { label: 'Month', value: 'month' },
-        { label: 'Year', value: 'year' },
-        { label: 'Custom', value: 'custom' }
-      ],
-      days: [
-        { label: 'Mon', value: 'mon' },
-        { label: 'Tue', value: 'tue' },
-        { label: 'Wed', value: 'wed' },
-        { label: 'Thu', value: 'thu' },
-        { label: 'Fri', value: 'fri' },
-        { label: 'Sat', value: 'sat' },
-        { label: 'Sun', value: 'sun' }
-      ],
-      nonWorkingDayOptions: [
-        { label: 'None', value: null },
-        { label: 'Previous', value: 'previous' },
-        { label: 'Closest', value: 'closest' },
-        { label: 'Next', value: 'next' }
-      ]
+      proxy: {
+        begins: new Date(),
+        ends: new Date()
+      },
+      day: new Date()
     }
   },
   computed: {
     ...mapState({
       occurrenceItem: state => state.item,
       occurrenceForm: state => state.form
-    }),
-    showN () {
-      return this.occurrenceForm.data && !_.includes(['once'], this.occurrenceForm.data.frequency)
-    },
-    showIsOnLastDayOfMonth () {
-      return this.occurrenceForm.data && _.includes(['month', 'year'], this.occurrenceForm.data.frequency) && isLastDayOfMonth(this.occurrenceForm.data.begins)
-    },
-    showDays () {
-      return this.occurrenceForm.data && _.includes(['week'], this.occurrenceForm.data.frequency)
-    },
-    showWorkingDayOption () {
-      return this.occurrenceForm.data && _.includes(['day', 'month', 'year'], this.occurrenceForm.data.frequency)
-    }
+    })
   },
   methods: {
     ...mapActions({
@@ -221,6 +252,9 @@ export default {
       removeOccurrence: 'remove',
       setOccurrence: 'set'
     }),
+    parse,
+    format,
+    set,
     init () {
       if (this.isEdit) {
         this.getOccurrence(this.id)
@@ -259,8 +293,10 @@ export default {
         ...this.occurrenceForm.data[type] ? this.occurrenceForm.data[type] : [],
         item
       ].sort(compareAsc)
-    },
-    compareAsc
+    }
+  },
+  mounted () {
+    this.init()
   },
   watch: {
     'occurrenceItem.success' (newValue) {
@@ -290,32 +326,15 @@ export default {
         })
       }
     },
-    'showN' (newValue) {
-      if (!newValue) {
-        this.occurrenceForm.data.n = 1
-      }
-    },
-    'showDays' (newValue) {
-      if (!newValue) {
-        this.occurrenceForm.data.weekdays = []
-      }
-    },
-    'showIsOnLastDayOfMonth' (newValue) {
-      if (!newValue) {
-        this.occurrenceForm.data.showIsOnLastDayOfMonth = false
-      }
-    },
     'occurrenceForm.data.frequency' (newValue, oldValue) {
-      if (oldValue === 'week') {
-        this.occurrenceForm.data.weekdays = []
-      }
+      console.log(newValue)
+      this.occurrenceForm.data.repeats = 1
+      this.occurrenceForm.data.weekdays = []
+      this.occurrenceForm.data.is_on_last_day_of_month = false
+      this.occurrenceForm.data.is_on_business_day = false
       if (newValue === 'week') {
-        this.occurrenceForm.data.weekdays = [this.days[getDay(startOfToday()) - 1].value]
-      }
-    },
-    id (newValue, oldValue) {
-      if (!_.isEqual(newValue, oldValue)) {
-        this.init()
+        const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+        this.occurrenceForm.data.weekdays = [days[this.occurrenceForm.data.begins.getDay() - 1]]
       }
     }
   }

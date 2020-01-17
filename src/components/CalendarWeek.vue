@@ -3,7 +3,7 @@
   <div class="row">
     <calendar-day
       class="col"
-      v-for="(item, index) in eachDay(starts, ends)"
+      v-for="(item, index) in eachDayOfInterval({ start: starts, end: ends })"
       :key="index"
       :day="item"
       :showWeekdays="showWeekdays"
@@ -15,7 +15,7 @@
 
 <script>
 import CalendarDay from './CalendarDay'
-import { eachDay, isSameDay, endOfDay } from 'date-fns'
+import { eachDayOfInterval, isSameDay, endOfDay } from 'date-fns'
 import { omit } from 'lodash'
 
 // TODO: make it slotted
@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    eachDay,
+    eachDayOfInterval,
     endOfDay,
     filterTasks (day) {
       return this.tasks.reduce((acc, t) => ({

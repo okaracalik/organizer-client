@@ -10,7 +10,7 @@
     </q-item-label>
     <!-- items -->
     <q-item v-for="(item, index) in items.slice(0, shownItems)" :key="index">
-      <q-item-section>{{ format(item, ' DD MMM YY, dd') }}</q-item-section>
+      <q-item-section>{{ format(item, 'MMM dd, yy, E') }}</q-item-section>
       <q-btn
         v-if="['next', 'failed', 'skipped'].includes(type) && isDue(item)"
         round
@@ -61,7 +61,7 @@
         <q-card-section>
           <q-date
             v-model="customDate.input"
-            mask="YYYY-MM-DD HH:mm"
+            mask="yyyy-MM-DD HH:mm"
             :first-day-of-week="1"
             @input="addCustomDate"
           />

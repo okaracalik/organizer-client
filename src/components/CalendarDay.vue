@@ -4,12 +4,12 @@
     :class="['day-card', isWeekend(day) ? 'bg-grey-3' : 'bg-grey-1', isPast(day) && !isToday(day) && tasks.next.length < 1 ? 'light-dimmed' : '']"
   >
     <q-card-section class="text-center">
-      <span class="weekday" v-if="showWeekdays">{{ format(day, 'dddd') }}</span>
+      <span class="weekday" v-if="showWeekdays">{{ format(day, 'EEEE') }}</span>
       <div>
         <component
           :is="isToday(day) ? 'q-badge' : 'span'"
           :color="isToday(day) ? 'primary' : ''"
-        >{{ format(day, 'Do') }}</component>
+        >{{ format(day, 'do') }}</component>
       </div>
       <div v-if="showSums" class="row justify-between" style="margin-bottom: 2px">
         <q-badge

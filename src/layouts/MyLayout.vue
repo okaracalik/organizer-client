@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+
     <q-header>
       <q-toolbar class="bg-orange-9 text-white">
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu">
