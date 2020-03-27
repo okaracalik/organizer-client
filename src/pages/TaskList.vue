@@ -14,10 +14,10 @@
           <q-item-label caption>{{ item.description }}</q-item-label>
         </q-item-section>
         <q-item-section>
-          <q-item-label>{{ format(min(...item.next), 'DD.MM.YYYY') }}</q-item-label>
+          <q-item-label>{{ format(min(...item.next), 'DD.MM.yyyy') }}</q-item-label>
           <q-item-label
             caption
-          >{{ distanceInWordsToNow(min(...item.next)) }} {{ getDueSituation(min(...item.next)) }}</q-item-label>
+          >{{ formatDistanceToNow(min(...item.next)) }} {{ getDueSituation(min(...item.next)) }}</q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label>
@@ -82,7 +82,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import { union } from 'lodash'
-import { distanceInWordsToNow, format, isAfter, min, isPast, compareAsc, parse } from 'date-fns'
+import { formatDistanceToNow, format, isAfter, min, isPast, compareAsc, parse } from 'date-fns'
 import { getStyleColors } from '../services/utils'
 
 const { mapState, mapActions } = createNamespacedHelpers('task')
@@ -120,7 +120,7 @@ export default {
       return isAfter(d, new Date()) ? 'left.' : 'passed.'
     },
     getStyleColors,
-    distanceInWordsToNow,
+    formatDistanceToNow,
     min,
     isPast,
     format

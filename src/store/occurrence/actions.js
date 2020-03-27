@@ -1,4 +1,4 @@
-import { getInstance, observer } from './model.js'
+import { getInstance, observer } from './model-new.js'
 // import { LocalStorage } from '../../services/local-storage'
 import HTTP from '../../services/http'
 
@@ -56,5 +56,6 @@ export const remove = ({ commit }, id) => {
 }
 
 export const set = ({ commit }, data) => {
+  console.log(observer)
   commit('formData', new Proxy({ ...getInstance(), ...data }, observer))
 }

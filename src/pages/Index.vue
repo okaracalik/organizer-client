@@ -11,11 +11,11 @@
         <template v-slot:day="week">
           <day
             class="col"
-            v-for="(d, index) in eachDay(week.props.starts, week.props.ends)"
+            v-for="(d, index) in eachDayOfInterval(week.props.starts, week.props.ends)"
             :key="index"
             :day="d"
             :show-weekdays="wIndex < 1"
-            :events="logList.success ? logList.success.data.filter(l => l.when === format(d, 'YYYY-MM-DD')) : []"
+            :events="logList.success ? logList.success.data.filter(l => l.when === format(d, 'yyyy-MM-DD')) : []"
           >
             <template v-slot:title>{{ isSameMonth(day, d) ? format(d, 'Do') : format(d, 'MMM Do') }}</template>
             <template v-slot:content="day">
@@ -33,13 +33,10 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex'
-import { eachDay, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addDays, format, isSameDay, parse, isSameMonth } from 'date-fns'
+import { eachDayOfInterval, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addDays, format, isSameDay, parse, isSameMonth } from 'date-fns'
 
 import Week from '../components/Week'
 import Day from '../components/Day'
-
-const { mapState, mapActions } = createNamespacedHelpers('log')
 
 export default {
   name: 'PageIndex',
@@ -53,9 +50,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      logList: state => state.list
-    }),
     periods () {
       const start = startOfWeek(startOfMonth(this.day), { weekStartsOn: 1 })
       const end = endOfWeek(endOfMonth(this.day), { weekStartsOn: 1 })
@@ -69,17 +63,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      findLogs: 'find'
-    }),
     format,
-    eachDay,
+    eachDayOfInterval,
     isSameDay,
     parse,
     isSameMonth
-  },
-  mounted () {
-    this.findLogs()
   }
 }
 </script>

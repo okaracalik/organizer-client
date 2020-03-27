@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   addDays,
   addMonths,
@@ -107,8 +108,8 @@ const generateOccurrences = (
 export const getInstance = () => ({
   id: null,
   task_id: null,
-  begins: format(startOfToday(), 'YYYY-MM-DD HH:mm'),
-  ends: format(endOfToday(), 'YYYY-MM-DD HH:mm'),
+  begins: startOfToday(),
+  ends: endOfMonth(startOfToday()),
   n: 1,
   frequency: 'once', // once, day, week, month, year, custom
   if_on_working_day: null, // 'previous', 'closest', 'next' for day, month, year
@@ -122,22 +123,10 @@ export const getInstance = () => ({
 
 export const observer = {
   set: function (obj, prop, value) {
+    console.log('observer');
     obj[prop] = value
     // any change on properties below will generate new occurrences
-    if (
-      _.includes(
-        [
-          'begins',
-          'ends',
-          'n',
-          'frequency',
-          'if_on_working_day',
-          'is_on_last_day_of_month',
-          'weekdays'
-        ],
-        prop
-      )
-    ) {
+    if (_.includes([ 'begins', 'ends', 'n', 'frequency', 'if_on_working_day', 'is_on_last_day_of_month', 'weekdays'], prop)) {
       obj.next = generateOccurrences(
         obj.begins,
         obj.ends,

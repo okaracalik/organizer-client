@@ -19,7 +19,7 @@
         <q-btn outline icon="fas fa-chevron-right" @click.native="changeDate(1)" color="grey-8" />
       </q-btn-group>
       <!-- current month -->
-      <span class="text-h5 text-grey-9">{{ format(day, 'MMMM, YYYY') }}</span>
+      <span class="text-h5 text-grey-9">{{ format(day, 'MMMM, yyyy') }}</span>
       <!-- overview chips -->
       <span class="text-h6 text-grey-9 q-ml-md">
         <q-chip
@@ -153,7 +153,7 @@
 <script>
 import _ from 'lodash'
 import { createNamespacedHelpers } from 'vuex'
-import { format, addMonths, isWithinRange, startOfWeek, isSameDay, endOfWeek, addWeeks, startOfMonth, endOfMonth, addDays, compareAsc, parse } from 'date-fns'
+import { format, addMonths, isWithinInterval, startOfWeek, isSameDay, endOfWeek, addWeeks, startOfMonth, endOfMonth, addDays, compareAsc, parse } from 'date-fns'
 
 import CalendarWeek from '../components/CalendarWeek'
 import FloatingActionButton from '../components/FloatingActionButton'
@@ -274,10 +274,10 @@ export default {
       return tasks.map(t => ({
         ...t,
         occurrences: {
-          next: t.occurrences.next.filter(d => isWithinRange(d, start, end)),
-          succeeded: t.occurrences.succeeded.filter(d => isWithinRange(d, start, end)),
-          failed: t.occurrences.failed.filter(d => isWithinRange(d, start, end)),
-          skipped: t.occurrences.skipped.filter(d => isWithinRange(d, start, end))
+          next: t.occurrences.next.filter(d => isWithinInterval(d, start, end)),
+          succeeded: t.occurrences.succeeded.filter(d => isWithinInterval(d, start, end)),
+          failed: t.occurrences.failed.filter(d => isWithinInterval(d, start, end)),
+          skipped: t.occurrences.skipped.filter(d => isWithinInterval(d, start, end))
         }
       }))
     },
@@ -326,7 +326,7 @@ export default {
           this.occurrenceForm.data = occurrences[0]
         }
         else {
-          this.occurrenceForm.data = occurrences.filter(o => isWithinRange(newValue.day, o.begins, o.ends))[0]
+          this.occurrenceForm.data = occurrences.filter(o => isWithinInterval(newValue.day, o.begins, o.ends))[0]
         }
       }
       else {

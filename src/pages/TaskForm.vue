@@ -128,6 +128,8 @@ const { mapState, mapActions } = createNamespacedHelpers('task')
 
 // TODO: make it have children
 // TODO: multiple occurrences should not have same elements for each category
+// TODO: order
+// TODO: try w/ occurrences
 export default {
   name: 'TaskForm',
   mixins: [form],
