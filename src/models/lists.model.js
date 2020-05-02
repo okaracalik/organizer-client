@@ -33,11 +33,13 @@ module.exports = function(app) {
   );
 
   lists.associate = function(models) {
+    // tags
     lists.belongsToMany(models.tags, {
       as: 'tags',
       through: 'list_tags',
       foreignKey: 'fk_lists'
     });
+    // items
     lists.belongsToMany(models.items, {
       as: 'items',
       through: 'list_items',

@@ -8,14 +8,18 @@ module.exports = function(app) {
   const tags = sequelizeClient.define(
     'tags',
     {
-      name: {
+      pk_tags: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      title: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      colors: DataTypes.ARRAY(DataTypes.STRING),
-      enabled: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
+      colors: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: ['#ffffff', '#000000']
       }
     },
     {
@@ -28,16 +32,19 @@ module.exports = function(app) {
   );
 
   tags.associate = function(models) {
+    // lists
     tags.belongsToMany(models.lists, {
       as: 'lists',
       through: 'list_tags',
       foreignKey: 'fk_tags'
     });
+    // items
     tags.belongsToMany(models.items, {
       as: 'tags',
       through: 'item_tags',
       foreignKey: 'fk_tags'
     });
+    // tasks
     tags.belongsToMany(models.tasks, {
       as: 'tasks',
       through: 'task_tags',

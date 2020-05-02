@@ -8,6 +8,11 @@ module.exports = function(app) {
   const tasks = sequelizeClient.define(
     'tasks',
     {
+      pk_tasks: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false
@@ -36,11 +41,13 @@ module.exports = function(app) {
   );
 
   tasks.associate = function(models) {
+    // tags
     tasks.belongsToMany(models.tags, {
       as: 'tags',
       through: 'task_tags',
       foreignKey: 'fk_tasks'
     });
+    // occurrences
     tasks.belongsToMany(models.occurrences, {
       as: 'occurrences',
       through: 'task_occurrences',

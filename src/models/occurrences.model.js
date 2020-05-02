@@ -8,6 +8,11 @@ module.exports = function(app) {
   const occurrences = sequelizeClient.define(
     'occurrences',
     {
+      pk_occurrences: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
       begins: {
         type: DataTypes.DATE,
         allowNull: false
@@ -73,6 +78,7 @@ module.exports = function(app) {
   );
 
   occurrences.associate = function(models) {
+    // tasks
     occurrences.belongsToMany(models.tasks, {
       as: 'tasks',
       through: 'task_occurrences',

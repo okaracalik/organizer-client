@@ -29,11 +29,13 @@ module.exports = function(app) {
 
   // eslint-disable-next-line no-unused-vars
   items.associate = function(models) {
+    // tags
     items.belongsToMany(models.tags, {
       as: 'tags',
       through: 'item_tags',
       foreignKey: 'fk_items'
     });
+    // lists
     items.belongsToMany(models.lists, {
       as: 'lists',
       through: 'list_items',
