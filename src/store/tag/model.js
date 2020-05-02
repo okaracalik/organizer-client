@@ -1,4 +1,4 @@
 export const getInstance = () => ({
-  name: '',
-  unit: ''
+  title: '',
+  colors: ['#FFFFFF', '#000000']
 })

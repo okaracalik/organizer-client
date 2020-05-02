@@ -22,7 +22,11 @@
       <!-- body -->
       <template v-slot:item="props">
         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-2">
-          <q-card :style="{ backgroundColor: props.row.colors[0], color: props.row.colors[1]}">
+          <q-card
+            :style="{ backgroundColor: props.row.colors[0], color: props.row.colors[1]}"
+            class="cursor-pointer"
+            @click="$router.push(`/tags/${props.row.pk_tags}`)"
+          >
             <q-card-section class="text-center">
               <strong>{{ props.row.title }}</strong>
             </q-card-section>
@@ -30,11 +34,15 @@
         </div>
       </template>
     </q-table>
+    <!-- fab -->
+    <floating-action-button next="/tags/new" />
   </q-page>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
+
+import FloatingActionButton from '../components/FloatingActionButton'
 
 const { mapState, mapActions } = createNamespacedHelpers('tag')
 
@@ -42,6 +50,9 @@ export default {
   name: 'TagList',
   mixins: [],
   props: {},
+  components: {
+    FloatingActionButton
+  },
   data () {
     return {
       filter: '',
@@ -75,7 +86,7 @@ export default {
       this.filter = search
     }
   },
-  created () {
+  mounted () {
     this.onRequest({
       pagination: this.pagination,
       filter: undefined
