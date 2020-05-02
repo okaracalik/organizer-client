@@ -85,14 +85,6 @@ export default {
         colors: { required }
       }
     },
-    taskForm: {
-      data: {
-        path: {},
-        title: { required },
-        description: {},
-        tags: {}
-      }
-    },
     occurrenceForm: {
       data: {
         begins: { required },
@@ -105,6 +97,14 @@ export default {
         succeeded: {},
         failed: {},
         skipped: {}
+      }
+    },
+    taskForm: {
+      data: {
+        path: {},
+        title: { required },
+        description: {},
+        tags: {}
       }
     },
     taskOccurrenceNoteForm: {

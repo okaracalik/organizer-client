@@ -11,32 +11,27 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
-        <q-toolbar-title>
-          Organizer
-        </q-toolbar-title>
-
+        <q-toolbar-title>Organizer</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
       <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Menu
-        </q-item-label>
+        <q-item-label header class="text-grey-8">Menu</q-item-label>
         <q-item clickable tag="a" to="/tags">
           <q-item-section avatar>
             <q-icon name="las la-tags" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Tags</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" to="/occurrences">
+          <q-item-section avatar>
+            <q-icon name="las la-history" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Occurrences</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
