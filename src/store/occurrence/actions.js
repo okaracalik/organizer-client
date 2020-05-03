@@ -1,4 +1,4 @@
-import { getInstance } from './model.js'
+import { getInstance, observer } from './model.js'
 import HTTP from '../../services/http'
 
 const moduleName = 'occurrences'
@@ -55,5 +55,5 @@ export const remove = ({ commit }, id) => {
 }
 
 export const set = ({ commit }, data) => {
-  commit('formData', { ...getInstance(), ...data })
+  commit('formData', new Proxy({ ...getInstance(), ...data }, observer))
 }

@@ -131,7 +131,6 @@ export default {
           this.mode = this.$emitter.modes.CREATE
           this.createTag(this.tagForm.data)
         }
-        console.log(this.$emitter.modes, this.mode)
       }
     },
     erase () {
