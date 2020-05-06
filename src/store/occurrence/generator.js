@@ -21,18 +21,18 @@ export const generateOnce = (begins, ends) => {
   }
 }
 
-export const generateDays = (begins, ends, repeats = 1) => {
+export const generateDays = (begins, ends, n = 1) => {
   const temp = []
   let today = begins
 
   while (!isAfter(today, ends)) {
     temp.push(endOfDay(today))
-    today = addDays(today, repeats)
+    today = addDays(today, n)
   }
   return temp
 }
 
-export const generateWeeks = (begins, ends, repeats = 1, weekdays = []) => {
+export const generateWeeks = (begins, ends, n = 1, weekdays = []) => {
   let temp = []
   let today = startOfISOWeek(begins)
   let days = []
@@ -41,34 +41,34 @@ export const generateWeeks = (begins, ends, repeats = 1, weekdays = []) => {
   while (!isAfter(today, ends)) {
     days = weekdays.map(wd => endOfDay(addDays(today, wd)))
     temp.push(...days)
-    today = addWeeks(today, repeats)
+    today = addWeeks(today, n)
   }
 
   temp = temp.filter(d => !isBefore(d, begins) && !isAfter(d, ends))
   return temp
 }
 
-export const generateMonths = (begins, ends, repeats = 1, isOnLastDayOfMonth = false) => {
+export const generateMonths = (begins, ends, n = 1, isOnLastDayOfMonth = false) => {
   const temp = []
   let today = begins
 
   while (!isAfter(today, ends)) {
     today = isOnLastDayOfMonth ? endOfMonth(today) : today
     temp.push(endOfDay(today))
-    today = addMonths(today, repeats)
+    today = addMonths(today, n)
   }
 
   return temp
 }
 
-export const generateYears = (begins, ends, repeats = 1, isOnLastDayOfMonth = false) => {
+export const generateYears = (begins, ends, n = 1, isOnLastDayOfMonth = false) => {
   const temp = []
   let today = begins
 
   while (!isAfter(today, ends)) {
     today = isOnLastDayOfMonth ? endOfMonth(today) : today
     temp.push(endOfDay(today))
-    today = addYears(today, repeats)
+    today = addYears(today, n)
   }
 
   return temp
