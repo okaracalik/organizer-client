@@ -83,7 +83,7 @@
                       @click="() => {
                         temp =  parse(proxy.ends, 'yyyy/MM/dd', occurrenceForm.data.ends)
                         ends = set(occurrenceForm.data.ends, {year: temp.getFullYear(), month: temp.getMonth(), date: temp.getDate()})
-                        occurrenceForm.data.ends = begins
+                        occurrenceForm.data.ends = ends
                       }"
                       v-close-popup
                     />
@@ -181,12 +181,15 @@
         />
       </div>
       <!-- calendar -->
-      <!-- <calendar-month
+      <calendar-month
         class="q-my-md"
         :day="day"
-        :taskList="[{ title: 'Event', occurrences: [occurrenceForm.data]}]"
-        @change-month="changeMonth"
-      />-->
+        @change-month="(date) => { day = date }"
+        :events="[...occurrenceForm.data['done'].map(d => ({title: 'done', date: d, color: 'green'})),
+                  ...occurrenceForm.data['skipped'].map(d => ({title: 'skipped', date: d, color: 'orange'})),
+                  ...occurrenceForm.data['failed'].map(d => ({title: 'failed', date: d, color: 'red'})),
+                  ...occurrenceForm.data['next'].map(d => ({title: 'next', date: d, color: 'blue'}))]"
+      />
       <!-- occurrences -->
       <div class="row q-mt-lg">
         <occurrences
@@ -221,7 +224,7 @@ import { parse, format, set, compareAsc } from 'date-fns'
 
 import form from '../mixins/form'
 import Occurrences from '../components/Occurrences'
-// import CalendarMonth from '../components/CalendarMonth'
+import CalendarMonth from '../components/CalendarMonth'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
@@ -229,7 +232,8 @@ export default {
   name: 'OccurrenceForm',
   mixins: [form],
   components: {
-    Occurrences
+    Occurrences,
+    CalendarMonth
   },
   data () {
     return {
