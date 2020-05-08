@@ -23,7 +23,6 @@
       <template v-slot:item="props">
         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-2">
           <q-card
-            :style="{ backgroundColor: props.row.colors[0], color: props.row.colors[1]}"
             class="cursor-pointer"
             @click="$router.push(`/occurrences/${props.row.pk_occurrences}`)"
           >

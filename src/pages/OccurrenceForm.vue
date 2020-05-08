@@ -191,7 +191,7 @@
                   ...occurrenceForm.data['next'].map(d => ({title: 'next', date: d, color: 'blue'}))]"
       />
       <!-- occurrences -->
-      <div class="row q-mt-lg">
+      <div v-if="!isModal" class="row q-mt-lg">
         <occurrences
           class="col-md-3 col-xs-3"
           v-for="(type, index) in ['done', 'skipped', 'failed', 'next']"
