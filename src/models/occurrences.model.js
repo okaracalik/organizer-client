@@ -37,7 +37,7 @@ module.exports = function(app) {
       },
       is_on_last_day_of_month: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true
+        defaultValue: false
       },
       // ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
       weekdays: {
@@ -55,7 +55,7 @@ module.exports = function(app) {
         type: DataTypes.ARRAY(DataTypes.DATE),
         allowNull: true
       },
-      succeeded: {
+      done: {
         type: DataTypes.ARRAY(DataTypes.DATE),
         allowNull: true
       },

@@ -7,8 +7,7 @@ module.exports = function (options = {}) {
     const sequelize = context.app.get('sequelizeClient');
     context.params.sequelize = {
       include: [
-        { model: sequelize.models.occurrences, as: 'occurrences' },
-        { model: sequelize.models.tasks, as: 'tasks' },
+        { model: sequelize.models.occurrences, as: 'occurrences' }
       ],
       raw: false,
     };

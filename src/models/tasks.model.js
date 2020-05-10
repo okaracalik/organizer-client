@@ -17,19 +17,14 @@ module.exports = function(app) {
         type: DataTypes.STRING,
         allowNull: false
       },
-      description: {
+      note: {
         type: DataTypes.TEXT,
         defaultValue: null
       },
-      parent_id: {
-        type: DataTypes.BIGINT,
-        defaultValue: null
-      },
-      path: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      colors: DataTypes.ARRAY(DataTypes.STRING)
+      colors: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        defaultValue: ['#ffffff', '#000000']
+      }
     },
     {
       hooks: {
