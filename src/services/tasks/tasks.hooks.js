@@ -1,6 +1,10 @@
 
 const extendTask = require('../../hooks/extend-task');
 
+const upsertTaskNewOccurrences = require('../../hooks/upsert-task-new-occurrences');
+
+const upsertTaskOldOccurrences = require('../../hooks/upsert-task-old-occurrences');
+
 module.exports = {
   before: {
     all: [],
@@ -16,8 +20,8 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
+    create: [upsertTaskNewOccurrences(), upsertTaskOldOccurrences()],
+    update: [upsertTaskNewOccurrences(), upsertTaskOldOccurrences()],
     patch: [],
     remove: []
   },
