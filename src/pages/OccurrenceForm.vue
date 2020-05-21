@@ -1,5 +1,9 @@
 <template>
-  <component :is="componentId" :padding="componentId === 'q-page'" :class="componentClass">
+  <component
+    :is="componentId"
+    :padding="componentId === 'q-page'"
+    :class="(isEmbedded || isModal) ? 'div' : 'q-page'"
+  >
     <!-- content -->
     <div :class="{'q-mt-lg': !(isEmbedded || isModal)}" v-if="occurrenceForm.data">
       <div class="row q-mt-lg">
@@ -228,9 +232,16 @@ import CalendarMonth from '../components/CalendarMonth'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
+// TODO: take form-data as props
 export default {
   name: 'OccurrenceForm',
   mixins: [form],
+  props: {
+    occurrencePropertyData: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     Occurrences,
     CalendarMonth
@@ -249,7 +260,10 @@ export default {
     ...mapState({
       occurrenceItem: state => state.item,
       occurrenceForm: state => state.form
-    })
+    }),
+    isEdit () {
+      return !_.isNull(this.id) || !_.isNull(this.occurrencePropertyData)
+    }
   },
   methods: {
     ...mapActions({
@@ -263,7 +277,9 @@ export default {
     format,
     set,
     init () {
-      if (this.isEdit) {
+      if (this.isModal) {
+        this.setOccurrence(this.occurrencePropertyData)
+      } else if (this.isEdit) {
         this.getOccurrence(this.id)
       } else {
         this.setOccurrence(null)
@@ -276,7 +292,12 @@ export default {
           color: 'warning'
         })
       } else {
-        if (this.isEdit) {
+        if (this.isModal) {
+          this.mode = this.isEdit ? this.$emitter.modes.UPDATE : this.$emitter.modes.CREATE
+          this.$emit(this.$emitter.constructEmitMessage(this.mode, 'occurrence'), { ...this.occurrenceForm.data })
+          this.setOccurrence(null)
+          this.$v.occurrenceForm.$reset()
+        } else if (this.isEdit) {
           this.mode = this.$emitter.modes.UPDATE
           this.updateOccurrence({ id: this.id, data: this.occurrenceForm.data })
         } else {
@@ -287,7 +308,11 @@ export default {
     },
     erase () {
       this.mode = this.$emitter.modes.REMOVE
-      this.removeOccurrence(this.id)
+      if (this.isModal) {
+        this.$emit(this.$emitter.constructEmitMessage(this.mode, 'occurrence'), { ...this.occurrenceForm.data })
+      } else {
+        this.removeOccurrence(this.id)
+      }
     },
     changeMonth (date) {
       this.day = date

@@ -59,15 +59,10 @@ export default {
   components: {
     CalendarWeek
   },
-  data () {
-    return {
-      today: new Date()
-    }
-  },
   computed: {
     weeks () {
-      const start = startOfWeek(startOfMonth(this.today), { weekStartsOn: 1 })
-      const end = endOfWeek(endOfMonth(this.today), { weekStartsOn: 1 })
+      const start = startOfWeek(startOfMonth(this.day), { weekStartsOn: 1 })
+      const end = endOfWeek(endOfMonth(this.day), { weekStartsOn: 1 })
       const ranges = [[start, endOfWeek(start, { weekStartsOn: 1 })]]
       while (addDays(ranges[ranges.length - 1][0], 7) < end) {
         const s = addDays(ranges[ranges.length - 1][0], 7)

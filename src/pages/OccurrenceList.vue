@@ -27,7 +27,11 @@
             @click="$router.push(`/occurrences/${props.row.pk_occurrences}`)"
           >
             <q-card-section class="text-center">
-              <strong>{{ props.row.title }}</strong>
+              <div>{{ format(parseISO(props.row.begins), 'MMM do, yyyy HH:mm') }}</div>
+              <div>{{ format(parseISO(props.row.ends), 'MMM do, yyyy HH:mm') }}</div>
+              <div>{{ props.row.frequency }}</div>
+              <div>{{ props.row.weekdays.join(', ') }}</div>
+              <div>{{ props.row.next.length }} | {{ props.row.done.length }} | {{ props.row.failed.length }} | {{ props.row.skipped.length }}</div>
             </q-card-section>
           </q-card>
         </div>
@@ -40,7 +44,7 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-
+import { format, parseISO } from 'date-fns'
 import FloatingActionButton from '../components/FloatingActionButton'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
@@ -62,8 +66,14 @@ export default {
       },
       uniqueKey: 'pk_occurrences',
       columns: [
-        { name: 'title', field: 'title', label: 'Title' },
-        { name: 'colors', field: 'colors', label: 'Colors' }
+        { name: 'begins', field: 'begins', label: 'begins' },
+        { name: 'ends', field: 'ends', label: 'ends' },
+        { name: 'frequency', field: 'frequency', label: 'frequency' },
+        { name: 'weekdays', field: 'weekdays', label: 'weekdays' },
+        { name: 'next', field: 'next', label: 'next' },
+        { name: 'done', field: 'next', label: 'next' },
+        { name: 'failed', field: 'failed', label: 'failed' },
+        { name: 'skipped', field: 'skipped', label: 'skipped' }
       ]
     }
   },
@@ -83,7 +93,9 @@ export default {
       this.pagination.page = page
       this.pagination.rowsPerPage = rowsPerPage
       this.filter = search
-    }
+    },
+    format,
+    parseISO
   },
   mounted () {
     this.onRequest({

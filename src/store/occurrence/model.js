@@ -6,7 +6,7 @@ export const getInstance = () => ({
   ends: endOfMonth(startOfToday()),
   n: 1,
   frequency: 'once', // once, day, week, month, year, custom
-  if_on_working_day: null, // 'previous', 'closest', 'next' for day, month, year
+  if_on_working_day: 'next', // 'previous', 'closest', 'next' for day, month, year
   is_on_last_day_of_month: false, // for month and year
   weekdays: [], // for week
   next: [],
@@ -17,7 +17,6 @@ export const getInstance = () => ({
 
 export const observer = {
   set: function (obj, prop, value) {
-    console.log('observer')
     obj[prop] = value
     if (['begins', 'ends', 'frequency', 'n', 'weekdays', 'is_on_last_day_of_month', 'is_on_business_day'].includes(prop)) {
       switch (obj.frequency) {
