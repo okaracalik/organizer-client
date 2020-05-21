@@ -24,6 +24,15 @@ const routes = [
       { path: 'new', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'New Occurrence' } },
       { path: ':id', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'Edit Occurrence' } }
     ]
+  },
+  {
+    path: '/tasks',
+    component: () => import('layouts/MainLayout'),
+    children: [
+      { path: '', component: () => import('pages/TaskList'), meta: { title: 'Tasks' } },
+      { path: 'new', component: () => import('pages/TaskForm'), props: true, meta: { title: 'New Task' } },
+      { path: ':id', component: () => import('pages/TaskForm'), props: true, meta: { title: 'Edit Task' } }
+    ]
   }
 ]
 

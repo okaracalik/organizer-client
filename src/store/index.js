@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import tag from './tag'
 import occurrence from './occurrence'
+import task from './task'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       tag,
-      occurrence
+      occurrence,
+      task
     },
 
     // enable strict mode (adds overhead!)

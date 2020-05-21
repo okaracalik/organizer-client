@@ -34,6 +34,14 @@
             <q-item-label>Occurrences</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable tag="a" to="/tasks">
+          <q-item-section avatar>
+            <q-icon name="las la-list-ul" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Tasks</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
