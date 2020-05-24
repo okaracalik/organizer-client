@@ -1,8 +1,8 @@
 <template>
   <div>
     <q-select
-      filled
       v-model="terms"
+      clearable
       use-input
       hide-selected
       fill-input
@@ -21,12 +21,11 @@
           <q-item-section class="text-grey">No results</q-item-section>
         </q-item>
       </template>
-      <template v-slot:append>
+      <template v-if="hasNoResult" v-slot:append>
         <q-icon
-          v-if="terms !== null"
+          name="add"
+          @click.stop="terms = null; $emit('open-tag-modal')"
           class="cursor-pointer"
-          name="clear"
-          @click.stop="terms = null"
         />
       </template>
     </q-select>
@@ -34,6 +33,7 @@
 </template>
 
 <script>
+import { isNull } from 'lodash'
 import Search from '../services/search'
 
 export default {
@@ -81,6 +81,11 @@ export default {
             })
           })
       })
+    },
+    reset () {
+      this.terms = null
+      this.options = []
+      this.hasNoResult = false
     }
   },
   watch: {
@@ -88,7 +93,9 @@ export default {
       this.terms = newValue
     },
     terms (newValue) {
-      this.$emit('change', newValue)
+      if (!isNull(newValue)) {
+        this.$emit('change', newValue)
+      }
     }
   }
 }

@@ -1,5 +1,9 @@
 <template>
-  <component :is="componentId" :padding="componentId === 'q-page'" :class="componentClass">
+  <component
+    :is="componentId"
+    :padding="componentId === 'q-page'"
+    :class="(isEmbedded || isModal) ? 'div' : 'q-page'"
+  >
     <!-- form -->
     <div class="q-mt-lg" v-if="tagForm.data">
       <!-- title -->
@@ -76,9 +80,9 @@ export default {
   name: 'TagForm',
   mixins: [form],
   props: {
-    isProperty: {
-      type: Boolean,
-      default: false
+    tagPropertyData: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -119,8 +123,8 @@ export default {
         // if (this.color !== '#FFFFFF') {
         //   this.tagForm.data.colors.push(this.color)
         // }
-        if (this.isProperty) {
-          this.mode = this.$emitter.modes.ADD
+        if (this.isModal) {
+          this.mode = this.isEdit ? this.$emitter.modes.UPDATE : this.$emitter.modes.CREATE
           this.$emit(this.$emitter.constructEmitMessage(this.mode, 'tag'), this.tagForm.data)
           this.setTag(null)
           this.$v.tagForm.$reset()
@@ -173,11 +177,6 @@ export default {
           message: this.$emitter.constructNotifyMessage(this.mode, 'Tag'),
           color: 'positive'
         })
-      }
-    },
-    isProperty (newValue) {
-      if (newValue) {
-        this.setTag({ title: newValue.title, colors: newValue.colors })
       }
     }
   }
