@@ -2,6 +2,7 @@
 const createService = require('feathers-sequelize');
 const createModel = require('../../models/tags.model');
 const hooks = require('./tags.hooks');
+const { Op } = require('sequelize');
 
 module.exports = function (app) {
   const Model = createModel(app);
@@ -9,7 +10,12 @@ module.exports = function (app) {
 
   const options = {
     Model,
-    paginate
+    paginate,
+    operators: {
+      '$iRegexp': Op.iRegexp,
+      '$ne': Op.ne
+    },
+    whitelist: ['$iRegexp', '$ne']
   };
 
   // Initialize our service with any options it requires
