@@ -1,5 +1,5 @@
 <template>
-  <div class="container-col">
+  <div class="vertically-expanding">
     <div class="row q-pa-xs">
       <!-- today button -->
       <q-btn
@@ -26,11 +26,13 @@
       <!-- current month -->
       <span class="text-h6 text-grey-8">{{ format(day, 'MMMM, yyyy') }}</span>
     </div>
-    <div class="container-col">
+    <div class="vertically-expanding">
       <calendar-week
         class="week"
         v-for="(week, wIndex) in weeks"
         :key="wIndex"
+        :index="wIndex"
+        :today="day"
         :start="week[0]"
         :end="week[1]"
         :events="events.filter(o => isWithinInterval(o.date, {start: week[0], end: week[1]}))"

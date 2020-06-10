@@ -1,5 +1,6 @@
 <template>
-  <q-page class="container-col">
+  <q-page class="vertically-expanding" padding>
+    <calendar-month :day="day"  @change-month="(date) => { day = date }" />
   </q-page>
 </template>
 
@@ -25,7 +26,7 @@ export default {
 </script>
 
 <style>
-.container-col {
+.vertically-expanding {
   display: flex;
   flex-flow: column;
   flex-grow: 1;

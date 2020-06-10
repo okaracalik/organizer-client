@@ -127,7 +127,7 @@
       <div class="row">
         <!-- frequency -->
         <q-select
-          class="col-md-5 col-xs-12 q-pr-lg text-capitalize"
+          class="col-md-4 col-xs-12 q-pr-lg text-capitalize"
           label="Frequency"
           v-model="occurrenceForm.data.frequency"
           :options="['once', 'day', 'week', 'month', 'year', 'custom']"
@@ -138,7 +138,7 @@
         </q-select>
         <!-- n -->
         <q-input
-          class="col-md-1 col-xs-12 q-pr-lg"
+          class="col-md-2 col-xs-12 q-pr-lg"
           input-class="text-center"
           type="number"
           float-label="N"
@@ -232,7 +232,6 @@ import CalendarMonth from '../components/CalendarMonth'
 
 const { mapState, mapActions } = createNamespacedHelpers('occurrence')
 
-// TODO: take form-data as props
 export default {
   name: 'OccurrenceForm',
   mixins: [form],

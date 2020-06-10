@@ -8,6 +8,13 @@ const routes = [
     ]
   },
   {
+    path: '/calendar',
+    component: () => import('layouts/MainLayout'),
+    children: [
+      { path: '', component: () => import('pages/Calendar'), meta: { title: 'Calendar' } }
+    ]
+  },
+  {
     path: '/tags',
     component: () => import('layouts/MainLayout'),
     children: [

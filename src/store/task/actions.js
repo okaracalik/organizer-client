@@ -8,7 +8,21 @@ const Service = HTTP(moduleName)
 export const find = ({ commit }, query = null) => {
   Service.find(query)
     .then(res => {
-      commit('listSuccess', res.data)
+      commit('listSuccess', {
+        ...res.data,
+        data: res.data.data.map(d => ({
+          ...d,
+          occurrences: d.occurrences.map(o => ({
+            ...o,
+            begins: parseISO(o.begins),
+            ends: parseISO(o.ends),
+            next: o.next.map(parseISO),
+            done: o.done.map(parseISO),
+            failed: o.failed.map(parseISO),
+            skipped: o.skipped.map(parseISO)
+          }))
+        }))
+      })
     })
     .catch(err => {
       commit('listError', err.response.data)

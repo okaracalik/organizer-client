@@ -1,11 +1,12 @@
 <template>
-  <div class="container-col">
+  <div class="vertically-expanding">
     <div class="row container-item">
       <calendar-day
         class="col"
         v-for="(day, dIndex) in eachDayOfInterval({start, end})"
         :key="dIndex"
         :day="day"
+        :show-weekdays="index < 1"
         :events="events.filter(o => isSameDay(o.date, day))"
       >
         <template v-slot:title>
@@ -46,11 +47,14 @@ export default {
     events: {
       type: Array,
       default: () => []
-    }
-  },
-  data () {
-    return {
-      today: new Date()
+    },
+    index: {
+      type: Number,
+      required: true
+    },
+    today: {
+      type: Date,
+      default: () => new Date()
     }
   },
   methods: {

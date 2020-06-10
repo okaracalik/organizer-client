@@ -43,7 +43,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .weekday {
   color: grey;
 }
@@ -58,23 +58,23 @@ export default {
   border-right: 1px solid lightgray;
 }
 
-.container-col.week:first-child > .row > .day-card {
+.vertically-expanding.week:first-child > .row > .day-card {
   border-top: 1px solid lightgray;
 }
 
-.container-col.week:first-child > .row > .day-card:first-child {
+.vertically-expanding.week:first-child > .row > .day-card:first-child {
   border-top-left-radius: 20px;
 }
 
-.container-col.week:first-child > .row > .day-card:last-child {
+.vertically-expanding.week:first-child > .row > .day-card:last-child {
   border-top-right-radius: 20px;
 }
 
-.container-col.week:last-child > .row > .day-card:first-child {
+.vertically-expanding.week:last-child > .row > .day-card:first-child {
   border-bottom-left-radius: 20px;
 }
 
-.container-col.week:last-child > .row > .day-card:last-child {
+.vertically-expanding.week:last-child > .row > .day-card:last-child {
   border-bottom-right-radius: 20px;
 }
 
