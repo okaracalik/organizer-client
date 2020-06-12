@@ -9,16 +9,19 @@
         :show-weekdays="index < 1"
         :events="events.filter(o => isSameDay(o.date, day))"
       >
-        <template v-slot:title>
-          {{ isSameMonth(today, day) ? format(day, 'do') : format(day, 'MMM do') }}
-        </template>
+        <template
+          v-slot:title
+        >{{ isSameMonth(today, day) ? format(day, 'do') : format(day, 'MMM do') }}</template>
         <template v-slot:content="day">
           <q-badge
-            :color="event.color"
+            :style="{backgroundColor: event.colors[0], color: event.colors[1]}"
             class="full-width text-bold cursor-pointer text-capitalize"
             v-for="(event, eIndex) in day.props.events"
             :key="eIndex"
-          >{{ event.title }}</q-badge>
+          >
+            <q-icon :name="getIcon(event.status)" :color="event.colors[1]" />
+            {{ event.title }}
+          </q-badge>
         </template>
       </calendar-day>
     </div>
@@ -58,6 +61,22 @@ export default {
     }
   },
   methods: {
+    getIcon (status) {
+      switch (status) {
+        case 'next':
+          return 'las la-stop'
+        case 'done':
+          return 'las la-check-square'
+        case 'failed':
+          return 'las la-times-circle'
+        case 'skipped':
+          return 'las la-fast-forward'
+        case 'removed':
+          return 'las la-trash'
+        default:
+          return 'las la-question'
+      }
+    },
     eachDayOfInterval,
     isSameMonth,
     format,
