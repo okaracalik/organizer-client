@@ -1,9 +1,10 @@
 
+const extendOccurrence = require('../../hooks/extend-occurrence');
 module.exports = {
   before: {
     all: [],
-    find: [],
-    get: [],
+    find: [extendOccurrence()],
+    get: [extendOccurrence()],
     create: [],
     update: [],
     patch: [],
