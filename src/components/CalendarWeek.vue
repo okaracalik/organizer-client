@@ -14,7 +14,8 @@
         >{{ isSameMonth(today, day) ? format(day, 'do') : format(day, 'MMM do') }}</template>
         <template v-slot:content="day">
           <q-badge
-            :style="{backgroundColor: event.colors[0], color: event.colors[1]}"
+             @click="$router.push(`/occurrences/${event.pck_ocurrences}`)"
+            :style="{backgroundColor: event.colors[0], color: event.colors[1], border: `1px solid ${event.colors[1]}`}"
             class="full-width text-bold cursor-pointer text-capitalize"
             v-for="(event, eIndex) in day.props.events"
             :key="eIndex"
