@@ -6,6 +6,14 @@
   >
     <!-- content -->
     <div :class="{'q-mt-lg': !(isEmbedded || isModal)}" v-if="occurrenceForm.data">
+      <q-banner class="bg-teal-11 text-black" rounded>
+      <strong> <q-icon name="las la-info-circle" /> Features:</strong>
+        <ul>
+          <li>A form to create or update an occurrence.</li>
+          <li>You can specify various features: interval(start, end), frequency, recurrence time, and based on frequency, there may be other things to specify such as weekdays.</li>
+          <li>You are able to see them on the calendar, and quickly change their states in the lists below. You cannot change the status of the upcoming dates.</li>
+        </ul>
+    </q-banner>
       <div class="row q-mt-lg">
         <!-- begins -->
         <q-input class="col" :value="format(occurrenceForm.data.begins, 'MMM do, yyyy HH:mm')">
@@ -189,10 +197,10 @@
         class="q-my-md"
         :day="day"
         @change-month="(date) => { day = date }"
-        :events="[...occurrenceForm.data['done'].map(d => ({title: 'done', date: d, color: 'green'})),
-                  ...occurrenceForm.data['skipped'].map(d => ({title: 'skipped', date: d, color: 'orange'})),
-                  ...occurrenceForm.data['failed'].map(d => ({title: 'failed', date: d, color: 'red'})),
-                  ...occurrenceForm.data['next'].map(d => ({title: 'next', date: d, color: 'blue'}))]"
+        :events="[...occurrenceForm.data['done'].map(d => ({title: 'done', date: d, colors: ['green', 'white']})),
+                  ...occurrenceForm.data['skipped'].map(d => ({title: 'skipped', date: d, colors: ['orange', 'white']})),
+                  ...occurrenceForm.data['failed'].map(d => ({title: 'failed', date: d, colors: ['red', 'white']})),
+                  ...occurrenceForm.data['next'].map(d => ({title: 'next', date: d, colors: ['blue', 'white']}))]"
       />
       <!-- occurrences -->
       <div v-if="!isModal" class="row q-mt-lg">

@@ -6,7 +6,7 @@
       <q-icon :name="getTaskIconAlt(type)" />
       {{ type }}
       <q-badge :color="getTaskColorDarker(type)" text-color="white">{{items.length}}</q-badge>
-      <q-btn  flat color="primary" icon="mdi-plus-circle" @click="customDate.isOpen = true" />
+      <!-- <q-btn  flat color="primary" icon="mdi-plus-circle" @click="customDate.isOpen = true" /> -->
     </q-item-label>
     <!-- items -->
     <q-item v-for="(item, index) in items.slice(0, shownItems)" :key="index">
