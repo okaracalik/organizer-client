@@ -1,16 +1,16 @@
 {
   "host": "localhost",
-  "port": 3030,
+  "port": 3031,
   "public": "../public/",
   "paginate": {
     "default": 30,
     "max": 50
   },
-  "postgres": "postgres://postgres:postgres@localhost:5432/dev",
+  "postgres": "postgres://postgres:postgres@database:5432/dev",
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "wrLS45SK3KE7HX0SQiKf6qm3IB8=",
+    "secret": "UyEcyMe+OHtL++jntIuwCTolWW4=",
     "authStrategies": [
       "jwt",
       "local"
