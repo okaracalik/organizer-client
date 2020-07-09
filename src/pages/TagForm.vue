@@ -6,6 +6,13 @@
   >
     <!-- form -->
     <div class="q-mt-lg" v-if="tagForm.data">
+      <q-banner class="bg-teal-11 text-black" rounded>
+        <strong> <q-icon name="las la-info-circle" /> Features:</strong>
+          <ul>
+            <li>A form to create or update a tag.</li>
+            <li>You can specify various features: title, color.</li>
+          </ul>
+      </q-banner>
       <!-- title -->
       <q-input class="col-md-6 col-xs-12" type="text" label="Title" v-model="tagForm.data.title">
         <template v-slot:before>

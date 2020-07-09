@@ -1,5 +1,12 @@
 <template>
   <q-page padding>
+    <q-banner class="bg-teal-11 text-black" rounded>
+      <strong> <q-icon name="las la-info-circle" /> Features:</strong>
+        <ul>
+          <li>An overview of your tasks.</li>
+          <li>Click on a task to edit the info or status.</li>
+        </ul>
+    </q-banner>
     <!-- content -->
     <q-table
       grid
@@ -12,13 +19,13 @@
       @request="onRequest"
     >
       <!-- search -->
-      <template v-slot:top-right>
+      <!-- <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
-      </template>
+      </template> -->
       <!-- body -->
       <template v-slot:item="props">
         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-2">

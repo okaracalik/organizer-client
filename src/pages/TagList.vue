@@ -1,7 +1,15 @@
 <template>
   <q-page padding>
+    <q-banner class="bg-teal-11 text-black" rounded>
+      <strong> <q-icon name="las la-info-circle" /> Features:</strong>
+        <ul>
+          <li>An overview of your tags.</li>
+          <li>Click on a tag to edit the info or status.</li>
+        </ul>
+    </q-banner>
     <!-- content -->
     <q-table
+      v-if="tagList.success"
       grid
       title="Tags"
       :data="tagList.success.data"
