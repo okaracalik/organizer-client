@@ -15,7 +15,7 @@
       icon="mdi-delete-forever-outline"
     />
   </div>
-  <q-page-sticky v-else class="row" position="top" :offset="[0, 18]">
+  <q-page-sticky v-else class="row" position="top" :offset="[0, 6]">
     <q-btn
       class="col q-mr-lg"
       color="positive"

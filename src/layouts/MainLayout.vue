@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-green-14">
         <q-btn
           flat
           dense
@@ -26,12 +26,12 @@
             <q-item-label>Calendar</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" to="/tags">
+        <q-item clickable tag="a" to="/tasks">
           <q-item-section avatar>
-            <q-icon name="las la-tags" />
+            <q-icon name="las la-list-ul" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Tags</q-item-label>
+            <q-item-label>Tasks</q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable tag="a" to="/occurrences">
@@ -42,12 +42,12 @@
             <q-item-label>Occurrences</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable tag="a" to="/tasks">
+        <q-item clickable tag="a" to="/tags">
           <q-item-section avatar>
-            <q-icon name="las la-list-ul" />
+            <q-icon name="las la-tags" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Tasks</q-item-label>
+            <q-item-label>Tags</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
