@@ -53,7 +53,9 @@ module.exports = function (/* ctx */) {
       directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify'
+      ]
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -116,7 +118,7 @@ module.exports = function (/* ctx */) {
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
-        theme_color: '#027be3',
+        theme_color: '#00c853',
         icons: [
           {
             src: 'statics/icons/icon-128x128.png',
