@@ -4,41 +4,41 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', name: 'Index', component: () => import('pages/Index.vue') }
     ]
   },
   {
     path: '/calendar',
     component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', component: () => import('pages/Calendar'), meta: { title: 'Calendar' } }
+      { path: '', name: 'Calendar', component: () => import('pages/Calendar'), meta: { title: 'Calendar' } }
     ]
   },
   {
     path: '/tags',
     component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', component: () => import('pages/TagList'), meta: { title: 'Tags' } },
-      { path: 'new', component: () => import('pages/TagForm'), props: true, meta: { title: 'New Tag' } },
-      { path: ':id', component: () => import('pages/TagForm'), props: true, meta: { title: 'Edit Tag' } }
+      { path: '', name: 'Tags', component: () => import('pages/TagList'), meta: { title: 'Tags' } },
+      { path: 'new', name: 'NewTag', component: () => import('pages/TagForm'), props: true, meta: { title: 'New Tag' } },
+      { path: ':id', name: 'EditTag', component: () => import('pages/TagForm'), props: true, meta: { title: 'Edit Tag' } }
     ]
   },
   {
     path: '/occurrences',
     component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', component: () => import('pages/OccurrenceList'), meta: { title: 'Occurrences' } },
-      { path: 'new', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'New Occurrence' } },
-      { path: ':id', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'Edit Occurrence' } }
+      { path: '', name: 'Occurrences', component: () => import('pages/OccurrenceList'), meta: { title: 'Occurrences' } },
+      { path: 'new', name: 'NewOccurrence', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'New Occurrence' } },
+      { path: ':id', name: 'EditOccurrence', component: () => import('pages/OccurrenceForm'), props: true, meta: { title: 'Edit Occurrence' } }
     ]
   },
   {
     path: '/tasks',
     component: () => import('layouts/MainLayout'),
     children: [
-      { path: '', component: () => import('pages/TaskList'), meta: { title: 'Tasks' } },
-      { path: 'new', component: () => import('pages/TaskForm'), props: true, meta: { title: 'New Task' } },
-      { path: ':id', component: () => import('pages/TaskForm'), props: true, meta: { title: 'Edit Task' } }
+      { path: '', name: 'Tasks', component: () => import('pages/TaskList'), meta: { title: 'Tasks' } },
+      { path: 'new', name: 'NewTask', component: () => import('pages/TaskForm'), props: true, meta: { title: 'New Task' } },
+      { path: ':id', name: 'EditTask', component: () => import('pages/TaskForm'), props: true, meta: { title: 'Edit Task' } }
     ]
   }
 ]
