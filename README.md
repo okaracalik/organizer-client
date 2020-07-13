@@ -1,6 +1,7 @@
-# Task Organizer (organizer-client)
+# Task Organizer
 
-An advanced to-do app.
+A to-do app where it focuses on the calendar-based organization.
+You can create a task with recurrence options. You can use tags to tags to categorize.
 
 ## Install the dependencies
 ```bash
@@ -21,6 +22,3 @@ yarn run lint
 ```bash
 quasar build
 ```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
