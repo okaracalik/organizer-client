@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const base = 'https://localhost/api/organizer'
-// const base = 'https://orkutkaracalik.info/api/organizer'
+// const base = 'https://localhost/api/organizer'
+const base = 'https://orkutkaracalik.info/api/organizer'
 
 const Service = name => ({
   find (query = null) {
