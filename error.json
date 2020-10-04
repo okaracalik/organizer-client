@@ -1,0 +1,53 @@
+{
+  "_bitField": 18087936,
+  "_fulfillmentHandler0": {
+    "name": "SequelizeDatabaseError",
+    "parent": {
+      "name": "error",
+      "length": 101,
+      "severity": "ERROR",
+      "code": "3F000",
+      "position": "28",
+      "file": "namespace.c",
+      "line": "3023",
+      "routine": "get_namespace_oid",
+      "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+    },
+    "original": {
+      "name": "error",
+      "length": 101,
+      "severity": "ERROR",
+      "code": "3F000",
+      "position": "28",
+      "file": "namespace.c",
+      "line": "3023",
+      "routine": "get_namespace_oid",
+      "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+    },
+    "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+  },
+  "name": "SequelizeDatabaseError",
+  "parent": {
+    "name": "error",
+    "length": 101,
+    "severity": "ERROR",
+    "code": "3F000",
+    "position": "28",
+    "file": "namespace.c",
+    "line": "3023",
+    "routine": "get_namespace_oid",
+    "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+  },
+  "original": {
+    "name": "error",
+    "length": 101,
+    "severity": "ERROR",
+    "code": "3F000",
+    "position": "28",
+    "file": "namespace.c",
+    "line": "3023",
+    "routine": "get_namespace_oid",
+    "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+  },
+  "sql": "CREATE TABLE IF NOT EXISTS \"recipes\".\"users\" (\"pk_users\"  SERIAL , \"email\" VARCHAR(255) NOT NULL UNIQUE, \"password\" VARCHAR(255) NOT NULL, PRIMARY KEY (\"pk_users\"));"
+}
