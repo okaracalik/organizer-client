@@ -15,7 +15,7 @@
     "@quasar/extras": "^1.8.2",
     "axios": "^0.19.2",
     "date-fns": "^2.12.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "quasar": "^1.12.6",
     "vuelidate": "^0.7.5"
   },
