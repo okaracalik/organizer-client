@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-// const base = 'https://localhost/api/organizer'
-const base = 'https://orkutkaracalik.info/api/organizer'
+const base = process.env.PROD ? 'https://orkutkaracalik.info/api/organizer' : 'http://localhost:3031'
 
 const Service = name => ({
   find (query = null) {

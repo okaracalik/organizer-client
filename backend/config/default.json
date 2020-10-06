@@ -6,7 +6,7 @@
     "default": 30,
     "max": 50
   },
-  "postgres": "postgres://postgres12:postgres12@database:5432/dev",
+  "postgres": "postgres://postgres:postgres@localhost:5432/dev",
   "authentication": {
     "entity": "user",
     "service": "users",
